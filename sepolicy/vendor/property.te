@@ -1,0 +1,6 @@
+# persist.vendor.sys.fp.* (Goodix fingerprint HAL)
+vendor_internal_prop(vendor_fp_prop)
+
+# ro.vendor.config.lgsi.* (vendor.prop): Lenovo device/pen identity read by
+# PenService, ZuiUDevice and other Lenovo apps
+vendor_public_prop(vendor_lenovo_config_prop)

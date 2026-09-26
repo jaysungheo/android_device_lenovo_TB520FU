@@ -1,0 +1,201 @@
+/*
+ * SPDX-FileCopyrightText: 2026 The LineageOS Project
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+package com.tb520fu.parts
+
+import android.app.AlertDialog
+import android.content.Intent
+import android.os.Bundle
+import android.os.PowerManager
+import android.provider.Settings
+import android.text.format.Formatter
+import androidx.preference.ListPreference
+import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
+import androidx.preference.SeekBarPreference
+import androidx.preference.SwitchPreferenceCompat
+import com.android.settingslib.widget.SelectorWithWidgetPreference
+import com.android.settingslib.widget.SettingsBasePreferenceFragment
+
+class PartsFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceChangeListener {
+
+    private lateinit var vramPref: ListPreference
+    private lateinit var statusPref: Preference
+    private lateinit var chargingPrefs: List<SelectorWithWidgetPreference>
+    private lateinit var bypassPref: SwitchPreferenceCompat
+    private lateinit var standbyPref: SwitchPreferenceCompat
+    private lateinit var maintenancePref: SwitchPreferenceCompat
+    private lateinit var batteryInfoPref: Preference
+    private lateinit var gamePerfPref: Preference
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.parts_settings, rootKey)
+        val ctx = requireContext()
+
+        // Charging mode: tb520fu_battery_mode 0 normal, 1 stop at 80%, 2 protection 40-60%
+        chargingPrefs = CHARGING_KEYS.map { findPreference<SelectorWithWidgetPreference>(it)!! }
+        chargingPrefs.forEachIndexed { mode, pref ->
+            pref.setOnClickListener {
+                LenovoSettings.putInt(ctx, LenovoSettings.BATTERY_MODE, mode)
+                updateChargingMode()
+            }
+        }
+
+        bypassPref = switch(KEY_BYPASS, LenovoSettings.BYPASS_CHARGING, 0)
+        standbyPref = switch(KEY_STANDBY, LenovoSettings.STANDBY_SAVER, 0)
+        maintenancePref = switch(KEY_MAINTENANCE, LenovoSettings.BATTERY_MAINTENANCE, 1)
+        batteryInfoPref = findPreference(KEY_BATTERY_INFO)!!
+
+        // Adaptive white balance (the Settings > Display switch is hidden) and how
+        // strongly it follows the ambient light (patches/frameworks_base-0002)
+        findPreference<SwitchPreferenceCompat>(KEY_WHITE_BALANCE)!!.apply {
+            isChecked = Settings.Secure.getInt(ctx.contentResolver,
+                LenovoSettings.DISPLAY_WHITE_BALANCE, 0) != 0
+            setOnPreferenceChangeListener { _, newValue ->
+                Settings.Secure.putInt(requireContext().contentResolver,
+                    LenovoSettings.DISPLAY_WHITE_BALANCE, if (newValue as Boolean) 1 else 0)
+                true
+            }
+        }
+        findPreference<SeekBarPreference>(KEY_WHITE_BALANCE_STRENGTH)!!.apply {
+            value = Settings.Secure.getInt(ctx.contentResolver,
+                LenovoSettings.WHITE_BALANCE_STRENGTH, LenovoSettings.DEFAULT_WHITE_BALANCE_STRENGTH)
+            setOnPreferenceChangeListener { _, newValue ->
+                Settings.Secure.putInt(requireContext().contentResolver,
+                    LenovoSettings.WHITE_BALANCE_STRENGTH, newValue as Int)
+                true
+            }
+        }
+
+        gamePerfPref = findPreference(KEY_GAME_PERF)!!
+
+        val penPref: Preference = findPreference(KEY_PEN_SETTINGS)!!
+        // Own task: embedded in the Settings two-pane layout the stock pen page
+        // is too narrow and cuts off the pen picture and the battery level.
+        val penIntent = Intent(LenovoSettings.ACTION_PEN_SETTINGS)
+            .setClassName(LenovoSettings.PEN_PACKAGE, LenovoSettings.PEN_SETTINGS_ACTIVITY)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        if (ctx.packageManager.resolveActivity(penIntent, 0) != null) {
+            penPref.intent = penIntent
+        } else {
+            findPreference<PreferenceCategory>(KEY_PEN_CATEGORY)?.isVisible = false
+        }
+
+        vramPref = findPreference(KEY_VRAM)!!
+        vramPref.entries = MemoryExtension.SIZES_GB.map { sizeLabel(it) }.toTypedArray()
+        vramPref.entryValues = MemoryExtension.SIZES_GB.map { it.toString() }.toTypedArray()
+        vramPref.value = MemoryExtension.selectedGb.toString()
+        vramPref.onPreferenceChangeListener = this
+
+        statusPref = findPreference(KEY_STATUS)!!
+    }
+
+    /** A switch backed by a Settings.Global int of [LenovoSettings]. */
+    private fun switch(key: String, setting: String, def: Int): SwitchPreferenceCompat {
+        val pref: SwitchPreferenceCompat = findPreference(key)!!
+        pref.isChecked = LenovoSettings.getInt(requireContext(), setting, def) != 0
+        pref.setOnPreferenceChangeListener { _, value ->
+            LenovoSettings.putInt(requireContext(), setting, if (value as Boolean) 1 else 0)
+            true
+        }
+        return pref
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.setTitle(R.string.app_name)
+        val ctx = requireContext()
+        updateChargingMode()
+        updateBatteryInfo()
+        gamePerfPref.summary = getString(
+            if (LenovoSettings.getInt(ctx, LenovoSettings.GAME_PERF, 0) != 0) R.string.game_perf_on
+            else R.string.game_perf_off
+        )
+        updateVramSummary()
+        updateStatus()
+    }
+
+    override fun onPreferenceChange(preference: Preference, newValue: Any?): Boolean {
+        when (preference) {
+            vramPref -> {
+                val gb = (newValue as String).toInt()
+                MemoryExtension.selectedGb = gb
+                vramPref.value = newValue
+                updateVramSummary()
+                if (gb != MemoryExtension.activeGb) askReboot()
+            }
+            else -> return false
+        }
+        return true
+    }
+
+    private fun updateChargingMode() {
+        val mode = LenovoSettings.getInt(requireContext(), LenovoSettings.BATTERY_MODE, 0)
+            .coerceIn(0, chargingPrefs.size - 1)
+        chargingPrefs.forEachIndexed { i, pref -> pref.isChecked = i == mode }
+    }
+
+    private fun updateBatteryInfo() {
+        val info = LenovoSettings.readBatteryInfo(requireContext())
+        val cycles = info.cycles?.toString() ?: "-"
+        val health = info.healthPercent?.let { "$it%" } ?: "-"
+        batteryInfoPref.summary = getString(R.string.battery_info_summary, cycles, health)
+    }
+
+    private fun sizeLabel(gb: Int) =
+        if (gb == 0) getString(R.string.vram_off) else getString(R.string.vram_size, gb)
+
+    private fun updateVramSummary() {
+        val selected = MemoryExtension.selectedGb
+        val active = MemoryExtension.activeGb
+        vramPref.summary = if (active == null || active == selected) {
+            getString(R.string.vram_summary, sizeLabel(selected))
+        } else {
+            getString(R.string.vram_summary_pending, sizeLabel(selected), sizeLabel(active))
+        }
+    }
+
+    private fun updateStatus() {
+        val status = MemoryExtension.readStatus() ?: return
+        val ctx = requireContext()
+        val ram = Formatter.formatShortFileSize(ctx, status.ramBytes)
+        statusPref.summary = if (status.swapBytes == 0L) {
+            getString(R.string.memory_status_summary_off, ram)
+        } else {
+            getString(
+                R.string.memory_status_summary,
+                ram,
+                Formatter.formatShortFileSize(ctx, status.swapBytes),
+                Formatter.formatShortFileSize(ctx, status.swapUsedBytes),
+            )
+        }
+    }
+
+    private fun askReboot() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.reboot_title)
+            .setMessage(R.string.reboot_message)
+            .setPositiveButton(R.string.reboot_now) { _, _ ->
+                requireContext().getSystemService(PowerManager::class.java).reboot(null)
+            }
+            .setNegativeButton(R.string.reboot_later, null)
+            .show()
+    }
+
+    private companion object {
+        val CHARGING_KEYS = listOf("charging_normal", "charging_limit", "charging_protect")
+        const val KEY_BYPASS = "bypass_charging"
+        const val KEY_STANDBY = "standby_saver"
+        const val KEY_MAINTENANCE = "battery_maintenance"
+        const val KEY_BATTERY_INFO = "battery_info"
+        const val KEY_WHITE_BALANCE = "white_balance"
+        const val KEY_WHITE_BALANCE_STRENGTH = "white_balance_strength"
+        const val KEY_GAME_PERF = "game_perf"
+        const val KEY_PEN_CATEGORY = "pen"
+        const val KEY_PEN_SETTINGS = "pen_settings"
+        const val KEY_VRAM = "vram_gb"
+        const val KEY_STATUS = "memory_status"
+    }
+}

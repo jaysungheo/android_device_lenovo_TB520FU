@@ -1,0 +1,10 @@
+[
+  {
+    "repository": "android_kernel_lenovo_TB520FU",
+    "target_path": "kernel/lenovo/TB520FU"
+  },
+  {
+    "repository": "android_vendor_lenovo_TB520FU",
+    "target_path": "vendor/lenovo/TB520FU"
+  }
+]

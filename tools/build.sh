@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+#
+# SPDX-FileCopyrightText: 2026 The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+# Apply the source patches and build, logging to <top>/build.log with the
+# result in <top>/build.status (RUNNING / EXIT=n), so it can run unattended:
+#
+#   setsid nohup device/lenovo/TB520FU/tools/build.sh > /dev/null 2>&1 < /dev/null &
+#   tail -f build.log
+#
+# usage: tools/build.sh [make target, default pixelos] [extra make args]
+set -uo pipefail
+TREE=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+TOP=$(cd "$TREE/../../.." && pwd)
+cd "$TOP"
+
+bash "$TREE/patches/apply.sh" "$TOP" || exit 1
+
+export WITH_ADB_INSECURE=${WITH_ADB_INSECURE:-false}
+source build/envsetup.sh > /dev/null
+breakfast TB520FU > /dev/null 2>&1 || { echo "breakfast failed" >&2; exit 1; }
+
+echo RUNNING > build.status
+m "${1:-pixelos}" -j"$(nproc)" -k 0 "${@:2}" > build.log 2>&1
+echo "EXIT=$?" > build.status
+cat build.status
