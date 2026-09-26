@@ -39,7 +39,7 @@ is not published at this version, so they come from the stock firmware
 with them (stable KMI).
 
 Source: [kernel/common](https://android.googlesource.com/kernel/common/+/2ecae636cf9be43fdfe04adb25b2c2987838955a),
-Lenovo's release: https://www.lenovo.com (Support > Open source).
+Lenovo's release: https://support.lenovo.com/us/en/solutions/ht511330-lenovo-open-source-portal
 
 ## Getting the source
 
