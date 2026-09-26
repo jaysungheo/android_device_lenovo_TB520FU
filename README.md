@@ -1,7 +1,7 @@
 # Lenovo Yoga Tab Plus (TB520FU) — PixelOS device tree
 
 Unofficial device tree for building PixelOS (Android 17, `seventeen`) for the
-Lenovo Yoga Tab Plus / Xiaoxin Pad Pro GT (TB520FU, codename "lapis", SM8650).
+Lenovo Yoga Tab Plus / YOGA Pad Pro (TB520FU, codename "lapis", SM8650).
 
 | | |
 |---|---|
