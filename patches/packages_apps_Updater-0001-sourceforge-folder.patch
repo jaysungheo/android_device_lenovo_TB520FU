@@ -20,7 +20,7 @@ diff --git a/app/src/main/java/net/pixelos/ota/data/source/network/UpdatesNetwor
  import java.util.concurrent.TimeUnit
  
  class UpdatesNetworkDataSource(private val context: Context) {
-@@ -37,35 +43,153 @@
+@@ -37,35 +43,157 @@
      private val client = OkHttpClient.Builder()
          .callTimeout(10, TimeUnit.SECONDS)
          .followRedirects(false)
@@ -55,16 +55,16 @@ diff --git a/app/src/main/java/net/pixelos/ota/data/source/network/UpdatesNetwor
 +    /**
 +     * SourceForge folder mode (updater_server_url is the RSS feed of the folder,
 +     * https://sourceforge.net/projects/<project>/rss?path=<dir>): every build in the folder
-+     * has "<package>.json" (the usual update list) next to its zip, and "<package>.json.sig" when
-+     * a signing key is configured.
++     * has "<package>.json" (the usual update list, full package and optional incremental), and
++     * "<package>.json.sig" when a signing key is configured.
 +     * The newest description for this device's package variant is used; the repository shows
 +     * it only when it is newer than the running build.
 +     *
 +     * Security: the feed URL and the signing key come from this app's resources (system
 +     * partition, verified boot); everything is fetched over HTTPS from sourceforge.net only;
 +     * links must stay in the project folder; with updater_signing_public_key set, the
-+     * description must carry a valid Ed25519 signature of that key; the zip must be in the
-+     * same folder and its SHA-256 is checked after the download (UpdaterController).
++     * description must carry a valid Ed25519 signature of that key; the packages must be files
++     * of the same project and a downloaded package's SHA-256 is checked (UpdaterController).
 +     */
 +    private fun isSourceForgeFolder(url: String) =
 +        url.startsWith("https://sourceforge.net/projects/") && url.contains("/rss")
@@ -98,12 +98,16 @@ diff --git a/app/src/main/java/net/pixelos/ota/data/source/network/UpdatesNetwor
 +            require(verifySignature(key, json, signature)) { "Bad signature for $newest" }
 +        }
 +
-+        val folder = newest.substringBeforeLast('/') + "/"
 +        return Json.decodeFromString<List<NetworkUpdate>>(json.decodeToString()).onEach { update ->
 +            update.validate()
++            // Full packages stay in the dated release folders, incrementals sit in the OTA
++            // folder; both must be files of this project.
 +            (update.files + update.incremental.orEmpty()).forEach { file ->
-+                require(file.url == folder + file.filename + "/download") {
-+                    "Package URL outside the release folder: ${file.url}"
++                require(
++                    file.url.startsWith(filesPrefix) && !file.url.contains("..") &&
++                        file.url.endsWith("/" + file.filename + "/download")
++                ) {
++                    "Package URL outside the project: ${file.url}"
 +                }
 +            }
 +        }

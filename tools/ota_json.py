@@ -3,19 +3,27 @@
 # SPDX-FileCopyrightText: 2026 The LineageOS Project
 # SPDX-License-Identifier: Apache-2.0
 #
-"""Write the update description of a build for the Updater.
+"""Write the update descriptions of a build for the Updater.
 
-For every ROM zip (PixelOS_TB520FU-<version>-<date>[-ROW].zip) this writes
-<zip name without .zip>.json (the Updater's update list with one entry), and
-with --key also <...>.json.sig (Ed25519 signature of the JSON, raw 64 bytes;
-only needed when the build has updater_signing_public_key set). Upload them
-with the zip into the OTA folder of the SourceForge project; the updater of a
-running build picks the newest description of its own variant (PRC / ROW).
+For every full ROM zip (PixelOS_TB520FU-<version>-<date>[-ROW].zip) this writes
+<zip name without .zip>.json, the Updater's update list with one entry:
 
-The JSON has no ota_property_files on purpose: the updater then downloads the
-whole package and checks its SHA-256 before installing it.
+  files        the full package
+  incremental  the incremental package of the same variant, if given with
+               --incremental (PixelOS_TB520FU-<version>-<date>-incremental-
+               <base date>[-ROW].zip)
 
-usage: ota_json.py [--key ota_signing_key.pem] [--folder-url URL] ZIP...
+Upload the .json files with the full and incremental zips into the OTA folder
+(builds up to 20260927-1632 accept packages only from the folder of the
+.json, so keep everything of a release together there). The
+updater of a running build picks the newest description of its own variant
+(PRC / ROW) that is newer than itself, uses the incremental package when
+update_engine can apply it to the running build and the full one otherwise.
+
+With --key it also writes <...>.json.sig (Ed25519 signature of the JSON, raw
+64 bytes), only needed for builds with updater_signing_public_key set.
+
+usage: ota_json.py [--incremental INC.zip]... [--key KEY.pem] FULL.zip...
 """
 import argparse
 import hashlib
@@ -27,8 +35,9 @@ import sys
 import tempfile
 import zipfile
 
-FOLDER_URL = 'https://sourceforge.net/projects/pixelos-unofficial-tb520fu/files/seventeen/OTA'
-NAME_RE = re.compile(r'PixelOS_TB520FU-([0-9.]+)-(\d{8}-\d{4})(-ROW)?\.zip')
+OTA_URL = 'https://sourceforge.net/projects/pixelos-unofficial-tb520fu/files/seventeen/OTA'
+FULL_RE = re.compile(r'PixelOS_TB520FU-([0-9.]+)-(\d{8}-\d{4})(-ROW)?\.zip')
+INC_RE = re.compile(r'PixelOS_TB520FU-([0-9.]+)-(\d{8}-\d{4})-incremental-(\d{8}-\d{4})(-ROW)?\.zip')
 
 
 def metadata(path):
@@ -56,46 +65,79 @@ def sign(key, data):
     return sig
 
 
+def file_entry(path, url, meta, streaming):
+    entry = {
+        'filename': os.path.basename(path),
+        'os_patch_level': meta['post-security-patch-level'],
+        'os_sdk_level': int(meta['post-sdk-level']),
+        'sha256': sha256(path),
+        'size': os.path.getsize(path),
+        'url': url,
+    }
+    if streaming:
+        # The updater checks with the payload metadata whether update_engine can
+        # apply the incremental to the running build, and streams it.
+        entry['ota_property_files'] = meta['ota-property-files'].strip()
+    return entry
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument('--incremental', action='append', default=[],
+                    help='incremental package of one of the builds (repeatable)')
+    ap.add_argument('--ota-url', default=OTA_URL,
+                    help='SourceForge folder the .json and packages are uploaded to')
     ap.add_argument('--key', help='Ed25519 private key (PEM), to also write <...>.json.sig')
-    ap.add_argument('--folder-url', default=FOLDER_URL,
-                    help='SourceForge folder the files are uploaded to')
-    ap.add_argument('zips', nargs='+')
+    ap.add_argument('zips', nargs='+', help='full packages')
     args = ap.parse_args()
-    folder = args.folder_url.rstrip('/')
+    folder = args.ota_url.rstrip('/')
     if not folder.startswith('https://sourceforge.net/projects/'):
-        sys.exit('folder URL must be a https://sourceforge.net/projects/ folder')
+        sys.exit('OTA URL must be a https://sourceforge.net/projects/ folder')
+
+    incrementals = {}
+    for path in args.incremental:
+        m = INC_RE.fullmatch(os.path.basename(path))
+        if not m:
+            sys.exit('unexpected incremental package name: ' + os.path.basename(path))
+        key = (m.group(1), m.group(2), bool(m.group(4)))
+        if key in incrementals:
+            sys.exit('two incrementals for the same build and variant: ' + path)
+        incrementals[key] = path
 
     for path in args.zips:
         name = os.path.basename(path)
-        m = NAME_RE.fullmatch(name)
+        m = FULL_RE.fullmatch(name)
         if not m:
             sys.exit('unexpected package name: ' + name)
         meta = metadata(path)
         if meta.get('ota-type') != 'AB':
             sys.exit(name + ': not an A/B package')
-        update = [{
+        update = {
             'datetime': int(meta['post-timestamp']),
             'version': m.group(1),
-            'files': [{
-                'filename': name,
-                'os_patch_level': meta['post-security-patch-level'],
-                'os_sdk_level': int(meta['post-sdk-level']),
-                'sha256': sha256(path),
-                'size': os.path.getsize(path),
-                'url': '%s/%s/download' % (folder, name),
-            }],
-        }]
-        data = (json.dumps(update, indent=2) + '\n').encode()
+            'files': [file_entry(path, '%s/%s/download' % (folder, name), meta,
+                                 streaming=False)],
+        }
+        inc = incrementals.pop((m.group(1), m.group(2), bool(m.group(3))), None)
+        if inc:
+            inc_meta = metadata(inc)
+            if inc_meta.get('post-timestamp') != meta['post-timestamp']:
+                sys.exit('%s is not an incremental to %s' % (os.path.basename(inc), name))
+            update['incremental'] = [file_entry(
+                inc, '%s/%s/download' % (folder, os.path.basename(inc)), inc_meta,
+                streaming=True)]
+        data = (json.dumps([update], indent=2) + '\n').encode()
         base = os.path.splitext(path)[0]
         with open(base + '.json', 'wb') as f:
             f.write(data)
         if args.key:
             with open(base + '.json.sig', 'wb') as f:
                 f.write(sign(args.key, data))
-        print('wrote %s.json%s' % (os.path.basename(base), '(.sig)' if args.key else ''))
+        print('wrote %s.json%s%s' % (os.path.basename(base), '(.sig)' if args.key else '',
+                                    ' with incremental' if inc else ''))
+    if incrementals:
+        sys.exit('incrementals without their full package: %s' % list(incrementals.values()))
 
 
 if __name__ == '__main__':
