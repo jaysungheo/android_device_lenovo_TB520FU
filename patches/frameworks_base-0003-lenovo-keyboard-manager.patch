@@ -27,7 +27,7 @@ diff --git a/core/java/android/app/SystemServiceRegistry.java b/core/java/androi
              @Override
 diff --git a/core/java/android/app/keyboard/ILenovoKeyboardService.aidl b/core/java/android/app/keyboard/ILenovoKeyboardService.aidl
 new file mode 100644
-index 000000000..bc4dcaa09
+index 000000000..32e7df64c
 --- /dev/null
 +++ b/core/java/android/app/keyboard/ILenovoKeyboardService.aidl
 @@ -0,0 +1,25 @@
@@ -43,7 +43,7 @@ index 000000000..bc4dcaa09
 + * vendor keyboard HAL, for the Lenovo keyboard firmware updater. Same
 + * interface and transaction order as the stock ZUI service.
 + *
-+ * {@hide}
++ * @hide
 + */
 +interface ILenovoKeyboardService {
 +    int kb_open(String path);
@@ -58,7 +58,7 @@ index 000000000..bc4dcaa09
 +}
 diff --git a/core/java/android/app/keyboard/LenovoKeyboardManager.java b/core/java/android/app/keyboard/LenovoKeyboardManager.java
 new file mode 100644
-index 000000000..b1c7a0a6e
+index 000000000..ea95319c3
 --- /dev/null
 +++ b/core/java/android/app/keyboard/LenovoKeyboardManager.java
 @@ -0,0 +1,124 @@
@@ -81,7 +81,7 @@ index 000000000..b1c7a0a6e
 + * reflection. The service is published by the device's DeviceKeyHandler and
 + * forwards to the vendor keyboard HAL.
 + *
-+ * {@hide}
++ * @hide
 + */
 +public class LenovoKeyboardManager {
 +    private static final String TAG = "LenovoKeyboardManager";
