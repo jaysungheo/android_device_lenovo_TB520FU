@@ -6,15 +6,16 @@
 """Write the update description of a build for the Updater.
 
 For every ROM zip (PixelOS_TB520FU-<version>-<date>[-ROW].zip) this writes
-<zip name without .zip>.json (the Updater's update list with one entry) and
-<...>.json.sig (Ed25519 signature of the JSON, raw 64 bytes). Upload all three
-into the OTA folder of the SourceForge project; the updater of a running build
-picks the newest signed description of its own variant (PRC / ROW).
+<zip name without .zip>.json (the Updater's update list with one entry), and
+with --key also <...>.json.sig (Ed25519 signature of the JSON, raw 64 bytes;
+only needed when the build has updater_signing_public_key set). Upload them
+with the zip into the OTA folder of the SourceForge project; the updater of a
+running build picks the newest description of its own variant (PRC / ROW).
 
 The JSON has no ota_property_files on purpose: the updater then downloads the
 whole package and checks its SHA-256 before installing it.
 
-usage: ota_json.py --key ota_signing_key.pem [--folder-url URL] ZIP...
+usage: ota_json.py [--key ota_signing_key.pem] [--folder-url URL] ZIP...
 """
 import argparse
 import hashlib
@@ -58,7 +59,7 @@ def sign(key, data):
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument('--key', required=True, help='Ed25519 private key (PEM)')
+    ap.add_argument('--key', help='Ed25519 private key (PEM), to also write <...>.json.sig')
     ap.add_argument('--folder-url', default=FOLDER_URL,
                     help='SourceForge folder the files are uploaded to')
     ap.add_argument('zips', nargs='+')
@@ -91,9 +92,10 @@ def main():
         base = os.path.splitext(path)[0]
         with open(base + '.json', 'wb') as f:
             f.write(data)
-        with open(base + '.json.sig', 'wb') as f:
-            f.write(sign(args.key, data))
-        print('wrote %s.json(.sig)' % os.path.basename(base))
+        if args.key:
+            with open(base + '.json.sig', 'wb') as f:
+                f.write(sign(args.key, data))
+        print('wrote %s.json%s' % (os.path.basename(base), '(.sig)' if args.key else ''))
 
 
 if __name__ == '__main__':

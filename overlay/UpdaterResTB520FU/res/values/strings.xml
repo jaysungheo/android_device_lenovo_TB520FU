@@ -5,10 +5,8 @@
 -->
 <resources>
     <!-- Builds are published in this SourceForge folder: <package>.zip with
-         <package>.json and <package>.json.sig (tools/ota_json.py). The updater
+         <package>.json (tools/ota_json.py). The updater
          reads the folder's RSS feed (packages_apps_Updater-0001). -->
     <string name="updater_server_url" translatable="false">https://sourceforge.net/projects/pixelos-unofficial-tb520fu/rss?path=/seventeen/OTA</string>
 
-    <!-- Ed25519 key that signs the update descriptions (private key kept offline) -->
-    <string name="updater_signing_public_key" translatable="false">MCowBQYDK2VwAyEAFsPZQHvfZbGbD5TDoO91jiNvxzmNGt3FxsYPHM5tzz8=</string>
 </resources>
