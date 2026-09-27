@@ -41,6 +41,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">Nastavi URL</string>
     <string name="lkb_solid_state_upgrade">Posodobitev vdelane programske opreme</string>
     <string name="lkb_keyboard_tips">Priporočamo, da z Lenovovim tabličnim računalnikom uporabite originalno tipkovnico, saj se lahko nekatere bližnjične tipke med tipkovnicami različnih proizvajalcev razlikujejo.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">Sistemski način, ko je tipkovnica priključena.</string>
+    <string name="lkb_screen_cast_phone_mode_title">Običajni način</string>
+    <string name="lkb_pc_mode_settings_title_name">Način računalnika</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">Začetni zaslon</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">Središče za obveščanje</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">Zaklepanje zaslona</string>

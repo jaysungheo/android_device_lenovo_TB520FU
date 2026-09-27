@@ -39,6 +39,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">Ange URL-adressen</string>
     <string name="lkb_solid_state_upgrade">Firmware-uppdatering</string>
     <string name="lkb_keyboard_tips">Vi rekommenderar att du använder originaltangentbordet med Lenovos surfplatta, eftersom vissa kortkommandon kan variera mellan tangentbord från olika tillverkare.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">Systemläge när det finns ett anslutet tangentbord</string>
+    <string name="lkb_screen_cast_phone_mode_title">Normalt läge</string>
+    <string name="lkb_pc_mode_settings_title_name">Datorläge</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">Startsida</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">Meddelandecenter</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">Lås skärmen</string>

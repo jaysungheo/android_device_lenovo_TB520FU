@@ -75,6 +75,17 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="keyboard_pc_mode_connect_category">
+
+        <ListPreference
+            android:key="keyboard_connect_system_mode"
+            android:title="@string/lkb_pc_mode_keyboard_connect_system_mode"
+            android:dialogTitle="@string/lkb_pc_mode_keyboard_connect_system_mode"
+            android:persistent="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:key="keyboard_touchpad_category"
         android:title="@string/lkb_physical_keyboard_touchpad">
 

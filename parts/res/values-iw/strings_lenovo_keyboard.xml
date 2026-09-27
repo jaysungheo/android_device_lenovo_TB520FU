@@ -41,6 +41,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">כוונן URL</string>
     <string name="lkb_solid_state_upgrade">עדכון קושחה</string>
     <string name="lkb_keyboard_tips">בטאבלט של Lenovo, מומלץ להשתמש במקלדת המקורית של המכשיר, כיוון שחלק ממקשי הקיצור עלולים להשתנות בין מקלדות של יצרנים שונים.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">מצב מערכת כאשר המקלדת מחוברת</string>
+    <string name="lkb_screen_cast_phone_mode_title">מצב רגיל</string>
+    <string name="lkb_pc_mode_settings_title_name">מצב מחשב</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">בית</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">מרכז התראות</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">נעל את המסך</string>

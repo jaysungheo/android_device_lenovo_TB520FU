@@ -39,6 +39,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">Postavi URL</string>
     <string name="lkb_solid_state_upgrade">Ažuriranje firmvera</string>
     <string name="lkb_keyboard_tips">Preporučuje se da upotrebljavate originalnu plosnatu tipkovnicu Lenovo. Učinak nekih tipkovnih prečaca može se razlikovati na tipkovnicama različitih proizvođača. Pogledajte stvaran učinak.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">Sistemski način rada ako je tipkovnica povezana</string>
+    <string name="lkb_screen_cast_phone_mode_title">Normalni način</string>
+    <string name="lkb_pc_mode_settings_title_name">Način rada za računalo</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">Doma</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">Centar za obavijesti</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">Zaključaj zaslon</string>

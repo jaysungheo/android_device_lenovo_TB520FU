@@ -41,6 +41,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">Aseta URL</string>
     <string name="lkb_solid_state_upgrade">Laiteohjelmiston päivitys</string>
     <string name="lkb_keyboard_tips">Suosittelemme, että käytät Lenovo-tabletin alkuperäistä näppäimistöä, sillä jotkin pikanäppäimet saattavat vaihdella eri valmistajien välillä.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">Järjestelmän tila, kun näppäimistö on liitettynä</string>
+    <string name="lkb_screen_cast_phone_mode_title">Normaalitila</string>
+    <string name="lkb_pc_mode_settings_title_name">PC-tila</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">Aloituspainike</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">Ilmoituskeskus</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">Lukitse ruutu</string>

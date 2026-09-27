@@ -20,6 +20,8 @@ object LenovoKeyboard {
     const val AUTO_BACKLIGHT = "keyboard_auto_backlight"
     const val TAP_WAKE = "keyboard_touch_bright_screen"
     const val SINGLE_FINGER_TAP = "physical_keyboard_single_finger_touch"
+    /** Stock "System mode when a keyboard is connected": 0 tablet, 1 PC mode. */
+    const val SYSTEM_MODE = "enter_work_mode_from_keyboard"
     const val APP1 = "keyboard_shortcut_value_app1"
     const val APP2 = "keyboard_shortcut_value_app2"
 

@@ -389,3 +389,16 @@ prebuilt_etc {
     src: "fstab.zram.16",
     vendor: true,
 }
+
+sh_binary {
+    name: "init.tb520fu.region.sh",
+    src: "init.tb520fu.region.sh",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "init.tb520fu.region.rc",
+    src: "init.tb520fu.region.rc",
+    sub_dir: "init",
+    vendor: true,
+}

@@ -39,6 +39,8 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">Podesite URL</string>
     <string name="lkb_solid_state_upgrade">Ažuriranje firmvera</string>
     <string name="lkb_keyboard_tips">Preporučuje se da koristite originalnu Lenovo ravnu tastaturu. Efekat nekih tasterskih prečica može da se razlikuje na tastaturama različitih proizvođača. Pogledajte stvarni efekat.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">Režim sistema kada je tastatura povezana</string>
+    <string name="lkb_screen_cast_phone_mode_title">Normalni režim</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">Почетна</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">Centar za obaveštenja</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">Закључавање екрана</string>

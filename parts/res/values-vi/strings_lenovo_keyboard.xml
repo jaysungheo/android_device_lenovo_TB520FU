@@ -40,6 +40,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">Thiết lập URL</string>
     <string name="lkb_solid_state_upgrade">Cập nhật phần mềm điều khiển</string>
     <string name="lkb_keyboard_tips">Chúng tôi khuyên bạn nên sử dụng bàn phím phẳng chính hãng của Lenovo. Hiệu ứng của một số phím tắt có thể khác nhau với bàn phím của các nhà sản xuất khác. Vui lòng tham khảo hiệu ứng thực tế.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">Chế độ hệ thống khi bàn phím được kết nối</string>
+    <string name="lkb_screen_cast_phone_mode_title">Chế độ bình thường</string>
+    <string name="lkb_pc_mode_settings_title_name">Chế độ PC</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">Trang chủ</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">Trung tâm thông báo</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">Khóa màn hình</string>

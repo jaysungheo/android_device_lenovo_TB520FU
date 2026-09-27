@@ -13,6 +13,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.UserHandle
 import android.provider.Settings
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.SeekBarPreference
@@ -80,6 +81,23 @@ class KeyboardFragment : SettingsBasePreferenceFragment(), InputManager.InputDev
             value = InputSettings.getTouchpadPointerSpeed(ctx)
             setOnPreferenceChangeListener { _, value ->
                 InputSettings.setTouchpadPointerSpeed(requireContext(), value as Int)
+                true
+            }
+        }
+
+        // Stock "System mode when a keyboard is connected": tablet (0) or PC mode (1, the
+        // default here as on AOSP, which switches to desktop windowing with keyboard and
+        // touchpad attached).
+        findPreference<ListPreference>(KEY_SYSTEM_MODE)!!.apply {
+            entries = arrayOf(
+                getString(R.string.lkb_screen_cast_phone_mode_title),
+                getString(R.string.lkb_pc_mode_settings_title_name),
+            )
+            entryValues = arrayOf("0", "1")
+            value = if (LenovoKeyboard.getInt(ctx, LenovoKeyboard.SYSTEM_MODE, 1) == 0) "0" else "1"
+            summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
+            setOnPreferenceChangeListener { _, v ->
+                LenovoKeyboard.putInt(requireContext(), LenovoKeyboard.SYSTEM_MODE, (v as String).toInt())
                 true
             }
         }
@@ -173,6 +191,7 @@ class KeyboardFragment : SettingsBasePreferenceFragment(), InputManager.InputDev
         const val KEY_RIGHT_CLICK_ZONE = "trackpad_bottom_right_tap"
         const val KEY_REVERSE_SCROLLING = "trackpad_reverse_scrolling"
         const val KEY_POINTER_SPEED = "touchpad_pointer_speed"
+        const val KEY_SYSTEM_MODE = "keyboard_connect_system_mode"
         const val KEY_APP1 = "key_shortcut_app1"
         const val KEY_APP2 = "key_shortcut_app2"
         const val KEY_FIRMWARE_CATEGORY = "firmware_update_category"

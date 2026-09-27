@@ -40,6 +40,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">Nastavit URL</string>
     <string name="lkb_solid_state_upgrade">Aktualizace firmwaru</string>
     <string name="lkb_keyboard_tips">Doporučujeme s tabletem Lenovo používat původní klávesnici, protože některé klávesové zkratky se mohou u různých výrobců klávesnic lišit.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">Systémový režim při připojené klávesnici</string>
+    <string name="lkb_screen_cast_phone_mode_title">Normální režim</string>
+    <string name="lkb_pc_mode_settings_title_name">Režim PC</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">Domů</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">Notifikační centrum</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">Uzamknout obrazovku</string>

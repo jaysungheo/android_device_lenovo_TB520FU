@@ -39,6 +39,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">Ustaw adres URL</string>
     <string name="lkb_solid_state_upgrade">Aktualizacja oprogramowania</string>
     <string name="lkb_keyboard_tips">Zalecamy korzystać z oryginalnej klawiatury tabletu Lenovo, ponieważ niektóre klawisze skrótów mogą różnić się między klawiaturami różnych producentów.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">Tryb systemu po podłączeniu klawiatury</string>
+    <string name="lkb_screen_cast_phone_mode_title">Tryb normalny</string>
+    <string name="lkb_pc_mode_settings_title_name">Tryb PC</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">Ekran główny</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">Centrum powiadomień</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">Zablokuj ekran</string>

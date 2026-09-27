@@ -35,7 +35,9 @@ final class LenovoHal {
     private static final int BAT_SET_STYLUS_QI_COMMAND = 25;
 
     // ITouchscreen
+    private static final int TS_SET_BIG_PALM = 7;
     private static final int TS_SET_DOUBLE_GESTURE = 8;
+    private static final int TS_SET_EDGE_INHIBITION = 10;
     private static final int TS_SET_PEN_MODE = 11;
     private static final int TS_SET_PEN_BLE = 12;
     private static final int TS_IOCTL = 13;
@@ -44,6 +46,15 @@ final class LenovoHal {
 
     // IKeyboard
     private static final int KB_SET_KEYBOARD_STATUS = 1;
+    private static final int KB_OPEN = 2;
+    private static final int KB_READ = 3;
+    private static final int KB_READ_DATA = 4;
+    private static final int KB_WRITE_DATA = 5;
+    private static final int KB_CLOSE = 6;
+    private static final int KB_GETFEATURE = 7;
+    private static final int KB_SETFEATURE = 8;
+    private static final int KB_GETRAWNAME = 9;
+    private static final int KB_GETRAWINFO = 10;
 
     // ITouchscreen.ioctl commands
     static final int IOCTL_QUICK_NOTE = 1;
@@ -118,6 +129,16 @@ final class LenovoHal {
         }
     }
 
+    private static byte[] callBytes(String d, int code, Args args) {
+        Parcel r = call(d, code, args);
+        if (r == null) return null;
+        try {
+            return r.createByteArray();
+        } finally {
+            r.recycle();
+        }
+    }
+
     private static String callString(String d, int code, Args args) {
         Parcel r = call(d, code, args);
         if (r == null) return null;
@@ -166,6 +187,16 @@ final class LenovoHal {
         return callBool(TOUCH, TS_SET_DOUBLE_GESTURE, p -> p.writeInt(enable ? 1 : 0));
     }
 
+    /** Palm rejection profile: 0 normal, 1 writing (reject palms), 2 game. */
+    static boolean setBigPalm(int mode) {
+        return callBool(TOUCH, TS_SET_BIG_PALM, p -> p.writeInt(mode));
+    }
+
+    /** Display rotation (Surface.ROTATION_*), for the edge rejection of the panel. */
+    static boolean setEdgeInhibition(int rotation) {
+        return callBool(TOUCH, TS_SET_EDGE_INHIBITION, p -> p.writeInt(rotation));
+    }
+
     static boolean setPenMode(boolean enable) {
         return callBool(TOUCH, TS_SET_PEN_MODE, p -> p.writeInt(enable ? 1 : 0));
     }
@@ -199,5 +230,62 @@ final class LenovoHal {
             p.writeInt(op);
             p.writeInt(data);
         });
+    }
+
+    // ---- raw keyboard access (lenovokeyboard service, firmware updater) ----
+
+    static int kbOpen(String path) {
+        return callInt(KEYBOARD, KB_OPEN, p -> p.writeString(path), -4);
+    }
+
+    static String kbRead(int fd, int size) {
+        return callString(KEYBOARD, KB_READ, p -> {
+            p.writeInt(fd);
+            p.writeInt(size);
+        });
+    }
+
+    static byte[] kbReadData(int fd, int size) {
+        return callBytes(KEYBOARD, KB_READ_DATA, p -> {
+            p.writeInt(fd);
+            p.writeInt(size);
+        });
+    }
+
+    static int kbWriteData(int fd, int size, byte[] data) {
+        return callInt(KEYBOARD, KB_WRITE_DATA, p -> {
+            p.writeInt(fd);
+            p.writeInt(size);
+            p.writeByteArray(data);
+        }, 0);
+    }
+
+    static void kbClose(int fd) {
+        Parcel r = call(KEYBOARD, KB_CLOSE, p -> p.writeInt(fd));
+        if (r != null) r.recycle();
+    }
+
+    static byte[] kbGetFeature(int fd, int size, byte[] data) {
+        return callBytes(KEYBOARD, KB_GETFEATURE, p -> {
+            p.writeInt(fd);
+            p.writeInt(size);
+            p.writeByteArray(data);
+        });
+    }
+
+    static int kbSetFeature(int fd, byte[] data, int size) {
+        return callInt(KEYBOARD, KB_SETFEATURE, p -> {
+            p.writeInt(fd);
+            p.writeByteArray(data);
+            p.writeInt(size);
+        }, 0);
+    }
+
+    static String kbGetRawName(int fd) {
+        return callString(KEYBOARD, KB_GETRAWNAME, p -> p.writeInt(fd));
+    }
+
+    static byte[] kbGetRawInfo(int fd) {
+        return callBytes(KEYBOARD, KB_GETRAWINFO, p -> p.writeInt(fd));
     }
 }

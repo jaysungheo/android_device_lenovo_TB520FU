@@ -40,6 +40,8 @@ final class InputCore {
     final DoubleTapWake mDoubleTapWake;
     final StandbyController mStandby;
     final GamePerfController mGamePerf;
+    final PalmController mPalm;
+    final KeyboardDesktopMode mDesktopMode;
     private StylusMonitor mStylusMonitor;
     private boolean mStarted;
 
@@ -67,11 +69,16 @@ final class InputCore {
         mDoubleTapWake = new DoubleTapWake(context, mHandler);
         mStandby = new StandbyController(context, mHandler);
         mGamePerf = new GamePerfController(context, mHandler);
+        mPalm = new PalmController(context, mHandler);
+        mDesktopMode = new KeyboardDesktopMode(context, mHandler);
 
         // The binder can be published right away; it only answers "not ready"
         // until a pen is connected.
         Safe.post(mHandler, "publish " + HAPTIC_SERVICE, () ->
                 ServiceManager.addService(HAPTIC_SERVICE, new HapticBinder(context, mHandler, mHaptics)));
+        Safe.post(mHandler, "publish " + KeyboardServiceBinder.SERVICE, () ->
+                ServiceManager.addService(KeyboardServiceBinder.SERVICE,
+                        new KeyboardServiceBinder(context)));
         Safe.post(mHandler, "publish " + ZuiNotificationBinder.SERVICE, () ->
                 ServiceManager.addService(ZuiNotificationBinder.SERVICE,
                         new ZuiNotificationBinder(context, mHandler)));
@@ -91,10 +98,12 @@ final class InputCore {
         Safe.run("double tap wake", mDoubleTapWake::start).run();
         Safe.run("standby saver", mStandby::start).run();
         Safe.run("game performance", mGamePerf::start).run();
+        Safe.run("palm rejection", mPalm::start).run();
+        Safe.run("keyboard desktop mode", mDesktopMode::start).run();
         Safe.run("haptics", mHaptics::start).run();
         Safe.run("pen", mPen::start).run();
         Safe.run("stylus monitor", () -> {
-            mStylusMonitor = new StylusMonitor(mContext, mHandler, mHaptics);
+            mStylusMonitor = new StylusMonitor(mContext, mHandler, mHaptics, mPalm);
             mStylusMonitor.start();
         }).run();
     }

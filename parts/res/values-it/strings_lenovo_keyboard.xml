@@ -38,6 +38,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">Imposta URL</string>
     <string name="lkb_solid_state_upgrade">Aggiornamento del firmware</string>
     <string name="lkb_keyboard_tips">Si consiglia di utilizzare la tastiera originale con il tablet Lenovo, poiché alcuni tasti di scelta rapida potrebbero essere diversi nelle tastiere di produttori terzi.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">Modalità del sistema con tastiera collegata</string>
+    <string name="lkb_screen_cast_phone_mode_title">Modalità normale</string>
+    <string name="lkb_pc_mode_settings_title_name">Modalità PC</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">Centro notifiche</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">Blocca lo schermo</string>
     <string name="lkb_keyboard_shortcuts_switch_title_4">Chiudi applicazione corrente</string>

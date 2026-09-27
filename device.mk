@@ -198,6 +198,8 @@ PRODUCT_PACKAGES += \
     fstab.zram.12 \
     fstab.zram.16 \
     init.tb520fu.zram.rc \
+    init.tb520fu.region.rc \
+    init.tb520fu.region.sh \
     ueventd.qcom.rc \
     init.qcom.factory.rc \
     init.qcom.rc \
@@ -279,6 +281,7 @@ PRODUCT_PACKAGES += \
 # Overlays
 PRODUCT_ENFORCE_RRO_TARGETS := *
 PRODUCT_PACKAGES += \
+    UpdaterResTB520FU \
     DolbyAtmosResTB520FU \
     FrameworksResTB520FU \
     SettingsProviderResTB520FU \
@@ -432,3 +435,13 @@ PRODUCT_PACKAGES += \
 
 # Inherit from the proprietary files makefile.
 $(call inherit-product, vendor/lenovo/TB520FU/TB520FU-vendor.mk)
+
+# Updater (PixelOS OTA app; only added for official builds by vendor/custom)
+PRODUCT_PACKAGES += \
+    Updater
+
+PRODUCT_COPY_FILES += \
+    vendor/custom/config/permissions/privapp-permissions-custom.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/permissions/privapp-permissions-custom.xml
+
+PRODUCT_PRODUCT_PROPERTIES += \
+    net.pixelos.build_type=unofficial

@@ -21,7 +21,8 @@ import android.view.MotionEvent;
 import java.util.List;
 
 /**
- * Watches stylus events on the default display and feeds PenHaptics.
+ * Watches stylus events on the default display and feeds PenHaptics and the
+ * dynamic palm rejection.
  *
  * Stock ZUI patched ViewRootImpl to forward every stylus event of an app to
  * system_server together with the caller's package. Here a gesture monitor
@@ -34,13 +35,15 @@ final class StylusMonitor {
     private final Context mContext;
     private final Handler mHandler;
     private final PenHaptics mHaptics;
+    private final PalmController mPalm;
     private InputMonitor mMonitor;
     private Receiver mReceiver;
 
-    StylusMonitor(Context context, Handler handler, PenHaptics haptics) {
+    StylusMonitor(Context context, Handler handler, PenHaptics haptics, PalmController palm) {
         mContext = context;
         mHandler = handler;
         mHaptics = haptics;
+        mPalm = palm;
     }
 
     void start() {
@@ -72,6 +75,7 @@ final class StylusMonitor {
         int tool = ev.getToolType(index);
         if (tool != MotionEvent.TOOL_TYPE_STYLUS && tool != MotionEvent.TOOL_TYPE_ERASER) return;
         int action = ev.getActionMasked();
+        if (action == MotionEvent.ACTION_DOWN) mPalm.onStylusDown();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_HOVER_ENTER: {

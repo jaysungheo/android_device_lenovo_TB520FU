@@ -41,6 +41,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">URL Ayarla</string>
     <string name="lkb_solid_state_upgrade">Donanım yazılımı güncellemesi</string>
     <string name="lkb_keyboard_tips">Orijinal Lenovo düz klavye kullanımı önerilir. Bazı kısayol tuşlarının etkisi, farklı üreticilerin klavyesinde değişkenlik gösterebilir. Lütfen asıl sonucu dikkate alın.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">Klavye bağlı olduğunda sistem modu</string>
+    <string name="lkb_screen_cast_phone_mode_title">Normal mod</string>
+    <string name="lkb_pc_mode_settings_title_name">PC modu</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">Ana sayfa</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">Bildirim merkezi</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">Ekranı kilitle</string>

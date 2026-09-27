@@ -38,6 +38,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">Definir URL</string>
     <string name="lkb_solid_state_upgrade">Atualização de firmware</string>
     <string name="lkb_keyboard_tips">Recomenda-se usar o teclado plano original Lenovo. O efeito de algumas teclas de atalho pode variar de acordo com o teclado de diferentes fabricantes. Consulte o efeito real.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">Modo de sistema quando um teclado está conectado</string>
+    <string name="lkb_screen_cast_phone_mode_title">Modo normal</string>
+    <string name="lkb_pc_mode_settings_title_name">Modo PC</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">Início</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">Central de Notificações</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">Bloqueie a tela</string>

@@ -41,6 +41,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">تعيين URL</string>
     <string name="lkb_solid_state_upgrade">تحديث البرنامج الثابت</string>
     <string name="lkb_keyboard_tips">يُوصى باستخدام لوحة المفاتيح المسطحة الأصلية من Lenovo. قد يختلف تأثير بعض مفاتيح الاختصار باختلاف لوحة مفاتيح الشركات المصنعة المختلفة. تُرجى مراجعة التأثير الفعلي.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">وضع النظام عند توصيل لوحة المفاتيح</string>
+    <string name="lkb_screen_cast_phone_mode_title">الوضع العادي</string>
+    <string name="lkb_pc_mode_settings_title_name">وضع الكمبيوتر الشخصي</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">الرئيسية</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">مركز الإعلام</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">تأمين الشاشة</string>

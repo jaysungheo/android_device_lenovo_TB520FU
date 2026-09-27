@@ -34,6 +34,8 @@ KEYS = [
     'keyboard_app_shortcut_option_open_url', 'keyboard_app_shortcut_option_open_url_summary',
     'keyboard_app_shortcut_option_set_url', 'keyboard_app_shortcut_option_set_url_hint',
     'solid_state_upgrade', 'keyboard_tips',
+    'pc_mode_keyboard_connect_system_mode', 'screen_cast_phone_mode_title',
+    'pc_mode_settings_title_name',
 ] + ['keyboard_shortcuts_switch_title_%d' % i for i in range(1, 22)] \
   + ['keyboard_shortcuts_switch_summary_%d' % i for i in range(1, 21)]
 

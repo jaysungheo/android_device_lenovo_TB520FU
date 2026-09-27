@@ -41,6 +41,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">Задаване на URL</string>
     <string name="lkb_solid_state_upgrade">Актуализация на фърмуера</string>
     <string name="lkb_keyboard_tips">Препоръчваме да използвате оригиналната клавиатура с таблета на Lenovo, тъй като някои клавишни комбинации може да се различават между клавиатурите от различни производители.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">Системен режим, когато е свързана клавиатура</string>
+    <string name="lkb_screen_cast_phone_mode_title">Нормален режим</string>
+    <string name="lkb_pc_mode_settings_title_name">PC режим</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">Начало</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">Център за известия</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">Заключване на екрана</string>

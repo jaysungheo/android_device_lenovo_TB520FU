@@ -39,6 +39,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">Angi nettadresse</string>
     <string name="lkb_solid_state_upgrade">Fastvareoppdatering</string>
     <string name="lkb_keyboard_tips">Vi anbefaler at du bruker det opprinnelige tastaturet sammen med Lenovos nettbrett, siden noen hurtigtaster kan variere mellom tastaturer fra forskjellige produsenter.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">Systemmodus når et tastatur er tilkoblet</string>
+    <string name="lkb_screen_cast_phone_mode_title">Normalmodus</string>
+    <string name="lkb_pc_mode_settings_title_name">PC-modus</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">Startside</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">Varslingssenter</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">Lås skjermen</string>

@@ -39,6 +39,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">URL の設定</string>
     <string name="lkb_solid_state_upgrade">ファームウェアの更新</string>
     <string name="lkb_keyboard_tips">異なるメーカーのキーボードでは一部のショートカットキーが異なる場合があるため、Lenovo タブレットの純正キーボードを使用することをお勧めします。</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">キーボードを接続した際にPCモードを起動</string>
+    <string name="lkb_screen_cast_phone_mode_title">通常モード</string>
+    <string name="lkb_pc_mode_settings_title_name">PC モード</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">ホーム</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">通知センター</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">画面のロック</string>

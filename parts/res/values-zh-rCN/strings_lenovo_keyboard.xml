@@ -40,6 +40,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url_hint">请输入网址</string>
     <string name="lkb_solid_state_upgrade">固件更新</string>
     <string name="lkb_keyboard_tips">建议使用Lenovo原装平板键盘，部分快捷键的效果可能因不同厂商键盘的差异而有所不同，请以实际效果为准。</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">连接键盘时的系统模式</string>
+    <string name="lkb_screen_cast_phone_mode_title">普通模式</string>
+    <string name="lkb_pc_mode_settings_title_name">电脑模式</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">主屏幕</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">通知中心</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">锁定屏幕</string>

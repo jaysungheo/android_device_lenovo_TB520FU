@@ -39,6 +39,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">Iestatīt URL</string>
     <string name="lkb_solid_state_upgrade">Programmaparatūras atjauninājums</string>
     <string name="lkb_keyboard_tips">Ieteicams izmantot Lenovo oriģinālo plakano tastatūru. Dažu īsinājumtaustiņu efekts var atšķirties atkarībā no dažādu ražotāju tastatūras. Lūdzu, ņemiet vērā faktisko efektu.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">Sistēmas režīms, kad ir pievienota tastatūra</string>
+    <string name="lkb_screen_cast_phone_mode_title">Parastais režīms</string>
+    <string name="lkb_pc_mode_settings_title_name">Datora režīms</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">Sākums</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">Paziņojumu centrs</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">Ekrāna bloķēšana</string>

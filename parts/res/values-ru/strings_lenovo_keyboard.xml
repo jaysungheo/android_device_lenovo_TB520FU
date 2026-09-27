@@ -42,6 +42,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url_hint">Введите адрес страницы</string>
     <string name="lkb_solid_state_upgrade">Обновление прошивки</string>
     <string name="lkb_keyboard_tips">Мы рекомендуем использовать оригинальную клавиатуру с планшетом Lenovo, так как некоторые сочетания клавиш могут различаться в клавиатурах разных производителей.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">Режим системы при подключенной клавиатуре</string>
+    <string name="lkb_screen_cast_phone_mode_title">Обычный режим</string>
+    <string name="lkb_pc_mode_settings_title_name">Режим ПК</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">Главная страница</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">Центр уведомлений</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">Блокировать экран</string>

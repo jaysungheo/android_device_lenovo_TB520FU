@@ -39,6 +39,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">Ρύθμιση URL</string>
     <string name="lkb_solid_state_upgrade">Ενημέρωση υλικολογισμικού</string>
     <string name="lkb_keyboard_tips">Συνιστάται η χρήση του γνήσιου επίπεδου πληκτρολογίου Lenovo. Το αποτέλεσμα ορισμένων πλήκτρων συντόμευσης μπορεί να διαφέρει ανάλογα με τα πληκτρολόγια των διάφορων κατασκευαστών. Ανατρέξτε στο πραγματικό αποτέλεσμα.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">Λειτουργία συστήματος όταν είναι συνδεδεμένο ένα πληκτρολόγιο</string>
+    <string name="lkb_screen_cast_phone_mode_title">Κανονική λειτουργία</string>
+    <string name="lkb_pc_mode_settings_title_name">Λειτουργία PC</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">Αρχική σελίδα</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">Κέντρο ειδοποιήσεων</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">Κλείδωμα οθόνης</string>

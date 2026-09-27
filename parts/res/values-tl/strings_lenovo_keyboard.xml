@@ -36,6 +36,7 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">Itakda ang URL</string>
     <string name="lkb_solid_state_upgrade">Update ng firmware</string>
     <string name="lkb_keyboard_tips">Inirerekomenda na gumamit ng orihinal na flat keyboard ng Lenovo. Ang epekto ng ilang mga shortcut key ay maaaring magkakaiba sa keyboard ng iba\'t ibang mga tagagawa. Mangyaring sumangguni sa aktuwal na epekto.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">System mode kapag may nakakonektang keyboard</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">I-lock ang screen</string>
     <string name="lkb_keyboard_shortcuts_switch_title_4">Isara ang kasalukuyang application</string>
     <string name="lkb_keyboard_shortcuts_switch_title_5">Mga Kamakailang Application</string>

@@ -321,4 +321,8 @@
         <item>com.painting.draw</item>
         <item>com.google.android.apps.docs</item>
     </string-array>
+
+    <!-- Lenovo Notes as the notes app (stylus button, lock screen notes), as stock -->
+    <bool name="config_enableDefaultNotes">true</bool>
+    <string name="config_defaultNotes" translatable="false">com.zui.notes</string>
 </resources>

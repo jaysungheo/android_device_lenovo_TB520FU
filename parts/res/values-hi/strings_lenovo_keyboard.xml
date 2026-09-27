@@ -41,6 +41,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">URL सेट करें</string>
     <string name="lkb_solid_state_upgrade">फ़र्मवेयर अद्यतन</string>
     <string name="lkb_keyboard_tips">हम सुझाव देते हैं कि आप Lenovo के टैबलेट के साथ मूल कीबोर्ड का इस्तेमाल करें, क्योंकि दूसरे निर्माताओं के कीबोर्ड की कुछ शॉर्टकट कुंजियां भिन्न हो सकती हैं.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">कीबोर्ड के कनेक्ट होने पर सिस्टम मोड</string>
+    <string name="lkb_screen_cast_phone_mode_title">सामान्य मोड</string>
+    <string name="lkb_pc_mode_settings_title_name">PC मोड</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">मुखपृष्ठ</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">सूचना केंद्र</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">स्‍क्रीन लॉक करें</string>

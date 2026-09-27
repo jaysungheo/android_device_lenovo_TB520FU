@@ -41,6 +41,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">Налаштувати URL</string>
     <string name="lkb_solid_state_upgrade">Оновлення мікропрограми</string>
     <string name="lkb_keyboard_tips">Рекомендуємо використовувати з планшетом Lenovo оригінальну клавіатуру, оскільки певні сполучення клавіш можуть різнитися на клавіатурах різних виробників.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">Системний режим за підключеної клавіатури</string>
+    <string name="lkb_screen_cast_phone_mode_title">Звичайний режим</string>
+    <string name="lkb_pc_mode_settings_title_name">Режим ПК</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">Головна</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">Центр сповіщень</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">Блокувати екран</string>

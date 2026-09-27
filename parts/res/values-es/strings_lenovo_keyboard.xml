@@ -41,6 +41,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">Establecer URL</string>
     <string name="lkb_solid_state_upgrade">Actualización del firmware</string>
     <string name="lkb_keyboard_tips">Le recomendamos que utilice el teclado original con la tableta de Lenovo, ya que es posible que algunas teclas de acceso directo varíen entre teclados de diferentes fabricantes.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">Modo del sistema cuando se conecta un teclado</string>
+    <string name="lkb_screen_cast_phone_mode_title">Modo normal</string>
+    <string name="lkb_pc_mode_settings_title_name">Modo de PC</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">Página principal</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">Centro de notificaciones</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">Bloquear la pantalla</string>

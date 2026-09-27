@@ -41,6 +41,9 @@
     <string name="lkb_keyboard_app_shortcut_option_set_url">Sea URL</string>
     <string name="lkb_solid_state_upgrade">Püsivara värskendus</string>
     <string name="lkb_keyboard_tips">Soovitame Lenovo tahvelarvutiga kasutada originaalklaviatuuri, sest mõned otseteed võivad erinevate tootjate klaviatuuride korral erineda.</string>
+    <string name="lkb_pc_mode_keyboard_connect_system_mode">Süsteemirežiim, kui klaviatuur on ühendatud</string>
+    <string name="lkb_screen_cast_phone_mode_title">Tavarežiim</string>
+    <string name="lkb_pc_mode_settings_title_name">PC režiim</string>
     <string name="lkb_keyboard_shortcuts_switch_title_1">Kodu</string>
     <string name="lkb_keyboard_shortcuts_switch_title_2">Teavituskeskus</string>
     <string name="lkb_keyboard_shortcuts_switch_title_3">Ekraani lukustamine</string>
