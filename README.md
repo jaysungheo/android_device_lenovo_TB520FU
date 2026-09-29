@@ -97,21 +97,18 @@ setsid nohup device/lenovo/TB520FU/tools/build.sh > /dev/null 2>&1 < /dev/null &
 ## OTA publishing
 
 The updater reads the newest `<full-zip-name>.json` in the SourceForge
-`seventeen/OTA` RSS folder. Publish that JSON and the full OTA ZIP together.
-`tools/ota_json.py FULL.zip` writes the JSON; pass `--key KEY.pem` when the
-updater's `updater_signing_public_key` resource is configured. The updater
-checks the package SHA-256 and Android OTA signature before installation.
+`seventeen/OTA` RSS folder (`PixelOS_TB520FU-<version>-<date>[-ROW].json`,
+matching the running dtb region). Publish the JSON together with its packages
+in that folder. The updater checks the package SHA-256; update_engine checks
+the AOSP OTA signature.
 
-An incremental OTA needs the **source and target target-files ZIPs**. Preserve
-the target-files ZIP alongside every published full build; an OTA ZIP alone
-cannot serve as the source target-files archive. After each build, run
-`m target-files-package` and save
-`out/target/product/TB520FU/obj/PACKAGING/target_files_intermediates/custom_TB520FU-target_files.zip`
-with the full OTA. Then, for each region separately:
+An incremental OTA is built from the **target files of both builds**, so keep
+the target files of every published build (the full OTA ZIP cannot replace
+them). For each region separately:
 
 ```bash
-out/host/linux-x86/bin/ota_from_target_files -i BASE_TARGET_FILES.zip \
-    TARGET_TARGET_FILES.zip \
+ota_from_target_files -k build/make/target/product/security/testkey \
+    -i BASE_TARGET_FILES TARGET_TARGET_FILES \
     PixelOS_TB520FU-17.0-TARGET_DATE-incremental-BASE_DATE.zip
 python3 device/lenovo/TB520FU/tools/ota_json.py \
     --base-full BASE_FULL.zip \
@@ -119,13 +116,9 @@ python3 device/lenovo/TB520FU/tools/ota_json.py \
     TARGET_FULL.zip
 ```
 
-The generator rejects a delta whose source/target metadata or streaming
-ranges do not match. Publish the full ZIP, incremental ZIP and generated JSON
-in the same OTA folder. The updater offers a delta only if `update_engine`
-accepts its payload metadata for the running slot, otherwise it offers the
-full ZIP. Since the 20260927-1632 build has no preserved target-files ZIP,
-its first update must be full; the following build can be a delta if its
-target-files ZIP is preserved.
+ota_json.py rejects a delta whose source/target metadata or streaming ranges
+do not match. The updater offers the delta only if update_engine accepts its
+payload metadata for the running build, otherwise the full ZIP.
 
 ## Installing
 
