@@ -54,6 +54,13 @@ apply_patch frameworks/base \
 apply_patch frameworks/base \
     "$PATCHES/frameworks_base-0004-keyboard-desktop-first-opt-out.patch"
 
+# frameworks/native
+# 0001: RefreshRateSelector: a static screen (all layers vote Min) goes to the
+#       lowest mode of at least 60 Hz, not the policy minimum; the idle timer
+#       still drops to 30 Hz (30 -> 60 -> 120 Hz, like stock ZUI).
+apply_patch frameworks/native \
+    "$PATCHES/frameworks_native-0001-static-screen-60hz-floor.patch"
+
 # packages/apps/DolbyAtmos
 # 0001: the default profile was hardcoded to Dynamic; move it into an
 #       overlayable string (overlay/DolbyAtmosResTB520FU keeps Dynamic).
