@@ -1,7 +1,8 @@
 diff --git a/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/desktopfirst/DesktopDisplayModeController.kt b/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/desktopfirst/DesktopDisplayModeController.kt
+index c5580da84..bfeaf0fa4 100644
 --- a/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/desktopfirst/DesktopDisplayModeController.kt
 +++ b/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/desktopfirst/DesktopDisplayModeController.kt
-@@ -21,6 +21,7 @@
+@@ -21,6 +21,7 @@ import android.app.WindowConfiguration.WINDOWING_MODE_FULLSCREEN
  import android.app.WindowConfiguration.WINDOWING_MODE_UNDEFINED
  import android.app.WindowConfiguration.windowingModeToString
  import android.content.Context
@@ -9,7 +10,7 @@ diff --git a/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/deskt
  import android.hardware.devicestate.DeviceState
  import android.hardware.devicestate.DeviceStateManager
  import android.hardware.input.InputManager
-@@ -127,8 +128,38 @@
+@@ -127,8 +128,47 @@ class DesktopDisplayModeController(
              }
          }
  
@@ -26,6 +27,10 @@ diff --git a/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/deskt
 +                updateDefaultDisplayWindowingMode()
 +            }
 +        }
++
++    /** PC mode requested from the quick settings tile ([PC_MODE] = 1), with or without a keyboard. */
++    private fun isPcModeRequested(): Boolean =
++        Settings.Global.getInt(context.contentResolver, PC_MODE, 0) != 0
 +
 +    private fun isKeyboardDesktopFirstAllowed(): Boolean {
 +        val resolver = context.contentResolver
@@ -45,10 +50,26 @@ diff --git a/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/deskt
 +            false,
 +            keyboardDesktopModeObserver,
 +        )
++        context.contentResolver.registerContentObserver(
++            Settings.Global.getUriFor(PC_MODE),
++            false,
++            keyboardDesktopModeObserver,
++        )
          inputManager.registerInputDeviceListener(inputDeviceListener, mainHandler)
          if (Flags.enableDesktopFirstLaptopStateBugfix()) {
              deviceStateManager.registerCallback(mainExecutor, deviceStateCallback)
-@@ -271,7 +302,10 @@
+@@ -263,6 +303,10 @@ class DesktopDisplayModeController(
+             if (isExtendedDisplayEnabled && hasExternalDisplay) {
+                 return true
+             }
++            if (isPcModeRequested()) {
++                logV("canDesktopFirstModeBeEnabledOnDefaultDisplay: PC mode requested")
++                return true
++            }
+             val hasAnyTouchpadDevice = hasAnyTouchpadDevice()
+             val hasAnyPhysicalKeyboardDevice = hasAnyPhysicalKeyboardDevice()
+             logV(
+@@ -271,7 +315,10 @@ class DesktopDisplayModeController(
                  hasAnyTouchpadDevice,
                  hasAnyPhysicalKeyboardDevice,
              )
@@ -60,12 +81,21 @@ diff --git a/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/deskt
                  return true
              }
              if (Flags.enableDesktopFirstLaptopStateBugfix()) {
-@@ -382,6 +416,9 @@
+@@ -364,6 +411,7 @@ class DesktopDisplayModeController(
+         pw.println("isDefaultDisplayDesktopEligible=" + isDefaultDisplayDesktopEligible())
+         pw.println("isExtendedDisplayEnabled=" + isExtendedDisplayEnabled())
+         pw.println("hasExternalDisplay=" + hasExternalDisplay())
++        pw.println("isPcModeRequested=" + isPcModeRequested())
+         pw.println(
+             "FORCE_DESKTOP_FIRST_ON_DEFAULT_DISPLAY=" + FORCE_DESKTOP_FIRST_ON_DEFAULT_DISPLAY
+         )
+@@ -382,6 +430,10 @@ class DesktopDisplayModeController(
      }
  
      companion object {
 +        const val KEYBOARD_SYSTEM_MODE = "enter_work_mode_from_keyboard"
 +        const val KEYBOARD_DESKTOP_MODE_EXITED = "tb520fu_keyboard_desktop_mode_exited"
++        const val PC_MODE = "tb520fu_pc_mode"
 +
          private const val TAG = "DesktopDisplayModeController"
      }

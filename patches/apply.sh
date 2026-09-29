@@ -50,7 +50,8 @@ apply_patch frameworks/base \
 #       and a touchpad are attached, with no way out. Let the device turn it
 #       off (stock setting enter_work_mode_from_keyboard = 0, Lenovo keyboard
 #       settings) or leave it until detach (tb520fu_keyboard_desktop_mode_exited,
-#       notification button from input/KeyboardDesktopMode).
+#       notification button from input/KeyboardDesktopMode). Also enter it
+#       on request without a keyboard (tb520fu_pc_mode, PC mode tile in Parts).
 apply_patch frameworks/base \
     "$PATCHES/frameworks_base-0004-keyboard-desktop-first-opt-out.patch"
 
@@ -124,6 +125,7 @@ apply_patch vendor/lineage \
 apply_patch vendor/lineage \
     "$PATCHES/vendor_lineage-0002-clean-sched-param-from-kernel-headers.patch"
 
-# 0005: TB520FU desktop exit button beside the taskbar, keeping the current app.
+# 0005: TB520FU desktop exit button beside the taskbar, keeping the current app
+#       (also clears tb520fu_pc_mode).
 apply_patch frameworks/base \
     "$PATCHES/frameworks_base-0005-desktop-mode-exit-button.patch"

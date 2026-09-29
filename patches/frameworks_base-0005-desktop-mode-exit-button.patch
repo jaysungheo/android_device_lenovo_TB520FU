@@ -253,7 +253,7 @@ index 000000000..ecec595f0
 +    }
 +}
 diff --git a/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/DesktopTasksController.kt b/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/DesktopTasksController.kt
-index 659479089..94def3f97 100644
+index 659479089..cd30f76a6 100644
 --- a/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/DesktopTasksController.kt
 +++ b/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/DesktopTasksController.kt
 @@ -52,6 +52,7 @@ import android.os.IBinder
@@ -264,7 +264,7 @@ index 659479089..94def3f97 100644
  import android.os.UserManager
  import android.view.Display.DEFAULT_DISPLAY
  import android.view.Display.INVALID_DISPLAY
-@@ -444,6 +445,46 @@ class DesktopTasksController(
+@@ -444,6 +445,48 @@ class DesktopTasksController(
              minimizeTask(task, MinimizeReason.KEY_GESTURE)
          }
          desktopScrimController.onInit()
@@ -293,6 +293,8 @@ index 659479089..94def3f97 100644
 +            "tb520fu_keyboard_desktop_mode_exited",
 +            1,
 +        )
++        // Also leave PC mode entered from the quick settings tile.
++        Settings.Global.putInt(context.contentResolver, "tb520fu_pc_mode", 0)
 +        // Keep the overlay non-focusable so the focused desktop task remains identifiable.
 +        val task =
 +            shellTaskOrganizer.getRunningTasks(DEFAULT_DISPLAY)
