@@ -97,6 +97,11 @@ apply_patch packages/apps/Settings \
 #       Ed25519 signature, HTTPS + sourceforge.net only, package SHA-256 check.
 apply_patch packages/apps/Updater \
     "$PATCHES/packages_apps_Updater-0001-sourceforge-folder.patch"
+# 0002: the advertised CertifiedProps APK has an AOSPA package name and
+#       only spoofs build properties; it is incompatible with this product.
+#       Let the TB520FU resource overlay hide the nonfunctional updater item.
+apply_patch packages/apps/Updater \
+    "$PATCHES/packages_apps_Updater-0002-hide-unsupported-certified-props.patch"
 
 # vendor/lineage
 # 0001: kernel.mk installs every kernel module it builds that is not in
@@ -111,3 +116,7 @@ apply_patch vendor/lineage \
 #       generated kernel headers. Drop it when cleaning the headers.
 apply_patch vendor/lineage \
     "$PATCHES/vendor_lineage-0002-clean-sched-param-from-kernel-headers.patch"
+
+# 0005: TB520FU desktop exit button beside the taskbar, keeping the current app.
+apply_patch frameworks/base \
+    "$PATCHES/frameworks_base-0005-desktop-mode-exit-button.patch"

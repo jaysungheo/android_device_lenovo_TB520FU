@@ -22,10 +22,10 @@ diff --git a/AndroidManifest.xml b/AndroidManifest.xml
  </manifest>
 diff --git a/src/com/android/settings/lenovo/LenovoPlaceHolderActivity.java b/src/com/android/settings/lenovo/LenovoPlaceHolderActivity.java
 new file mode 100644
-index 0000000..9c53977
+index 0000000..e51c8ea
 --- /dev/null
 +++ b/src/com/android/settings/lenovo/LenovoPlaceHolderActivity.java
-@@ -0,0 +1,55 @@
+@@ -0,0 +1,56 @@
 +/*
 + * SPDX-FileCopyrightText: 2026 The LineageOS Project
 + * SPDX-License-Identifier: Apache-2.0
@@ -63,8 +63,9 @@ index 0000000..9c53977
 +        Intent in = getIntent();
 +        String pkg = in.getStringExtra(EXTRA_PACKAGE);
 +        String cls = in.getStringExtra(EXTRA_CLASS);
-+        if (!TextUtils.isEmpty(pkg) && !TextUtils.isEmpty(cls) && ALLOWED.contains(pkg)
-+                && cls.startsWith(pkg + ".")) {
++        // Class names of these apps do not always start with the package name
++        // (com.lenovo.penservice -> com.lenovo.pen.bt.ui.BtSettingsActivity).
++        if (!TextUtils.isEmpty(pkg) && !TextUtils.isEmpty(cls) && ALLOWED.contains(pkg)) {
 +            Intent out = new Intent(Intent.ACTION_MAIN)
 +                    .setClassName(pkg, cls)
 +                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -38,6 +38,29 @@ final class KeyboardServiceBinder extends Binder {
     private static final int KB_GETRAWNAME = 8;
     private static final int KB_GETRAWINFO = 9;
 
+    // Bound allocations in system_server and reject empty arrays before the
+    // stock NDK HAL unmarshals them (an empty vector can return NO_MEMORY).
+    private static final int MAX_IO_SIZE = 64 * 1024;
+
+    private static void checkFd(int fd) {
+        if (fd < 0) throw new IllegalArgumentException("Invalid keyboard fd");
+    }
+
+    private static void checkRead(int fd, int size) {
+        checkFd(fd);
+        if (size <= 0 || size > MAX_IO_SIZE) {
+            throw new IllegalArgumentException("Invalid keyboard transfer size");
+        }
+    }
+
+    private static void checkBuffer(int fd, int size, byte[] buffer) {
+        checkRead(fd, size);
+        if (buffer == null || buffer.length == 0 || buffer.length > MAX_IO_SIZE
+                || size > buffer.length) {
+            throw new IllegalArgumentException("Invalid keyboard buffer");
+        }
+    }
+
     private final Context mContext;
 
     KeyboardServiceBinder(Context context) {
@@ -88,6 +111,7 @@ final class KeyboardServiceBinder extends Binder {
                 case KB_READ: {
                     int fd = data.readInt();
                     int size = data.readInt();
+                    checkRead(fd, size);
                     String r = LenovoHal.kbRead(fd, size);
                     reply.writeNoException();
                     reply.writeString(r);
@@ -96,6 +120,7 @@ final class KeyboardServiceBinder extends Binder {
                 case KB_READ_DATA: {
                     int fd = data.readInt();
                     int size = data.readInt();
+                    checkRead(fd, size);
                     byte[] r = LenovoHal.kbReadData(fd, size);
                     reply.writeNoException();
                     reply.writeByteArray(r != null ? r : new byte[Math.max(size, 0)]);
@@ -105,6 +130,7 @@ final class KeyboardServiceBinder extends Binder {
                     int fd = data.readInt();
                     int size = data.readInt();
                     byte[] buf = data.createByteArray();
+                    checkBuffer(fd, size, buf);
                     int r = LenovoHal.kbWriteData(fd, size, buf);
                     reply.writeNoException();
                     reply.writeInt(r);
@@ -112,7 +138,9 @@ final class KeyboardServiceBinder extends Binder {
                     return true;
                 }
                 case KB_CLOSE: {
-                    LenovoHal.kbClose(data.readInt());
+                    int fd = data.readInt();
+                    checkFd(fd);
+                    LenovoHal.kbClose(fd);
                     reply.writeNoException();
                     return true;
                 }
@@ -120,6 +148,7 @@ final class KeyboardServiceBinder extends Binder {
                     int fd = data.readInt();
                     int size = data.readInt();
                     byte[] buf = data.createByteArray();
+                    checkBuffer(fd, size, buf);
                     byte[] r = LenovoHal.kbGetFeature(fd, size, buf);
                     reply.writeNoException();
                     reply.writeByteArray(r != null ? r : new byte[Math.max(size, 0)]);
@@ -130,6 +159,7 @@ final class KeyboardServiceBinder extends Binder {
                     int fd = data.readInt();
                     byte[] buf = data.createByteArray();
                     int size = data.readInt();
+                    checkBuffer(fd, size, buf);
                     int r = LenovoHal.kbSetFeature(fd, buf, size);
                     reply.writeNoException();
                     reply.writeInt(r);
@@ -137,19 +167,25 @@ final class KeyboardServiceBinder extends Binder {
                     return true;
                 }
                 case KB_GETRAWNAME: {
-                    String r = LenovoHal.kbGetRawName(data.readInt());
+                    int fd = data.readInt();
+                    checkFd(fd);
+                    String r = LenovoHal.kbGetRawName(fd);
                     reply.writeNoException();
                     reply.writeString(r);
                     return true;
                 }
                 case KB_GETRAWINFO: {
-                    byte[] r = LenovoHal.kbGetRawInfo(data.readInt());
+                    int fd = data.readInt();
+                    checkFd(fd);
+                    byte[] r = LenovoHal.kbGetRawInfo(fd);
                     reply.writeNoException();
                     reply.writeByteArray(r != null ? r : new byte[8]);
                     return true;
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception | OutOfMemoryError e) {
+            // Binder maps a vendor STATUS_NO_MEMORY reply to OutOfMemoryError.
+            // A failed keyboard request must not terminate system_server.
             Log.e(TAG, "transaction " + code, e);
             reply.setDataPosition(0);
             reply.setDataSize(0);

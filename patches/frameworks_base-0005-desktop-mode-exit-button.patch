@@ -1,0 +1,743 @@
+diff --git a/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/DesktopModeExitButton.java b/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/DesktopModeExitButton.java
+new file mode 100644
+index 000000000..ecec595f0
+--- /dev/null
++++ b/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/DesktopModeExitButton.java
+@@ -0,0 +1,248 @@
++/*
++ * Copyright (C) 2026 The Android Open Source Project
++ * SPDX-License-Identifier: Apache-2.0
++ */
++package com.android.wm.shell.desktopmode;
++
++import android.app.ActivityTaskManager;
++import android.app.KeyguardManager;
++import android.app.TaskStackListener;
++import android.content.BroadcastReceiver;
++import android.content.Context;
++import android.content.Intent;
++import android.content.IntentFilter;
++import android.content.res.ColorStateList;
++import android.content.res.Configuration;
++import android.content.res.Resources;
++import android.graphics.Canvas;
++import android.graphics.Color;
++import android.graphics.ColorFilter;
++import android.graphics.Paint;
++import android.graphics.Path;
++import android.graphics.PixelFormat;
++import android.graphics.Typeface;
++import android.graphics.drawable.GradientDrawable;
++import android.graphics.drawable.Drawable;
++import android.graphics.drawable.RippleDrawable;
++import android.os.Handler;
++import android.util.Log;
++import android.view.Display;
++import android.view.Gravity;
++import android.view.WindowInsets;
++import android.view.WindowManager;
++import android.widget.TextView;
++
++import java.util.function.BooleanSupplier;
++import java.util.function.Supplier;
++
++/** A tablet-mode exit control beside the taskbar, owned by WM Shell. */
++public final class DesktopModeExitButton {
++    private static final String TAG = "DesktopModeExitButton";
++    private static final int WINDOW_TYPE = WindowManager.LayoutParams.TYPE_NAVIGATION_BAR_PANEL;
++
++    private final Context mContext;
++    private final Handler mHandler;
++    private final BooleanSupplier mDesktopVisible;
++    private final Supplier<String> mLabel;
++    private final Runnable mExit;
++    private final WindowManager mWindowManager;
++    private final KeyguardManager mKeyguard;
++    private TextView mButton;
++    private final Runnable mUpdate = this::update;
++
++    public DesktopModeExitButton(Context context, Handler handler, BooleanSupplier desktopVisible,
++            Supplier<String> label, Runnable exit) {
++        mContext = context.createWindowContext(WINDOW_TYPE, null);
++        mHandler = handler;
++        mDesktopVisible = desktopVisible;
++        mLabel = label;
++        mExit = exit;
++        mWindowManager = mContext.getSystemService(WindowManager.class);
++        mKeyguard = context.getSystemService(KeyguardManager.class);
++    }
++
++    public void start() {
++        try {
++            ActivityTaskManager.getService().registerTaskStackListener(new TaskStackListener() {
++                @Override
++                public void onTaskStackChanged() { schedule(); }
++
++                @Override
++                public void onTaskFocusChanged(int taskId, boolean focused) { schedule(); }
++            });
++            mKeyguard.addKeyguardLockedStateListener(mHandler::post, locked -> update());
++            IntentFilter filter = new IntentFilter();
++            filter.addAction(Intent.ACTION_SCREEN_OFF);
++            filter.addAction(Intent.ACTION_SCREEN_ON);
++            filter.addAction(Intent.ACTION_USER_PRESENT);
++            filter.addAction(Intent.ACTION_USER_SWITCHED);
++            filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
++            filter.addAction(Intent.ACTION_WALLPAPER_CHANGED);
++            filter.addAction(Intent.ACTION_OVERLAY_CHANGED);
++            mContext.registerReceiver(new BroadcastReceiver() {
++                @Override
++                public void onReceive(Context context, Intent intent) {
++                    hide();
++                    schedule();
++                }
++            }, filter, null, mHandler, Context.RECEIVER_NOT_EXPORTED);
++            update();
++        } catch (Exception e) {
++            Log.e(TAG, "Cannot start desktop exit button", e);
++        }
++    }
++
++    private void schedule() {
++        mHandler.removeCallbacks(mUpdate);
++        mHandler.postDelayed(mUpdate, 150);
++    }
++
++    private int dp(int value) {
++        return Math.round(value * mContext.getResources().getDisplayMetrics().density);
++    }
++
++    /** Resolve the same dynamic color resources used by the installed Pixel taskbar. */
++    private Resources taskbarResources() {
++        try {
++            Context launcher = mContext.createPackageContext(
++                    "com.google.android.apps.nexuslauncher", 0);
++            return launcher.createConfigurationContext(
++                    mContext.getResources().getConfiguration()).getResources();
++        } catch (Exception e) {
++            return null;
++        }
++    }
++
++    private int taskbarColor(Resources resources, String name, int fallback) {
++        if (resources != null) {
++            int id = resources.getIdentifier(name, "color", "com.google.android.apps.nexuslauncher");
++            if (id != 0) return resources.getColor(id, null);
++        }
++        return mContext.getColor(fallback);
++    }
++
++    private void update() {
++        try {
++            if (mKeyguard.isKeyguardLocked()
++                    || mContext.getDisplay().getState() != Display.STATE_ON
++                    || !mDesktopVisible.getAsBoolean()) {
++                hide();
++                return;
++            }
++            if (mButton != null) return;
++
++            boolean night = (mContext.getResources().getConfiguration().uiMode
++                    & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
++            Resources taskbar = taskbarResources();
++            int backgroundColor = taskbarColor(taskbar, "taskbar_background",
++                    night ? android.R.color.system_neutral1_900 : android.R.color.system_neutral1_50);
++            int foregroundColor = taskbarColor(taskbar,
++                    night ? "taskbar_nav_icon_light_color" : "taskbar_nav_icon_dark_color",
++                    night ? android.R.color.system_neutral1_100 : android.R.color.system_neutral1_900);
++
++            TextView button = new TextView(mContext);
++            button.setText(mLabel.get());
++            button.setContentDescription(mLabel.get());
++            button.setTooltipText(mLabel.get());
++            button.setTextSize(14);
++            button.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
++            button.setTextColor(foregroundColor);
++            button.setGravity(Gravity.CENTER);
++            button.setPadding(dp(18), 0, dp(18), 0);
++            button.setSingleLine(true);
++            button.setElevation(dp(3));
++            Drawable icon = new ExitIcon(foregroundColor);
++            icon.setBounds(0, 0, dp(24), dp(24));
++            button.setCompoundDrawablesRelative(icon, null, null, null);
++            button.setCompoundDrawablePadding(dp(8));
++            GradientDrawable background = new GradientDrawable();
++            background.setColor(backgroundColor);
++            background.setCornerRadius(dp(24));
++            int rippleColor = (foregroundColor & 0x00ffffff) | 0x22000000;
++            button.setBackground(new RippleDrawable(ColorStateList.valueOf(rippleColor),
++                    background, null));
++            button.setOnClickListener(view -> {
++                try {
++                    mExit.run();
++                    hide();
++                    mHandler.postDelayed(mUpdate, 700);
++                } catch (Exception e) {
++                    Log.e(TAG, "Cannot exit desktop mode", e);
++                }
++            });
++
++            WindowManager.LayoutParams params = new WindowManager.LayoutParams(
++                    WindowManager.LayoutParams.WRAP_CONTENT, dp(48), WINDOW_TYPE,
++                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
++                            | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
++                            | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
++                    PixelFormat.TRANSLUCENT);
++            params.gravity = Gravity.BOTTOM | Gravity.LEFT;
++            params.x = dp(24);
++            int taskbarHeight = dp(64);
++            if (taskbar != null) {
++                int id = taskbar.getIdentifier("taskbar_size", "dimen",
++                        "com.google.android.apps.nexuslauncher");
++                if (id != 0) taskbarHeight = taskbar.getDimensionPixelSize(id);
++            }
++            params.y = Math.max(dp(8), (taskbarHeight - dp(48)) / 2);
++            params.setFitInsetsTypes(WindowInsets.Type.displayCutout());
++            params.privateFlags |= WindowManager.LayoutParams.PRIVATE_FLAG_TRUSTED_OVERLAY;
++            params.setTitle(TAG);
++            mWindowManager.addView(button, params);
++            mButton = button;
++        } catch (Exception e) {
++            Log.e(TAG, "Cannot update desktop exit button", e);
++        }
++    }
++
++    private void hide() {
++        if (mButton == null) return;
++        try {
++            mWindowManager.removeView(mButton);
++        } catch (Exception e) {
++            Log.w(TAG, "Cannot remove desktop exit button", e);
++        }
++        mButton = null;
++    }
++
++    /** Tablet outline and outward arrow, following the stock ZUI exit affordance. */
++    private static final class ExitIcon extends Drawable {
++        private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
++        private final Path mPath = new Path();
++
++        ExitIcon(int color) {
++            mPaint.setColor(color);
++            mPaint.setStyle(Paint.Style.STROKE);
++            mPaint.setStrokeWidth(1.8f);
++            mPaint.setStrokeCap(Paint.Cap.ROUND);
++            mPaint.setStrokeJoin(Paint.Join.ROUND);
++            mPath.moveTo(16, 7);
++            mPath.lineTo(16, 4);
++            mPath.quadTo(16, 3, 15, 3);
++            mPath.lineTo(5, 3);
++            mPath.quadTo(4, 3, 4, 4);
++            mPath.lineTo(4, 20);
++            mPath.quadTo(4, 21, 5, 21);
++            mPath.lineTo(15, 21);
++            mPath.quadTo(16, 21, 16, 20);
++            mPath.lineTo(16, 17);
++            mPath.moveTo(11, 12);
++            mPath.lineTo(22, 12);
++            mPath.moveTo(18.5f, 8.5f);
++            mPath.lineTo(22, 12);
++            mPath.lineTo(18.5f, 15.5f);
++        }
++
++        @Override public void draw(Canvas canvas) {
++            int save = canvas.save();
++            canvas.translate(getBounds().left, getBounds().top);
++            canvas.scale(getBounds().width() / 24f, getBounds().height() / 24f);
++            canvas.drawPath(mPath, mPaint);
++            canvas.restoreToCount(save);
++        }
++        @Override public void setAlpha(int alpha) { mPaint.setAlpha(alpha); }
++        @Override public void setColorFilter(ColorFilter filter) { mPaint.setColorFilter(filter); }
++        @Override public int getOpacity() { return PixelFormat.TRANSLUCENT; }
++    }
++}
+diff --git a/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/DesktopTasksController.kt b/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/DesktopTasksController.kt
+index 659479089..94def3f97 100644
+--- a/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/DesktopTasksController.kt
++++ b/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/DesktopTasksController.kt
+@@ -52,6 +52,7 @@ import android.os.IBinder
+ import android.os.RemoteException
+ import android.os.Trace
+ import android.os.UserHandle
++import android.provider.Settings
+ import android.os.UserManager
+ import android.view.Display.DEFAULT_DISPLAY
+ import android.view.Display.INVALID_DISPLAY
+@@ -444,6 +445,46 @@ class DesktopTasksController(
+             minimizeTask(task, MinimizeReason.KEY_GESTURE)
+         }
+         desktopScrimController.onInit()
++        if (android.os.Build.DEVICE == "TB520FU") {
++            DesktopModeExitButton(
++                    context,
++                    handler,
++                    {
++                        shellTaskOrganizer.getRunningTasks(DEFAULT_DISPLAY).any {
++                            it.isVisible &&
++                                (it.isFreeform ||
++                                    it.topActivity?.className == DesktopWallpaperActivity::class.java.name)
++                        }
++                    },
++                    { context.getString(R.string.tb520fu_exit_pc_mode) },
++                    { exitDesktopToTablet() },
++                )
++                .start()
++        }
++    }
++
++    /** Keep the foreground app open while leaving desktop mode from the taskbar. */
++    private fun exitDesktopToTablet() {
++        Settings.Global.putInt(
++            context.contentResolver,
++            "tb520fu_keyboard_desktop_mode_exited",
++            1,
++        )
++        // Keep the overlay non-focusable so the focused desktop task remains identifiable.
++        val task =
++            shellTaskOrganizer.getRunningTasks(DEFAULT_DISPLAY)
++                .filter { it.isVisible && it.isFreeform }
++                .maxByOrNull { if (it.isFocused) Long.MAX_VALUE else it.lastActiveTime }
++        if (task != null) {
++            moveToFullscreen(task.taskId, DesktopModeTransitionSource.TASKBAR)
++        } else {
++            context.startActivityAsUser(
++                Intent(Intent.ACTION_MAIN)
++                    .addCategory(Intent.CATEGORY_HOME)
++                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
++                UserHandle.CURRENT,
++            )
++        }
+     }
+ 
+     @VisibleForTesting
+diff --git a/libs/WindowManager/Shell/res/values-ar/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-ar/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..13bc3651f
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-ar/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">الخروج من وضع الكمبيوتر</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-b+sr+Latn/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-b+sr+Latn/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..9990e4db5
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-b+sr+Latn/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Zatvori režim računara</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-bg/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-bg/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..214c5ab66
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-bg/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Изход от режим на компютър</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-cs/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-cs/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..8b697e183
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-cs/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Ukončit režim PC</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-da/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-da/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..bcf2ae495
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-da/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Afslut pc-tilstand</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-de/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-de/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..a1ec5349b
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-de/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">PC-Modus beenden</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-el/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-el/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..85705ffd0
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-el/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Έξοδος από τη λειτουργία υπολογιστή</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-es/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-es/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..fc6abe457
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-es/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Salir del modo PC</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-et/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-et/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..c1d657826
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-et/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Välju arvutirežiimist</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-fi/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-fi/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..f548174b8
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-fi/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Poistu PC-tilasta</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-fr/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-fr/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..7afca9ff5
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-fr/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Quitter le mode PC</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-hi/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-hi/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..63b2bf938
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-hi/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">PC मोड से बाहर निकलें</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-hr/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-hr/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..1e588e836
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-hr/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Zatvori način rada računala</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-hu/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-hu/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..f40eff534
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-hu/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Kilépés a PC módból</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-in/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-in/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..1acbe327b
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-in/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Keluar dari mode PC</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-it/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-it/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..b1eb6ff8a
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-it/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Esci dalla modalità PC</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-iw/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-iw/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..652b25435
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-iw/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">יציאה ממצב PC</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-ja/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-ja/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..064d8118e
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-ja/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">PC モードを終了する</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-ko/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-ko/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..94a3d1066
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-ko/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">PC 모드 종료</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-lt/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-lt/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..a910eaead
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-lt/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Išjungti asmeninio kompiuterio režimą</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-lv/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-lv/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..ca3b8332e
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-lv/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Iziet no datora režīma</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-ms/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-ms/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..07ef9875d
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-ms/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Keluar daripada Mod PC</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-nb/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-nb/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..bb60dce97
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-nb/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Avslutt PC-modus</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-nl/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-nl/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..dc3dc3bd5
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-nl/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Pc-modus afsluiten</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-pl/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-pl/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..f2cb0643c
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-pl/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Wyjdź z trybu PC</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-pt-rBR/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-pt-rBR/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..0894238f2
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-pt-rBR/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Sair do modo PC</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-pt-rPT/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-pt-rPT/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..0894238f2
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-pt-rPT/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Sair do modo PC</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-ro/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-ro/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..3633d3680
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-ro/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Ieșire din modul PC</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-ru/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-ru/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..62bfc3c73
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-ru/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Выйти из режима ПК</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-sk/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-sk/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..63a46d380
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-sk/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Ukončenie režimu počítača</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-sl/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-sl/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..db6897adc
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-sl/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Izhod iz načina računalnika</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-sr/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-sr/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..9990e4db5
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-sr/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Zatvori režim računara</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-sv/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-sv/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..242b68e93
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-sv/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Avsluta datorläge</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-th/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-th/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..21d269d0b
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-th/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">ออกจากโหมดพีซี</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-tl/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-tl/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..6dcdb8c80
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-tl/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Lumabas sa mode na PC</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-tr/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-tr/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..b11984b5d
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-tr/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Bilgisayar kipinden çık</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-uk/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-uk/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..0d8f41288
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-uk/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Вихід із режиму ПК</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-ur/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-ur/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..52ec26448
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-ur/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">‏PC موڈ سے باہر نکلیں</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-vi/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-vi/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..22a6e6ba2
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-vi/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Thoát chế độ PC</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-zh-rCN/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-zh-rCN/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..0f252ce0b
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-zh-rCN/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">退出电脑模式</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-zh-rHK/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-zh-rHK/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..079d78d07
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-zh-rHK/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">退出電腦模式</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values-zh-rTW/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values-zh-rTW/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..079d78d07
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values-zh-rTW/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">退出電腦模式</string>
++</resources>
+diff --git a/libs/WindowManager/Shell/res/values/tb520fu_desktop.xml b/libs/WindowManager/Shell/res/values/tb520fu_desktop.xml
+new file mode 100644
+index 000000000..bd36277e1
+--- /dev/null
++++ b/libs/WindowManager/Shell/res/values/tb520fu_desktop.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="tb520fu_exit_pc_mode">Exit PC mode</string>
++</resources>

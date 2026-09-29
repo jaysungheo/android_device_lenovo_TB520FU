@@ -23,7 +23,8 @@ update_engine can apply it to the running build and the full one otherwise.
 With --key it also writes <...>.json.sig (Ed25519 signature of the JSON, raw
 64 bytes), only needed for builds with updater_signing_public_key set.
 
-usage: ota_json.py [--incremental INC.zip]... [--key KEY.pem] FULL.zip...
+usage: ota_json.py [--incremental INC.zip --base-full BASE.zip]...
+                   [--key KEY.pem] FULL.zip...
 """
 import argparse
 import hashlib
@@ -77,7 +78,23 @@ def file_entry(path, url, meta, streaming):
     if streaming:
         # The updater checks with the payload metadata whether update_engine can
         # apply the incremental to the running build, and streams it.
-        entry['ota_property_files'] = meta['ota-property-files'].strip()
+        property_files = meta['ota-property-files'].strip()
+        ranges = {}
+        for token in property_files.split(','):
+            fields = token.strip().split(':')
+            if len(fields) != 3:
+                sys.exit('%s: malformed ota-property-files entry: %s' % (path, token))
+            name, offset, size = fields
+            try:
+                offset, size = int(offset), int(size)
+            except ValueError:
+                sys.exit('%s: invalid ota-property-files range: %s' % (path, token))
+            if name in ranges or offset < 0 or size <= 0 or offset + size > entry['size']:
+                sys.exit('%s: invalid ota-property-files range: %s' % (path, token))
+            ranges[name] = (offset, size)
+        if not {'payload_metadata.bin', 'payload.bin', 'payload_properties.txt'} <= ranges.keys():
+            sys.exit('%s: missing payload streaming ranges' % path)
+        entry['ota_property_files'] = property_files
     return entry
 
 
@@ -86,6 +103,8 @@ def main():
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--incremental', action='append', default=[],
                     help='incremental package of one of the builds (repeatable)')
+    ap.add_argument('--base-full', action='append', default=[],
+                    help='full package of an incremental source build (repeatable)')
     ap.add_argument('--ota-url', default=OTA_URL,
                     help='SourceForge folder the .json and packages are uploaded to')
     ap.add_argument('--key', help='Ed25519 private key (PEM), to also write <...>.json.sig')
@@ -94,6 +113,16 @@ def main():
     folder = args.ota_url.rstrip('/')
     if not folder.startswith('https://sourceforge.net/projects/'):
         sys.exit('OTA URL must be a https://sourceforge.net/projects/ folder')
+
+    bases = {}
+    for path in args.base_full:
+        match = FULL_RE.fullmatch(os.path.basename(path))
+        if not match:
+            sys.exit('unexpected base package name: ' + os.path.basename(path))
+        key = (match.group(1), match.group(2), bool(match.group(3)))
+        if key in bases:
+            sys.exit('two base packages for the same build and variant: ' + path)
+        bases[key] = metadata(path)
 
     incrementals = {}
     for path in args.incremental:
@@ -122,7 +151,18 @@ def main():
         inc = incrementals.pop((m.group(1), m.group(2), bool(m.group(3))), None)
         if inc:
             inc_meta = metadata(inc)
-            if inc_meta.get('post-timestamp') != meta['post-timestamp']:
+            inc_name = INC_RE.fullmatch(os.path.basename(inc))
+            base = bases.get((inc_name.group(1), inc_name.group(3), bool(inc_name.group(4))))
+            if base is None:
+                sys.exit('%s: --base-full for its source build is required' % inc)
+            if (inc_meta.get('ota-type') != 'AB' or
+                    inc_meta.get('post-timestamp') != meta['post-timestamp'] or
+                    inc_meta.get('post-build') != meta.get('post-build') or
+                    inc_meta.get('post-build-incremental') != meta.get('post-build-incremental') or
+                    inc_meta.get('pre-device') != meta.get('pre-device') or
+                    inc_meta.get('pre-build') != base.get('post-build') or
+                    inc_meta.get('pre-build-incremental') != base.get('post-build-incremental') or
+                    base.get('pre-device') != meta.get('pre-device')):
                 sys.exit('%s is not an incremental to %s' % (os.path.basename(inc), name))
             update['incremental'] = [file_entry(
                 inc, '%s/%s/download' % (folder, os.path.basename(inc)), inc_meta,
