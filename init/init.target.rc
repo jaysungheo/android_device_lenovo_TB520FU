@@ -353,6 +353,14 @@ service setwlansardsi4 /vendor/bin/setwlansardsi4.sh
     group root root
 #wifi sar feature by linshuai1, JLAPIS-252,at 2024-06-11 end
 
+# Stock ExWifiManagerService starts these with ctl.start from system_server;
+# here tb520fu-input (WifiSarController) sets the power index.
+on property:sys.tb520fu.wlan_sar=1
+    start setwlansardsi1
+
+on property:sys.tb520fu.wlan_sar=2
+    start setwlansardsi2
+
 #add for online lenovocust
 on post-fs-data
     chown system system /lenovocust

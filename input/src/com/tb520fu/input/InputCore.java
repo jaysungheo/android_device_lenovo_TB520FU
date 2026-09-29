@@ -42,6 +42,7 @@ final class InputCore {
     final GamePerfController mGamePerf;
     final PalmController mPalm;
     final KeyboardDesktopMode mDesktopMode;
+    final WifiSarController mWifiSar;
     private StylusMonitor mStylusMonitor;
     private boolean mStarted;
 
@@ -71,6 +72,7 @@ final class InputCore {
         mGamePerf = new GamePerfController(context, mHandler);
         mPalm = new PalmController(context, mHandler);
         mDesktopMode = new KeyboardDesktopMode(context, mHandler);
+        mWifiSar = new WifiSarController(context, mHandler);
 
         // The binder can be published right away; it only answers "not ready"
         // until a pen is connected.
@@ -100,6 +102,7 @@ final class InputCore {
         Safe.run("game performance", mGamePerf::start).run();
         Safe.run("palm rejection", mPalm::start).run();
         Safe.run("keyboard desktop mode", mDesktopMode::start).run();
+        Safe.run("wifi sar", mWifiSar::start).run();
         Safe.run("haptics", mHaptics::start).run();
         Safe.run("pen", mPen::start).run();
         Safe.run("stylus monitor", () -> {
