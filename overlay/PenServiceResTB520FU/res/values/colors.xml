@@ -15,9 +15,11 @@
     <color name="list_item_text_disabled_zui">@android:color/system_neutral2_300</color>
     <!-- Preference summary -->
     <color name="list_item_second_line_text_normal_zui">@android:color/system_neutral2_600</color>
-    <!-- Category title -->
-    <color name="preference_category_text_zui">@android:color/system_neutral2_600</color>
-    <color name="preference_category_bg_zui">@android:color/system_neutral1_50</color>
+    <!-- Category title: PixelOS Settings titles use the primary colour above
+         the card groups (BasePreferenceFragmentCompat in lenovo/PenService),
+         on the page background. -->
+    <color name="preference_category_text_zui">@android:color/system_accent1_600</color>
+    <color name="preference_category_bg_zui">@android:color/transparent</color>
     <!-- Switch (track when on) and its pressed/hovered states -->
     <color name="system_primary_color_on_zui">@android:color/system_accent1_600</color>
     <color name="system_primary_color_on_pressed_zui">@android:color/system_accent1_700</color>

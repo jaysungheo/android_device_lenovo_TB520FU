@@ -7,7 +7,7 @@
     <color name="list_item_text_normal_zui">@android:color/system_neutral1_100</color>
     <color name="list_item_text_disabled_zui">@android:color/system_neutral2_600</color>
     <color name="list_item_second_line_text_normal_zui">@android:color/system_neutral2_300</color>
-    <color name="preference_category_text_zui">@android:color/system_neutral2_300</color>
+    <color name="preference_category_text_zui">@android:color/system_accent1_200</color>
     <!-- neutral1_50 is #F1F0F6 in the night map; keep the theme background. -->
     <color name="preference_category_bg_zui">@android:color/transparent</color>
     <color name="system_primary_color_on_zui">@android:color/system_accent1_500</color>
