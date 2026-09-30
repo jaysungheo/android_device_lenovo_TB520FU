@@ -1,4 +1,14 @@
+//
+// SPDX-FileCopyrightText: 2026 The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
 runtime_resource_overlay {
     name: "KeyboardUpdateResTB520FU",
     product_specific: true,
+    // The theme overlay names the non-public parent style of the stock app.
+    aaptflags: [
+        "-I",
+        "vendor/lenovo/TB520FU/proprietary/system_ext/app/ZuiKeyboardUpdate/ZuiKeyboardUpdate.apk",
+    ],
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2026 The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- The stock AppCompat attribute, declared so the theme below can set it;
+         at runtime it maps to the target attribute of the same name. -->
+    <attr name="colorPrimary" format="reference|color" />
+</resources>
