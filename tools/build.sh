@@ -19,9 +19,15 @@ cd "$TOP"
 
 bash "$TREE/patches/apply.sh" "$TOP" || exit 1
 
-export WITH_ADB_INSECURE=${WITH_ADB_INSECURE:-false}
+# common.mk uses ifdef, so even the nonempty value "false" disables ADB auth.
+# Keep authentication enabled unless explicitly requested with "true".
+if [ "${WITH_ADB_INSECURE:-false}" = true ]; then
+    export WITH_ADB_INSECURE=true
+else
+    unset WITH_ADB_INSECURE
+fi
 source build/envsetup.sh > /dev/null
-breakfast TB520FU > /dev/null 2>&1 || { echo "breakfast failed" >&2; exit 1; }
+breakfast TB520FU user > /dev/null 2>&1 || { echo "breakfast failed" >&2; exit 1; }
 
 echo RUNNING > build.status
 if [ "${SHOW_LOG:-0}" = 1 ]; then

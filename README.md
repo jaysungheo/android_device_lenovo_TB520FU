@@ -92,7 +92,7 @@ working; run the script again after every sync.
 ```bash
 bash device/lenovo/TB520FU/patches/apply.sh
 source build/envsetup.sh
-breakfast TB520FU
+breakfast TB520FU user
 m pixelos
 ```
 
@@ -100,7 +100,13 @@ The script also runs `vendor/lenovo/TB520FU-custom/patches/apply.sh` when
 the customizations repository is synced, and reverts its patches when it is
 gone.
 
-or unattended, with the log in `build.log` and the result in `build.status`:
+The build helper selects the `user` variant and keeps ADB authentication
+configured on by default. `WITH_ADB_INSECURE=true` explicitly requests the
+insecure ADB setting; unset, empty and `false` values keep authentication on.
+The AVB and app signing keys stay as configured below. `user` builds exclude
+debug tools, ADB root and the OTA `addon.d` preservation path.
+
+Or unattended, with the log in `build.log` and the result in `build.status`:
 
 ```bash
 setsid nohup device/lenovo/TB520FU/tools/build.sh > /dev/null 2>&1 < /dev/null &
