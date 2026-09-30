@@ -29,8 +29,6 @@ class PartsFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceC
     private lateinit var standbyPref: SwitchPreferenceCompat
     private lateinit var maintenancePref: SwitchPreferenceCompat
     private lateinit var batteryInfoPref: Preference
-    private lateinit var gamePerfPref: Preference
-    private lateinit var spoofPref: SwitchPreferenceCompat
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.parts_settings, rootKey)
@@ -72,18 +70,6 @@ class PartsFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceC
             }
         }
 
-        gamePerfPref = findPreference(KEY_GAME_PERF)!!
-
-        // Play Store identity spoof; applied at boot, so off by default and the
-        // reboot dialog is shown on every change.
-        spoofPref = findPreference(KEY_SPOOF)!!
-        spoofPref.isChecked = DeviceSpoof.enabled
-        spoofPref.setOnPreferenceChangeListener { _, value ->
-            DeviceSpoof.enabled = value as Boolean
-            askReboot(R.string.spoof_reboot_message)
-            true
-        }
-
         val penPref: Preference = findPreference(KEY_PEN_SETTINGS)!!
         // Own task: embedded in the Settings two-pane layout the stock pen page
         // is too narrow and cuts off the pen picture and the battery level.
@@ -122,10 +108,6 @@ class PartsFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceC
         val ctx = requireContext()
         updateChargingMode()
         updateBatteryInfo()
-        gamePerfPref.summary = getString(
-            if (LenovoSettings.getInt(ctx, LenovoSettings.GAME_PERF, 0) != 0) R.string.game_perf_on
-            else R.string.game_perf_off
-        )
         updateVramSummary()
         updateStatus()
     }
@@ -205,8 +187,6 @@ class PartsFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceC
         const val KEY_BATTERY_INFO = "battery_info"
         const val KEY_WHITE_BALANCE = "white_balance"
         const val KEY_WHITE_BALANCE_STRENGTH = "white_balance_strength"
-        const val KEY_GAME_PERF = "game_perf"
-        const val KEY_SPOOF = "spoof_galaxy"
         const val KEY_PEN_CATEGORY = "pen"
         const val KEY_PEN_SETTINGS = "pen_settings"
         const val KEY_VRAM = "vram_gb"

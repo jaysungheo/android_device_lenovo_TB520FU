@@ -100,3 +100,20 @@ index c5580da84..bfeaf0fa4 100644
          private const val TAG = "DesktopDisplayModeController"
      }
  }
+diff --git a/core/res/res/values/tb520fu_patch_desktop_opt_out.xml b/core/res/res/values/tb520fu_patch_desktop_opt_out.xml
+new file mode 100644
+index 000000000..709742480
+--- /dev/null
++++ b/core/res/res/values/tb520fu_patch_desktop_opt_out.xml
+@@ -0,0 +1,11 @@
++<?xml version="1.0" encoding="utf-8"?>
++<!--
++     SPDX-FileCopyrightText: 2026 The LineageOS Project
++     SPDX-License-Identifier: Apache-2.0
++-->
++<!-- Marker for the TB520FU keyboard desktop first opt out framework patch.
++     The resource exists only while that patch is applied, so TB520FUParts can
++     show the keyboard desktop mode settings only on builds that have it. -->
++<resources>
++    <bool name="config_tb520fu_patch_desktop_opt_out" translatable="false">true</bool>
++</resources>

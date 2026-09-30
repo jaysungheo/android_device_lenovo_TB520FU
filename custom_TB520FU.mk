@@ -11,6 +11,11 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 # Inherit from TB520FU device
 $(call inherit-product, device/lenovo/TB520FU/device.mk)
 
+# Optional customizations repository (Lenovo Notes, game performance,
+# Play Store identity, OTA updater, default wallpaper). It is not required:
+# without it this builds a plain PixelOS for the device.
+$(call inherit-product-if-exists, vendor/lenovo/TB520FU-custom/custom.mk)
+
 # Inherit some common PixelOS stuff.
 $(call inherit-product, vendor/custom/config/common_full_tablet_wifionly.mk)
 

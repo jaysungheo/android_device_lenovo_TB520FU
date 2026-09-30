@@ -117,11 +117,6 @@
     <integer name="config_nightDisplayColorTemperatureMax">6000</integer>
     <integer name="config_nightDisplayColorTemperatureMin">4000</integer>
 
-    <!-- Default wallpaper: Pixel "Feathers" Porcelain live wallpaper
-         (extras/FeathersLiveWallpaper). default_wallpaper stays as fallback;
-         the sw720dp copy is needed to beat PixelOS' own sw720dp tablet image. -->
-    <string name="default_wallpaper_component" translatable="false">com.google.pixel.wallpapers23/.liveBirds.porcelain.PorcelainWallpaperService</string>
-
     <!-- Light theme by default (vendor/lineage sets dark, 2) -->
     <integer name="config_defaultNightMode">1</integer>
 
@@ -322,8 +317,4 @@
         <item>com.painting.draw</item>
         <item>com.google.android.apps.docs</item>
     </string-array>
-
-    <!-- Lenovo Notes as the notes app (stylus button, lock screen notes), as stock -->
-    <bool name="config_enableDefaultNotes">true</bool>
-    <string name="config_defaultNotes" translatable="false">com.zui.notes</string>
 </resources>

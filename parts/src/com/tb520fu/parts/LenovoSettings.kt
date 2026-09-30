@@ -14,18 +14,14 @@ import java.io.File
 
 /**
  * Settings.Global keys applied by tb520fu-input in system_server
- * (input/src/com/tb520fu/input: BatteryController, StandbyController,
- * GamePerfController). The keyboard settings are in LenovoKeyboard.
+ * (input/src/com/tb520fu/input: BatteryController, StandbyController).
+ * The keyboard settings are in LenovoKeyboard.
  */
 object LenovoSettings {
     const val BATTERY_MODE = "tb520fu_battery_mode"
     const val BATTERY_MAINTENANCE = "tb520fu_battery_maintenance"
     const val BYPASS_CHARGING = "tb520fu_bypass_charging"
     const val STANDBY_SAVER = "tb520fu_standby_saver"
-    const val GAME_PERF = "tb520fu_game_perf"
-    const val GAME_PERF_APPS = "tb520fu_game_perf_apps"
-    const val GAME_PERF_CUSTOM = "tb520fu_game_perf_custom"
-    const val GAME_MEM_CLEAN = "tb520fu_game_mem_clean"
 
     /** Settings.Secure, AOSP adaptive white balance (DisplayWhiteBalanceController). */
     const val DISPLAY_WHITE_BALANCE = "display_white_balance_enabled"

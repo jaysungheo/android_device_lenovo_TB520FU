@@ -1933,10 +1933,6 @@ system/etc/default-permissions/default-permissions-com.zui.udevice.xml:system_ex
 system/app/ZuiKeyboardUpdate/ZuiKeyboardUpdate.apk:system_ext/app/ZuiKeyboardUpdate/ZuiKeyboardUpdate.apk
 system/app/ZuiKeyboardUpdateOlympia/ZuiKeyboardUpdateOlympia.apk:system_ext/app/ZuiKeyboardUpdateOlympia/ZuiKeyboardUpdateOlympia.apk;PRESIGNED
 
-# Lenovo Notes (global ROM; quick notes from the pen and the stylus toolbox, notes role)
-system/preinstall/ZuiNotes/ZuiNotes.apk:system_ext/priv-app/ZuiNotes/ZuiNotes.apk;PRESIGNED
-system/etc/permissions/privapp-permissions-com.zui.notes.xml:system_ext/etc/permissions/privapp-permissions-com.zui.notes.xml
-
 # Dependencies (auto)
 vendor/lib64/libBSTDSLR.so
 vendor/lib64/libBSTFilter.so

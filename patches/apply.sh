@@ -68,12 +68,14 @@ apply_patch frameworks/base \
     "$PATCHES/frameworks_base-0001-lenovo-pen-haptic-manager.patch"
 # 0002: Settings.Secure display_white_balance_strength (0-100, default 100),
 #       how far white balance follows the ambient light (TB520FUParts slider).
+#       Defines config_tb520fu_patch_wb_strength so TB520FUParts can detect it.
 apply_patch frameworks/base \
     "$PATCHES/frameworks_base-0002-display-white-balance-strength.patch"
 # 0003: android.app.keyboard.LenovoKeyboardManager (+ ILenovoKeyboardService)
 #       registered as "lenovokeyboard". The stock keyboard firmware updater
 #       (ZuiKeyboardUpdate) reaches the keyboard only through it; the service
 #       itself lives in the device jar (input/KeyboardServiceBinder).
+#       Defines config_tb520fu_patch_keyboard_manager so TB520FUParts can detect it.
 apply_patch frameworks/base \
     "$PATCHES/frameworks_base-0003-lenovo-keyboard-manager.patch"
 # 0004: WM Shell turns the display into desktop windowing whenever a keyboard
@@ -82,17 +84,9 @@ apply_patch frameworks/base \
 #       settings) or leave it until detach (tb520fu_keyboard_desktop_mode_exited,
 #       notification button from input/KeyboardDesktopMode). Also enter it
 #       on request without a keyboard (tb520fu_pc_mode, PC mode tile in Parts).
+#       Defines config_tb520fu_patch_desktop_opt_out so TB520FUParts can detect it.
 apply_patch frameworks/base \
     "$PATCHES/frameworks_base-0004-keyboard-desktop-first-opt-out.patch"
-# 0005: Optional Galaxy Tab S11 Ultra (SM-X930) identity for the Play Store,
-#       set from TB520FUParts (persist.sys.tb520fu.spoof_galaxy). The framework
-#       reads the boot-time snapshot sys.tb520fu.spoof_galaxy, so the switch
-#       only takes effect after a restart. Applies to the Play Store and the
-#       Play services device check-in; the GMS droidguard process keeps its
-#       Play Integrity behaviour.
-apply_patch frameworks/base \
-    "$PATCHES/frameworks_base-0005-tb520fu-galaxy-device-spoof.patch"
-
 # frameworks/native
 # 0001: RefreshRateSelector: a static screen (all layers vote Min) goes to the
 #       lowest mode of at least 60 Hz, not the policy minimum; the idle timer
@@ -137,18 +131,6 @@ apply_patch packages/apps/Settings \
 apply_patch packages/apps/Settings \
     "$PATCHES/packages_apps_Settings-0002-lenovo-place-holder-activity.patch"
 
-# packages/apps/Updater
-# 0001: SourceForge folder as update server (RSS feed of the OTA folder):
-#       newest signed <package>.json of the running variant (PRC / ROW dtb),
-#       Ed25519 signature, HTTPS + sourceforge.net only, package SHA-256 check.
-apply_patch packages/apps/Updater \
-    "$PATCHES/packages_apps_Updater-0001-sourceforge-folder.patch"
-# 0002: the advertised CertifiedProps APK has an AOSPA package name and
-#       only spoofs build properties; it is incompatible with this product.
-#       Let the TB520FU resource overlay hide the nonfunctional updater item.
-apply_patch packages/apps/Updater \
-    "$PATCHES/packages_apps_Updater-0002-hide-unsupported-certified-props.patch"
-
 # vendor/lineage
 # 0001: kernel.mk installs every kernel module it builds that is not in
 #       SYSTEM_KERNEL_MODULES to vendor_dlkm, even an empty set, which
@@ -165,7 +147,8 @@ apply_patch vendor/lineage \
 
 # Optional customizations (vendor/lenovo/TB520FU-custom), when present
 if [ -f "$CUSTOM/patches/apply.sh" ]; then
-    bash "$CUSTOM/patches/apply.sh" "$TOP" || FAILED+=("vendor/lenovo/TB520FU-custom/patches/apply.sh")
+    bash "$CUSTOM/patches/apply.sh" "$TOP" \
+        || FAILED+=("vendor/lenovo/TB520FU-custom/patches/apply.sh")
 fi
 
 if [ ${#FAILED[@]} -gt 0 ]; then

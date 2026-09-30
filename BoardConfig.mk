@@ -228,3 +228,6 @@ WPA_SUPPLICANT_VERSION := VER_0_8_X
 
 # Include the proprietary files BoardConfig.
 include vendor/lenovo/TB520FU/BoardConfigVendor.mk
+
+# Optional customizations (vendor/lenovo/TB520FU-custom), when present
+-include vendor/lenovo/TB520FU-custom/BoardConfigCustom.mk

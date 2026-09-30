@@ -14,12 +14,12 @@ import android.os.Handler;
 import android.util.Log;
 
 /** Wrappers that keep exceptions out of system_server threads. */
-final class Safe {
-    static final String TAG = "TB520FUInput";
+public final class Safe {
+    public static final String TAG = "TB520FUInput";
 
     private Safe() {}
 
-    static Runnable run(String what, Runnable r) {
+    public static Runnable run(String what, Runnable r) {
         return () -> {
             try {
                 r.run();
@@ -29,19 +29,19 @@ final class Safe {
         };
     }
 
-    static void post(Handler h, String what, Runnable r) {
+    public static void post(Handler h, String what, Runnable r) {
         h.post(run(what, r));
     }
 
-    static void postDelayed(Handler h, String what, Runnable r, long delayMs) {
+    public static void postDelayed(Handler h, String what, Runnable r, long delayMs) {
         h.postDelayed(run(what, r), delayMs);
     }
 
-    interface IntentCallback {
+    public interface IntentCallback {
         void onReceive(Context context, Intent intent);
     }
 
-    static BroadcastReceiver receiver(String what, IntentCallback cb) {
+    public static BroadcastReceiver receiver(String what, IntentCallback cb) {
         return new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -54,11 +54,11 @@ final class Safe {
         };
     }
 
-    interface UriCallback {
+    public interface UriCallback {
         void onChange(Uri uri);
     }
 
-    static ContentObserver observer(Handler h, String what, UriCallback cb) {
+    public static ContentObserver observer(Handler h, String what, UriCallback cb) {
         return new ContentObserver(h) {
             @Override
             public void onChange(boolean selfChange, Uri uri) {

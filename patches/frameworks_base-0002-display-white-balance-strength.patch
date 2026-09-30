@@ -6,6 +6,9 @@ white balance target CCT towards the nominal white point: 100 keeps the
 configured mapping (the stock ZUI one on the TB520FU), lower values make the
 tint weaker. Set from TB520FUParts (Lenovo features > Display).
 
+Also define the config_tb520fu_patch_wb_strength framework resource so
+TB520FUParts can tell whether this patch is applied.
+
 ---
 diff --git a/services/core/java/com/android/server/display/color/ColorDisplayService.java b/services/core/java/com/android/server/display/color/ColorDisplayService.java
 index ce2fae2ff..bbb750eac 100644
@@ -77,3 +80,20 @@ index ce2fae2ff..bbb750eac 100644
  
              if (mDisplayWhiteBalanceTintController.isActivated()) {
                  mHandler.sendEmptyMessage(MSG_APPLY_DISPLAY_WHITE_BALANCE);
+diff --git a/core/res/res/values/tb520fu_patch_wb_strength.xml b/core/res/res/values/tb520fu_patch_wb_strength.xml
+new file mode 100644
+index 000000000..acb6d04a2
+--- /dev/null
++++ b/core/res/res/values/tb520fu_patch_wb_strength.xml
+@@ -0,0 +1,11 @@
++<?xml version="1.0" encoding="utf-8"?>
++<!--
++     SPDX-FileCopyrightText: 2026 The LineageOS Project
++     SPDX-License-Identifier: Apache-2.0
++-->
++<!-- Marker for the TB520FU display white balance strength framework patch.
++     The resource exists only while that patch is applied, so TB520FUParts can
++     show the white balance strength slider only on builds that have it. -->
++<resources>
++    <bool name="config_tb520fu_patch_wb_strength" translatable="false">true</bool>
++</resources>

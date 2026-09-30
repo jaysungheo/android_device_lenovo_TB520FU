@@ -186,3 +186,20 @@ index 000000000..ea95319c3
 +        }
 +    }
 +}
+diff --git a/core/res/res/values/tb520fu_patch_keyboard_manager.xml b/core/res/res/values/tb520fu_patch_keyboard_manager.xml
+new file mode 100644
+index 000000000..5f5fc8d20
+--- /dev/null
++++ b/core/res/res/values/tb520fu_patch_keyboard_manager.xml
+@@ -0,0 +1,11 @@
++<?xml version="1.0" encoding="utf-8"?>
++<!--
++     SPDX-FileCopyrightText: 2026 The LineageOS Project
++     SPDX-License-Identifier: Apache-2.0
++-->
++<!-- Marker for the TB520FU Lenovo keyboard manager framework patch. The
++     resource exists only while that patch is applied, so TB520FUParts can show
++     the keyboard firmware settings only on builds that have it. -->
++<resources>
++    <bool name="config_tb520fu_patch_keyboard_manager" translatable="false">true</bool>
++</resources>

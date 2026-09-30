@@ -26,7 +26,8 @@ Pick the region of your device: ROW and PRC only differ in the device tree
 The `.zip` installs from TWRP or the PixelOS recovery; the `ltbox_*.7z` is a
 firmware package for LTBox (EDL). Both keep the user data when updating an
 installed build; coming from the stock firmware or another ROM, format data.
-Installed builds also update themselves (Settings > System > System update).
+Installed builds that include the optional customizations also update
+themselves (Settings > System > System update).
 
 ## Repositories
 
@@ -35,6 +36,18 @@ Installed builds also update themselves (Settings > System > System update).
 | `device/lenovo/TB520FU` | `android_device_lenovo_TB520FU` | this tree |
 | `kernel/lenovo/TB520FU` | `android_kernel_lenovo_TB520FU` | Android common kernel `android14-6.1` at `2ecae636cf9b` (the source of the stock GKI kernel) plus the Qualcomm UAPI headers |
 | `vendor/lenovo/TB520FU` | `android_vendor_lenovo_TB520FU` | proprietary blobs, plus the stock vendor kernel modules, dtb and dtbo in `kernel/` (Git LFS for files over 50 MB) |
+| `vendor/lenovo/TB520FU-custom` | `android_vendor_lenovo_TB520FU-custom` | optional customizations, see below |
+
+`vendor/lenovo/TB520FU-custom` is optional. It holds the maintainer
+additions on top of PixelOS - Lenovo Notes, the per-app game performance
+profiles, the Galaxy Tab S11 Ultra identity for the Play Store, the OTA
+updater with its publishing tools and the default live wallpaper - with
+their app ("Custom features"), overlays, blobs, patches and a small
+system_server extension. Without it this tree builds a plain PixelOS for
+the device: no such app, no updater, no game performance enforcement and
+the device tree's own TB520FUParts (Lenovo features) as the only settings
+app. `patches/apply.sh` reverts the repository's patches automatically when
+it is removed.
 
 `tools/local_manifest.xml` lists them; `lineage.dependencies` does the same
 for roomservice.
@@ -56,8 +69,8 @@ Lenovo's release: https://support.lenovo.com/us/en/solutions/ht511330-lenovo-ope
 
 ## Getting the source
 
-Git LFS is needed for the wallpaper APK in this tree and for two blobs in the
-vendor repository.
+Git LFS is needed for two blobs in the vendor repository (and, with the
+optional customizations, for the wallpaper APK and Lenovo Notes there).
 
 ```bash
 sudo apt install git-lfs && git lfs install
@@ -83,6 +96,10 @@ breakfast TB520FU
 m pixelos
 ```
 
+The script also runs `vendor/lenovo/TB520FU-custom/patches/apply.sh` when
+the customizations repository is synced, and reverts its patches when it is
+gone.
+
 or unattended, with the log in `build.log` and the result in `build.status`:
 
 ```bash
@@ -91,38 +108,9 @@ setsid nohup device/lenovo/TB520FU/tools/build.sh > /dev/null 2>&1 < /dev/null &
 
 ## OTA publishing
 
-Each build is published in two SourceForge folders:
-
-| Folder | Files |
-|---|---|
-| `seventeen/<date>/` | full packages `PixelOS_TB520FU-<version>-<date>[-ROW].zip` (recovery / TWRP / full OTA) and the LTBox archives |
-| `seventeen/OTA/<date>/` | updater descriptions `PixelOS_TB520FU-<version>-<date>[-ROW].json` and the incremental packages |
-
-The updater reads the RSS feed of `seventeen/OTA`, takes the newest build
-folder with a description of the running variant (PRC / ROW, from the running
-dtb) and offers it when it is newer than the running build. It downloads the
-incremental package from `seventeen/OTA/<date>/` when update_engine accepts its
-payload metadata for the running build, otherwise the full package from
-`seventeen/<date>/`; packages from anywhere else are refused. The package
-SHA-256 is checked, update_engine checks the AOSP OTA signature.
-
-An incremental OTA is built from the **target files of both builds**, so keep
-the target files of every published build (the full OTA ZIP cannot replace
-them). For each region separately:
-
-```bash
-ota_from_target_files -k build/make/target/product/security/testkey \
-    -i BASE_TARGET_FILES TARGET_TARGET_FILES \
-    PixelOS_TB520FU-17.0-TARGET_DATE-incremental-BASE_DATE.zip
-python3 device/lenovo/TB520FU/tools/ota_json.py \
-    --base-full BASE_FULL.zip \
-    --incremental PixelOS_TB520FU-17.0-TARGET_DATE-incremental-BASE_DATE.zip \
-    --out-dir OTA_FOLDER TARGET_FULL.zip
-```
-
-`--base-build DIR` (`DIR/target_files`) can replace `--base-full`. ota_json.py
-rejects a delta whose source/target metadata or streaming ranges do not match,
-and writes the package URLs for the folder layout above.
+Belongs to the optional customizations repository
+(`vendor/lenovo/TB520FU-custom`); see its README for the SourceForge folder
+layout, its `tools/ota_json.py` and the incremental OTA steps.
 
 ## Installing
 
@@ -148,10 +136,11 @@ trees, merged into one tree with the OnePlus-specific parts removed.
   `manifest_pineapple.xml` without IMS/DPM, the device is Wi-Fi only).
 - `health/` — QTI health HAL copy that ignores the pen charger (`wls_tx`).
 - `parts/` — TB520FUParts, "Lenovo features" in Settings > System: charging
-  modes, white balance strength, game performance levels per app, memory
-  extension (zram writeback), pen settings, and the physical keyboard page of
-  the stock settings (stock strings copied by
-  `tools/lenovo_keyboard_strings.py`).
+  modes, white balance strength, memory extension (zram writeback), pen
+  settings, and the physical keyboard page of the stock settings (stock
+  strings copied by `tools/lenovo_keyboard_strings.py`). The game performance
+  page and the Play Store identity moved to "Custom features"
+  (`vendor/lenovo/TB520FU-custom`).
 - `input/` — `tb520fu-input.jar`, loaded into system_server as a
   DeviceKeyHandler: Lenovo pen (attach, pairing, battery, writing haptics,
   buttons), keyboard keys, charging modes and double tap to wake, ported from
@@ -160,7 +149,6 @@ trees, merged into one tree with the OnePlus-specific parts removed.
 - `lenovo/PenService/` — the stock PenService with a compat dex for APIs that
   changed in Android 17.
 - `patches/` — PixelOS source patches, applied by `patches/apply.sh`.
-- `extras/` — maintainer additions (default wallpaper), see `extras/README.md`.
 - `tools/bringup/` — scripts used to generate `proprietary-files.txt` and the
   props from a stock dump (`TB520FU_STOCK`, default `~/tb520fu`).
 

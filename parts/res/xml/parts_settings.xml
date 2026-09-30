@@ -86,17 +86,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="games"
-        android:title="@string/games_category">
-
-        <Preference
-            android:key="game_perf"
-            android:title="@string/game_perf_title"
-            android:fragment="com.tb520fu.parts.GamePerfFragment" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:key="pen"
         android:title="@string/pen_category">
 
@@ -132,18 +121,6 @@
             android:key="memory_status"
             android:title="@string/memory_status_title"
             android:selectable="false" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:key="play_store"
-        android:title="@string/play_store_category">
-
-        <SwitchPreferenceCompat
-            android:key="spoof_galaxy"
-            android:title="@string/spoof_title"
-            android:summary="@string/spoof_summary"
-            android:persistent="false" />
 
     </PreferenceCategory>
 
