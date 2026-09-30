@@ -46,7 +46,7 @@ class PartsFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceC
         }
 
         bypassPref = switch(KEY_BYPASS, LenovoSettings.BYPASS_CHARGING, 0)
-        standbyPref = switch(KEY_STANDBY, LenovoSettings.STANDBY_SAVER, 0)
+        standbyPref = switch(KEY_STANDBY, LenovoSettings.STANDBY_SAVER, 1)
         maintenancePref = switch(KEY_MAINTENANCE, LenovoSettings.BATTERY_MAINTENANCE, 1)
         batteryInfoPref = findPreference(KEY_BATTERY_INFO)!!
 

@@ -18,7 +18,7 @@ import android.util.Log;
  * Doze, so this makes the device reach deep Doze within minutes of the screen
  * turning off instead of after the default hour-long sensing phases.
  *
- * Settings.Global tb520fu_standby_saver (TB520FUParts) toggles
+ * Settings.Global tb520fu_standby_saver (TB520FUParts, on by default) toggles
  * Settings.Global.DEVICE_IDLE_CONSTANTS, which DeviceIdleController reads
  * with priority over DeviceConfig. A previous user value is not touched
  * unless it was written by this class.
@@ -61,7 +61,7 @@ final class StandbyController {
 
     private void apply() {
         ContentResolver cr = mContext.getContentResolver();
-        boolean on = Settings.Global.getInt(cr, SETTING, 0) != 0;
+        boolean on = Settings.Global.getInt(cr, SETTING, 1) != 0;
         String current = Settings.Global.getString(cr, Settings.Global.DEVICE_IDLE_CONSTANTS);
         boolean ours = current != null && current.startsWith(MARKER);
         if (on && !CONSTANTS.equals(current)) {
