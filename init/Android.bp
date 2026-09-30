@@ -402,3 +402,9 @@ prebuilt_etc {
     sub_dir: "init",
     vendor: true,
 }
+
+prebuilt_etc {
+    name: "init.tb520fu.spoof.rc",
+    src: "init.tb520fu.spoof.rc",
+    sub_dir: "init",
+}

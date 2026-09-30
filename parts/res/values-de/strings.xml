@@ -52,6 +52,9 @@
     <string name="reboot_message">Die neue Größe der Speichererweiterung gilt nach einem Neustart. Jetzt neu starten?</string>
     <string name="reboot_now">Neu starten</string>
     <string name="reboot_later">Später</string>
+    <string name="spoof_title">Galaxy Tab S11 Ultra im Play Store</string>
+    <string name="spoof_summary">Lässt den Play Store Apps anbieten, die für dieses Tablet als nicht kompatibel gelistet sind. Nach dem Umschalten müssen eventuell die Play-Store-Daten gelöscht werden, und die Änderung gilt erst nach einem Neustart.</string>
+    <string name="spoof_reboot_message">Die Änderung der Play-Store-Identität gilt nach einem Neustart des Tablets. Jetzt neu starten?</string>
     <string-array name="game_level_entries">
         <item>Energiesparen</item>
         <item>Ausgewogen</item>

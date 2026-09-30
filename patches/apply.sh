@@ -54,6 +54,14 @@ apply_patch frameworks/base \
 #       on request without a keyboard (tb520fu_pc_mode, PC mode tile in Parts).
 apply_patch frameworks/base \
     "$PATCHES/frameworks_base-0004-keyboard-desktop-first-opt-out.patch"
+# 0005: Optional Galaxy Tab S11 Ultra (SM-X930) identity for the Play Store,
+#       set from TB520FUParts (persist.sys.tb520fu.spoof_galaxy). The framework
+#       reads the boot-time snapshot sys.tb520fu.spoof_galaxy, so the switch
+#       only takes effect after a restart. Applies to the Play Store and the
+#       Play services device check-in; the GMS droidguard process keeps its
+#       Play Integrity behaviour.
+apply_patch frameworks/base \
+    "$PATCHES/frameworks_base-0005-tb520fu-galaxy-device-spoof.patch"
 
 # frameworks/native
 # 0001: RefreshRateSelector: a static screen (all layers vote Min) goes to the

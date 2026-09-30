@@ -55,6 +55,10 @@
     <string name="reboot_message">新的内存扩展大小将在平板重启后生效。立即重启？</string>
     <string name="reboot_now">重启</string>
     <string name="reboot_later">稍后</string>
+    <string name="play_store_category">Play 商店</string>
+    <string name="spoof_title">在 Play 商店中显示为 Galaxy Tab S11 Ultra</string>
+    <string name="spoof_summary">让 Play 商店提供被标记为与本平板不兼容的应用。切换后可能需要清除 Play 商店数据，且仅在重启后生效。</string>
+    <string name="spoof_reboot_message">Play 商店显示更改将在平板重启后生效。立即重启？</string>
     <string-array name="game_level_entries">
         <item>省电</item>
         <item>均衡</item>

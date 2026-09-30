@@ -135,4 +135,16 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:key="play_store"
+        android:title="@string/play_store_category">
+
+        <SwitchPreferenceCompat
+            android:key="spoof_galaxy"
+            android:title="@string/spoof_title"
+            android:summary="@string/spoof_summary"
+            android:persistent="false" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

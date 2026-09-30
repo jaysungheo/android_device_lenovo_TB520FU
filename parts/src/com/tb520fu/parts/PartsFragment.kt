@@ -30,6 +30,7 @@ class PartsFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceC
     private lateinit var maintenancePref: SwitchPreferenceCompat
     private lateinit var batteryInfoPref: Preference
     private lateinit var gamePerfPref: Preference
+    private lateinit var spoofPref: SwitchPreferenceCompat
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.parts_settings, rootKey)
@@ -72,6 +73,16 @@ class PartsFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceC
         }
 
         gamePerfPref = findPreference(KEY_GAME_PERF)!!
+
+        // Play Store identity spoof; applied at boot, so off by default and the
+        // reboot dialog is shown on every change.
+        spoofPref = findPreference(KEY_SPOOF)!!
+        spoofPref.isChecked = DeviceSpoof.enabled
+        spoofPref.setOnPreferenceChangeListener { _, value ->
+            DeviceSpoof.enabled = value as Boolean
+            askReboot(R.string.spoof_reboot_message)
+            true
+        }
 
         val penPref: Preference = findPreference(KEY_PEN_SETTINGS)!!
         // Own task: embedded in the Settings two-pane layout the stock pen page
@@ -126,7 +137,7 @@ class PartsFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceC
                 MemoryExtension.selectedGb = gb
                 vramPref.value = newValue
                 updateVramSummary()
-                if (gb != MemoryExtension.activeGb) askReboot()
+                if (gb != MemoryExtension.activeGb) askReboot(R.string.reboot_message)
             }
             else -> return false
         }
@@ -175,10 +186,10 @@ class PartsFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceC
         }
     }
 
-    private fun askReboot() {
+    private fun askReboot(message: Int) {
         AlertDialog.Builder(requireContext())
             .setTitle(R.string.reboot_title)
-            .setMessage(R.string.reboot_message)
+            .setMessage(message)
             .setPositiveButton(R.string.reboot_now) { _, _ ->
                 requireContext().getSystemService(PowerManager::class.java).reboot(null)
             }
@@ -195,6 +206,7 @@ class PartsFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceC
         const val KEY_WHITE_BALANCE = "white_balance"
         const val KEY_WHITE_BALANCE_STRENGTH = "white_balance_strength"
         const val KEY_GAME_PERF = "game_perf"
+        const val KEY_SPOOF = "spoof_galaxy"
         const val KEY_PEN_CATEGORY = "pen"
         const val KEY_PEN_SETTINGS = "pen_settings"
         const val KEY_VRAM = "vram_gb"

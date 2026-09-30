@@ -59,6 +59,10 @@
     <string name="reboot_message">The new memory extension size is used after the tablet restarts. Restart now?</string>
     <string name="reboot_now">Restart</string>
     <string name="reboot_later">Later</string>
+    <string name="play_store_category">Play Store</string>
+    <string name="spoof_title">Galaxy Tab S11 Ultra identity for Play Store</string>
+    <string name="spoof_summary">Lets the Play Store offer apps it lists as incompatible with this tablet. Switching it may require clearing the Play Store data, and it applies only after a restart.</string>
+    <string name="spoof_reboot_message">The Play Store identity change is applied after the tablet restarts. Restart now?</string>
     <string-array name="game_level_entries">
         <item>Power saving</item>
         <item>Balanced</item>

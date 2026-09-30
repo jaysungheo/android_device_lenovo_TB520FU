@@ -54,6 +54,9 @@
     <string name="reboot_message">El nuevo tamaño de ampliación de memoria se aplica tras reiniciar la tableta. ¿Reiniciar ahora?</string>
     <string name="reboot_now">Reiniciar</string>
     <string name="reboot_later">Más tarde</string>
+    <string name="spoof_title">Mostrar Galaxy Tab S11 Ultra en Play Store</string>
+    <string name="spoof_summary">Permite que Play Store ofrezca aplicaciones que marca como incompatibles con esta tablet. Tras cambiarlo puede que haya que borrar los datos de Play Store y solo se aplica después de reiniciar.</string>
+    <string name="spoof_reboot_message">El cambio de identidad en Play Store se aplica después de reiniciar la tablet. ¿Reiniciar ahora?</string>
     <string-array name="game_level_entries">
         <item>Ahorro de energía</item>
         <item>Equilibrado</item>

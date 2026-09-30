@@ -198,6 +198,7 @@ PRODUCT_PACKAGES += \
     fstab.zram.12 \
     fstab.zram.16 \
     init.tb520fu.zram.rc \
+    init.tb520fu.spoof.rc \
     init.tb520fu.region.rc \
     init.tb520fu.region.sh \
     ueventd.qcom.rc \

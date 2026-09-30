@@ -56,6 +56,10 @@
     <string name="reboot_message">Новый размер расширения памяти применится после перезапуска планшета. Перезапустить сейчас?</string>
     <string name="reboot_now">Перезапустить</string>
     <string name="reboot_later">Позже</string>
+    <string name="play_store_category">Play Маркет</string>
+    <string name="spoof_title">Galaxy Tab S11 Ultra в Play Маркете</string>
+    <string name="spoof_summary">Позволяет Play Маркету предлагать приложения, помеченные как несовместимые с этим планшетом. После переключения может понадобиться очистить данные Play Маркета; применяется только после перезапуска.</string>
+    <string name="spoof_reboot_message">Смена идентичности в Play Маркете применяется после перезапуска планшета. Перезапустить сейчас?</string>
     <string-array name="game_level_entries">
         <item>Энергосбережение</item>
         <item>Баланс</item>

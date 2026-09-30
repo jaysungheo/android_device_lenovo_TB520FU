@@ -55,6 +55,10 @@
     <string name="reboot_message">새 메모리 확장 크기는 태블릿을 다시 시작한 뒤 적용됩니다. 지금 다시 시작할까요?</string>
     <string name="reboot_now">다시 시작</string>
     <string name="reboot_later">나중에</string>
+    <string name="play_store_category">Play 스토어</string>
+    <string name="spoof_title">Play 스토어에 Galaxy Tab S11 Ultra로 표시</string>
+    <string name="spoof_summary">이 태블릿과 호환되지 않는다고 표시되는 앱을 Play 스토어에서 설치할 수 있게 합니다. 전환하면 Play 스토어 데이터를 지워야 할 수 있고, 다시 시작한 뒤에만 적용됩니다.</string>
+    <string name="spoof_reboot_message">Play 스토어 표시 변경은 태블릿을 다시 시작한 뒤 적용됩니다. 지금 다시 시작할까요?</string>
     <string-array name="game_level_entries">
         <item>절전</item>
         <item>균형</item>
