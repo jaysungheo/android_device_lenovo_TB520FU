@@ -23,8 +23,12 @@ update_engine can apply it to the running build and the full one otherwise.
 With --key it also writes <...>.json.sig (Ed25519 signature of the JSON, raw
 64 bytes), only needed for builds with updater_signing_public_key set.
 
-usage: ota_json.py [--incremental INC.zip --base-full BASE.zip]...
+usage: ota_json.py [--incremental INC.zip (--base-full BASE.zip | --base-build DIR)]...
                    [--key KEY.pem] FULL.zip...
+
+--base-build takes the archived target files of the source build instead of
+its full package: <DIR>/target_files, where DIR is named like the build
+(PixelOS_TB520FU-<version>-<date>), for both variants.
 """
 import argparse
 import hashlib
@@ -105,6 +109,9 @@ def main():
                     help='incremental package of one of the builds (repeatable)')
     ap.add_argument('--base-full', action='append', default=[],
                     help='full package of an incremental source build (repeatable)')
+    ap.add_argument('--base-build', action='append', default=[], metavar='DIR',
+                    help='archived target files of an incremental source build, '
+                         '<DIR>/target_files (repeatable)')
     ap.add_argument('--ota-url', default=OTA_URL,
                     help='SourceForge folder the .json and packages are uploaded to')
     ap.add_argument('--key', help='Ed25519 private key (PEM), to also write <...>.json.sig')
@@ -123,6 +130,27 @@ def main():
         if key in bases:
             sys.exit('two base packages for the same build and variant: ' + path)
         bases[key] = metadata(path)
+
+    for path in args.base_build:
+        name = os.path.basename(path.rstrip('/'))
+        match = re.fullmatch(r'PixelOS_TB520FU-([0-9.]+)-(\d{8}-\d{4})', name)
+        if not match:
+            sys.exit('unexpected base build folder name: ' + name)
+        props = {}
+        for part in ('SYSTEM', 'VENDOR'):
+            with open(os.path.join(path, 'target_files', part, 'build.prop')) as f:
+                props.update(line.strip().split('=', 1) for line in f
+                             if '=' in line and not line.startswith('#'))
+        meta = {
+            'post-build': props['ro.build.fingerprint'],
+            'post-build-incremental': props['ro.build.version.incremental'],
+            'pre-device': props['ro.product.vendor.device'],
+        }
+        for row in (False, True):
+            key = (match.group(1), match.group(2), row)
+            if key in bases:
+                sys.exit('two bases for the same build and variant: ' + path)
+            bases[key] = meta
 
     incrementals = {}
     for path in args.incremental:
