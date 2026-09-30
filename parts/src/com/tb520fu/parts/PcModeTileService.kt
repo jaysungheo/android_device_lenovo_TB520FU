@@ -77,7 +77,9 @@ class PcModeTileService : TileService() {
             return false
         }
         val im = getSystemService(InputManager::class.java)
-        val devices = im.inputDeviceIds.mapNotNull { im.getInputDevice(it) }.filter { it.isEnabled }
+        val devices = im.inputDeviceIds.asList()
+            .mapNotNull { im.getInputDevice(it) }
+            .filter { it.isEnabled }
         return devices.any { it.supportsSource(InputDevice.SOURCE_TOUCHPAD) } &&
             devices.any { !it.isVirtual && it.isFullKeyboard }
     }
