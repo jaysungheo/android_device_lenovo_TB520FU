@@ -60,7 +60,12 @@ class PartsFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceC
                 true
             }
         }
-        findPreference<SeekBarPreference>(KEY_WHITE_BALANCE_STRENGTH)!!.apply {
+        val strengthPref: SeekBarPreference = findPreference(KEY_WHITE_BALANCE_STRENGTH)!!
+        // The strength setting is only read by the patched ColorDisplayService
+        // (patches/frameworks_base-0002); on a ROM without it the slider would
+        // store a value nothing reads.
+        strengthPref.isVisible = FrameworkPatches.wbStrength
+        strengthPref.apply {
             value = Settings.Secure.getInt(ctx.contentResolver,
                 LenovoSettings.WHITE_BALANCE_STRENGTH, LenovoSettings.DEFAULT_WHITE_BALANCE_STRENGTH)
             setOnPreferenceChangeListener { _, newValue ->
@@ -71,11 +76,12 @@ class PartsFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceC
         }
 
         val penPref: Preference = findPreference(KEY_PEN_SETTINGS)!!
-        // Own task: embedded in the Settings two-pane layout the stock pen page
-        // is too narrow and cuts off the pen picture and the battery level.
+        // No own task, so the stock pen page opens in the Settings two-pane
+        // right pane like the other sub pages. An overlay
+        // (PenServiceResTB520FU) shrinks its pen picture and battery row to
+        // fit the narrow pane.
         val penIntent = Intent(LenovoSettings.ACTION_PEN_SETTINGS)
             .setClassName(LenovoSettings.PEN_PACKAGE, LenovoSettings.PEN_SETTINGS_ACTIVITY)
-            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         if (ctx.packageManager.resolveActivity(penIntent, 0) != null) {
             penPref.intent = penIntent
         } else {

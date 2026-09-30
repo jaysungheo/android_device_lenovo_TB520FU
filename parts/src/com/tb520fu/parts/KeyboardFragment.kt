@@ -87,8 +87,13 @@ class KeyboardFragment : SettingsBasePreferenceFragment(), InputManager.InputDev
 
         // Stock "System mode when a keyboard is connected": tablet (0) or PC mode (1, the
         // default here as on AOSP, which switches to desktop windowing with keyboard and
-        // touchpad attached).
-        findPreference<ListPreference>(KEY_SYSTEM_MODE)!!.apply {
+        // touchpad attached). The category only makes sense with the desktop-first opt-out
+        // (patches/frameworks_base-0004), so hide the whole thing without it.
+        val systemModePref: ListPreference = findPreference(KEY_SYSTEM_MODE)!!
+        systemModePref.isVisible = FrameworkPatches.desktopOptOut
+        findPreference<PreferenceCategory>(KEY_SYSTEM_MODE_CATEGORY)?.isVisible =
+            FrameworkPatches.desktopOptOut
+        systemModePref.apply {
             entries = arrayOf(
                 getString(R.string.lkb_screen_cast_phone_mode_title),
                 getString(R.string.lkb_pc_mode_settings_title_name),
@@ -166,11 +171,15 @@ class KeyboardFragment : SettingsBasePreferenceFragment(), InputManager.InputDev
 
     override fun onInputDeviceChanged(deviceId: Int) = updateFirmwareUpdate()
 
-    /** Stock: the firmware update entry is shown only with a Lenovo keyboard connected. */
+    /**
+     * Stock: the firmware update entry is shown only with a Lenovo keyboard connected.
+     * The updater reads the keyboard state through LenovoKeyboardManager
+     * (patches/frameworks_base-0003), so hide the category on ROMs without it as well.
+     */
     private fun updateFirmwareUpdate() {
         val intent = LenovoKeyboard.firmwareUpdateIntent(requireContext())
         firmwarePref.intent = intent
-        firmwareCategory.isVisible = intent != null
+        firmwareCategory.isVisible = intent != null && FrameworkPatches.keyboardManager
     }
 
     private companion object {
@@ -192,6 +201,7 @@ class KeyboardFragment : SettingsBasePreferenceFragment(), InputManager.InputDev
         const val KEY_REVERSE_SCROLLING = "trackpad_reverse_scrolling"
         const val KEY_POINTER_SPEED = "touchpad_pointer_speed"
         const val KEY_SYSTEM_MODE = "keyboard_connect_system_mode"
+        const val KEY_SYSTEM_MODE_CATEGORY = "keyboard_pc_mode_connect_category"
         const val KEY_APP1 = "key_shortcut_app1"
         const val KEY_APP2 = "key_shortcut_app2"
         const val KEY_FIRMWARE_CATEGORY = "firmware_update_category"

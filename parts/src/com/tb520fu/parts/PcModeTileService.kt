@@ -56,6 +56,9 @@ class PcModeTileService : TileService() {
 
     override fun onClick() {
         super.onClick()
+        // Without the desktop-first opt-out (patches/frameworks_base-0004) the
+        // shell ignores tb520fu_pc_mode, so leave the settings untouched.
+        if (!FrameworkPatches.desktopOptOut) return
         if (isPcMode()) {
             Settings.Global.putInt(contentResolver, PC_MODE, 0)
             if (isKeyboardPcMode()) Settings.Global.putInt(contentResolver, KEYBOARD_EXITED, 1)
@@ -86,7 +89,11 @@ class PcModeTileService : TileService() {
 
     private fun updateTile() {
         val tile = qsTile ?: return
-        tile.state = if (isPcMode()) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
+        tile.state = when {
+            !FrameworkPatches.desktopOptOut -> Tile.STATE_UNAVAILABLE
+            isPcMode() -> Tile.STATE_ACTIVE
+            else -> Tile.STATE_INACTIVE
+        }
         tile.updateTile()
     }
 
