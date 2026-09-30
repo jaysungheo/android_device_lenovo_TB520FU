@@ -25,7 +25,7 @@ breakfast TB520FU > /dev/null 2>&1 || { echo "breakfast failed" >&2; exit 1; }
 
 echo RUNNING > build.status
 if [ "${SHOW_LOG:-0}" = 1 ]; then
-    # Interactive (tools/*.bat): show the output and keep build.log
+    # Show the output as well (interactive use); build.log is still written
     m "${1:-pixelos}" -j"${JOBS:-8}" -k 0 "${@:2}" 2>&1 | tee build.log
     status=${PIPESTATUS[0]}
 else
