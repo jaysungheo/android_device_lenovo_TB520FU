@@ -40,7 +40,7 @@ themselves (Settings > System > System update).
 
 `vendor/lenovo/TB520FU-custom` is optional. It holds the maintainer
 additions on top of PixelOS - Lenovo Notes, the per-app game performance
-profiles, the Galaxy Tab S11 Ultra identity for the Play Store, the OTA
+profiles, the Play Integrity Fix switch, the OTA
 updater with its publishing tools and the default live wallpaper - with
 their app ("Custom features"), overlays, blobs, patches and a small
 system_server extension. Without it this tree builds a plain PixelOS for
