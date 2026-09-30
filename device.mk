@@ -279,11 +279,14 @@ PRODUCT_ENFORCE_RRO_TARGETS := *
 PRODUCT_PACKAGES += \
     DolbyAtmosResTB520FU \
     FrameworksResTB520FU \
+    KeyboardUpdateOlympiaResTB520FU \
+    KeyboardUpdateResTB520FU \
     PenServiceResTB520FU \
     SettingsProviderResTB520FU \
     SettingsResTB520FU \
     SystemUIResTB520FU \
-    WifiResTB520FU
+    WifiResTB520FU \
+    ZuiUDeviceResTB520FU
 
 # Partitions
 PRODUCT_PACKAGES += \

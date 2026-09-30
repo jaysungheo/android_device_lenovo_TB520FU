@@ -1,0 +1,4 @@
+runtime_resource_overlay {
+    name: "KeyboardUpdateResTB520FU",
+    product_specific: true,
+}

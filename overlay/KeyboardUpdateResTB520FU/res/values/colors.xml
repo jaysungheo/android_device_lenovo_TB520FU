@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<!-- The stock Lenovo keyboard-update app targets SDK 34 and paints the
+     navigation bar with the framework default (black), which shows as a black
+     band inside the Settings right pane. Its own background (@color/background_zui)
+     is the theme colorBackground, so the bar is re-pointed at the same colour
+     and the page background is mapped onto the PixelOS Settings surface. Both
+     are plain colour resources, so the selectors that layer on top of them keep
+     their states. -->
+<resources>
+    <color name="background_zui">@android:color/system_surface_container_light</color>
+</resources>
