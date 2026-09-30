@@ -11,6 +11,7 @@
 #
 # usage: [JOBS=n] tools/build.sh [make target, default pixelos] [extra make args]
 # JOBS defaults to 8, which builds faster here than all cores (less memory stall).
+# SHOW_LOG=1 also prints the build output (it always goes to build.log).
 set -uo pipefail
 TREE=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 TOP=$(cd "$TREE/../../.." && pwd)
@@ -23,6 +24,14 @@ source build/envsetup.sh > /dev/null
 breakfast TB520FU > /dev/null 2>&1 || { echo "breakfast failed" >&2; exit 1; }
 
 echo RUNNING > build.status
-m "${1:-pixelos}" -j"${JOBS:-8}" -k 0 "${@:2}" > build.log 2>&1
-echo "EXIT=$?" > build.status
+if [ "${SHOW_LOG:-0}" = 1 ]; then
+    # Interactive (tools/*.bat): show the output and keep build.log
+    m "${1:-pixelos}" -j"${JOBS:-8}" -k 0 "${@:2}" 2>&1 | tee build.log
+    status=${PIPESTATUS[0]}
+else
+    m "${1:-pixelos}" -j"${JOBS:-8}" -k 0 "${@:2}" > build.log 2>&1
+    status=$?
+fi
+echo "EXIT=$status" > build.status
 cat build.status
+exit "$status"

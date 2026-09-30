@@ -13,9 +13,11 @@ For every full ROM zip (PixelOS_TB520FU-<version>-<date>[-ROW].zip) this writes
                --incremental (PixelOS_TB520FU-<version>-<date>-incremental-
                <base date>[-ROW].zip)
 
-Upload the .json files with the full and incremental zips into the build's own
-folder in the OTA folder, OTA/<date>/ (e.g. OTA/20260930-0251/); the package
-URLs point there. The updater of a running build picks the newest build folder
+Upload the .json files and the incremental zips into the build's own folder in
+the OTA folder, <branch>/OTA/<date>/ (e.g. seventeen/OTA/20260930-0251/). The
+full zips stay only in the release folder <branch>/<date>/ (the recovery
+packages of the release, e.g. seventeen/20260930-0251/); the description
+points there. The updater of a running build picks the newest build folder
 with a description of its own variant (PRC / ROW), shows it when it is newer
 than itself, and uses the incremental package when update_engine can apply it
 to the running build and the full one otherwise.
@@ -115,9 +117,11 @@ def main():
     ap.add_argument('--ota-url', default=OTA_URL,
                     help='SourceForge OTA folder; each build goes to <OTA folder>/<date>/')
     ap.add_argument('--key', help='Ed25519 private key (PEM), to also write <...>.json.sig')
+    ap.add_argument('--out-dir', help='folder for the .json files (default: next to the full zip)')
     ap.add_argument('zips', nargs='+', help='full packages')
     args = ap.parse_args()
     folder = args.ota_url.rstrip('/')
+    branch = folder.rsplit('/', 1)[0]  # <branch>/OTA -> <branch>
     if not folder.startswith('https://sourceforge.net/projects/'):
         sys.exit('OTA URL must be a https://sourceforge.net/projects/ folder')
 
@@ -173,7 +177,7 @@ def main():
         update = {
             'datetime': int(meta['post-timestamp']),
             'version': m.group(1),
-            'files': [file_entry(path, '%s/%s/%s/download' % (folder, m.group(2), name), meta,
+            'files': [file_entry(path, '%s/%s/%s/download' % (branch, m.group(2), name), meta,
                                  streaming=False)],
         }
         inc = incrementals.pop((m.group(1), m.group(2), bool(m.group(3))), None)
@@ -196,7 +200,7 @@ def main():
                 inc, '%s/%s/%s/download' % (folder, m.group(2), os.path.basename(inc)), inc_meta,
                 streaming=True)]
         data = (json.dumps([update], indent=2) + '\n').encode()
-        base = os.path.splitext(path)[0]
+        base = os.path.join(args.out_dir or os.path.dirname(path), os.path.splitext(name)[0])
         with open(base + '.json', 'wb') as f:
             f.write(data)
         if args.key:
