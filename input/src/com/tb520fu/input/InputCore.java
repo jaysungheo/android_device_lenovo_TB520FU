@@ -56,6 +56,8 @@ public final class InputCore {
     final PalmController mPalm;
     final KeyboardDesktopMode mDesktopMode;
     final WifiSarController mWifiSar;
+    final PenScreenshot mPenScreenshot;
+    final PenMagnifier mPenMagnifier;
     private InputExtension mExtension;
     private StylusMonitor mStylusMonitor;
     private boolean mStarted;
@@ -86,6 +88,8 @@ public final class InputCore {
         mPalm = new PalmController(context, mHandler);
         mDesktopMode = new KeyboardDesktopMode(context, mHandler);
         mWifiSar = new WifiSarController(context, mHandler);
+        mPenScreenshot = new PenScreenshot(context, mHandler);
+        mPenMagnifier = new PenMagnifier(context, mHandler);
         mExtension = loadExtension(context, mHandler);
 
         // The binder can be published right away; it only answers "not ready"
@@ -141,6 +145,8 @@ public final class InputCore {
         Safe.run("wifi sar", mWifiSar::start).run();
         Safe.run("haptics", mHaptics::start).run();
         Safe.run("pen", mPen::start).run();
+        Safe.run("stylus screenshot", mPenScreenshot::start).run();
+        Safe.run("stylus magnifier", mPenMagnifier::start).run();
         if (mExtension != null) {
             Safe.run("custom", mExtension::start).run();
         }
