@@ -279,6 +279,7 @@ PRODUCT_ENFORCE_RRO_TARGETS := *
 PRODUCT_PACKAGES += \
     DolbyAtmosResTB520FU \
     FrameworksResTB520FU \
+    PenServiceResTB520FU \
     SettingsProviderResTB520FU \
     SettingsResTB520FU \
     SystemUIResTB520FU \

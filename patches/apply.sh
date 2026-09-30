@@ -128,6 +128,9 @@ apply_patch packages/apps/Settings \
     "$PATCHES/packages_apps_Settings-0001-optional-display-white-balance-switch.patch"
 # 0002: com.android.settings.PLACE_HOLDER, the stock Lenovo settings action the
 #       Lenovo PenService uses to open its pen settings (stylus toolbox button).
+#       On a large screen the target is opened through the Settings embedded
+#       deep link, so Settings embeds it next to its two-pane home (as the
+#       stock Lenovo settings app did); otherwise it opens directly.
 apply_patch packages/apps/Settings \
     "$PATCHES/packages_apps_Settings-0002-lenovo-place-holder-activity.patch"
 
