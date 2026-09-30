@@ -16,6 +16,11 @@ cd "$TOP"
 
 apply_patch() { # repo-dir patch-file
     local dir=$1 patch=$2
+    # Projects some ROMs do not have (e.g. packages/apps/ParanoidSense)
+    if [ ! -d "$dir" ]; then
+        echo "skipped (no $dir): $(basename "$patch")"
+        return 0
+    fi
     if git -C "$dir" apply --check "$patch" 2>/dev/null; then
         git -C "$dir" apply "$patch" && echo "applied $(basename "$patch")"
     elif git -C "$dir" apply --reverse --check "$patch" 2>/dev/null; then
