@@ -7,3 +7,8 @@ allow tb520fu_region vendor_shell_exec:file rx_file_perms;
 allow tb520fu_region vendor_toolbox_exec:file rx_file_perms;
 allow tb520fu_region vendor_sysfs_tb520fu_fdt:file r_file_perms;
 set_prop(tb520fu_region, vendor_tb520fu_region_prop)
+
+# The updater (net.pixelos.ota, updater_app) picks the PRC/ROW package by the
+# region; its domain is not visible to vendor policy, so allow app domains
+# (the value is only "PRC" or "ROW").
+get_prop(appdomain, vendor_tb520fu_region_prop)
