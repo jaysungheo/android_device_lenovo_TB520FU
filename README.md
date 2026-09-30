@@ -17,18 +17,11 @@ BASIC.
 
 ## Downloads
 
-Latest build: [20260926-1818](https://github.com/wnduddld0513/android_device_lenovo_TB520FU/releases/tag/20260926-1818),
+Latest build: (https://github.com/wnduddld0513/android_device_lenovo_TB520FU/releases/),
 installation steps in the release notes. Files are on
 [SourceForge](https://sourceforge.net/projects/pixelos-unofficial-tb520fu/files/seventeen/).
 Pick the region of your device: ROW and PRC only differ in the device tree
 (dtb) and the signed images that carry it.
-
-| Region | File | SHA256 |
-|---|---|---|
-| ROW | [`PixelOS_TB520FU-17.0-20260926-1818-ROW.zip`](https://sourceforge.net/projects/pixelos-unofficial-tb520fu/files/seventeen/ROW/PixelOS_TB520FU-17.0-20260926-1818-ROW.zip/download) | `0ea2f3d1f9273c8d9b15acbe8ce967d0cdd57e907001db159cb5981d29973ffa` |
-| ROW | [`ltbox_ROW_PixelOS_TB520FU-17.0-20260926-1818.7z`](https://sourceforge.net/projects/pixelos-unofficial-tb520fu/files/seventeen/ROW/ltbox_ROW_PixelOS_TB520FU-17.0-20260926-1818.7z/download) | `b6bf8364530604f45f2e0d4fd266b42907b12bf885514bbb60688b33770220bc` |
-| PRC | [`PixelOS_TB520FU-17.0-20260926-1818-PRC.zip`](https://sourceforge.net/projects/pixelos-unofficial-tb520fu/files/seventeen/PRC/PixelOS_TB520FU-17.0-20260926-1818-PRC.zip/download) | `75afeecaf0ca1ba05e76a83148619c99e5cc16f2cf3d3f618ed4ef996ba5dc33` |
-| PRC | [`ltbox_PRC_PixelOS_TB520FU-17.0-20260926-1818.7z`](https://sourceforge.net/projects/pixelos-unofficial-tb520fu/files/seventeen/PRC/ltbox_PRC_PixelOS_TB520FU-17.0-20260926-1818.7z/download) | `ebcbd8b06f3733de96483049925590cb7dc8a059b0898c9966d7ea6b703a6435` |
 
 The `.zip` installs from TWRP or the PixelOS recovery; the `ltbox_*.7z` is a
 full firmware package for LTBox (EDL) and wipes the device.
