@@ -21,7 +21,7 @@ import android.view.InputDevice
  * when Settings.Global [PC_MODE] is 1, or when a keyboard and a touchpad are
  * attached, the Lenovo keyboard setting allows it and the user has not left
  * it for this attachment ([KEYBOARD_EXITED], reset on detach by tb520fu-input).
- * The tile shows either case and turns both off, like the exit button.
+ * The tile shows either case and turns both off.
  */
 class PcModeTileService : TileService() {
     private val handler = Handler(Looper.getMainLooper())

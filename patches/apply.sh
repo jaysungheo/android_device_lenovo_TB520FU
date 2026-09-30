@@ -125,7 +125,3 @@ apply_patch vendor/lineage \
 apply_patch vendor/lineage \
     "$PATCHES/vendor_lineage-0002-clean-sched-param-from-kernel-headers.patch"
 
-# 0005: TB520FU desktop exit button beside the taskbar, keeping the current app
-#       (also clears tb520fu_pc_mode).
-apply_patch frameworks/base \
-    "$PATCHES/frameworks_base-0005-desktop-mode-exit-button.patch"
