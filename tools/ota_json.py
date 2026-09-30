@@ -13,12 +13,12 @@ For every full ROM zip (PixelOS_TB520FU-<version>-<date>[-ROW].zip) this writes
                --incremental (PixelOS_TB520FU-<version>-<date>-incremental-
                <base date>[-ROW].zip)
 
-Upload the .json files with the full and incremental zips into the OTA folder
-(builds up to 20260927-1632 accept packages only from the folder of the
-.json, so keep everything of a release together there). The
-updater of a running build picks the newest description of its own variant
-(PRC / ROW) that is newer than itself, uses the incremental package when
-update_engine can apply it to the running build and the full one otherwise.
+Upload the .json files with the full and incremental zips into the build's own
+folder in the OTA folder, OTA/<date>/ (e.g. OTA/20260930-0251/); the package
+URLs point there. The updater of a running build picks the newest build folder
+with a description of its own variant (PRC / ROW), shows it when it is newer
+than itself, and uses the incremental package when update_engine can apply it
+to the running build and the full one otherwise.
 
 With --key it also writes <...>.json.sig (Ed25519 signature of the JSON, raw
 64 bytes), only needed for builds with updater_signing_public_key set.
@@ -113,7 +113,7 @@ def main():
                     help='archived target files of an incremental source build, '
                          '<DIR>/target_files (repeatable)')
     ap.add_argument('--ota-url', default=OTA_URL,
-                    help='SourceForge folder the .json and packages are uploaded to')
+                    help='SourceForge OTA folder; each build goes to <OTA folder>/<date>/')
     ap.add_argument('--key', help='Ed25519 private key (PEM), to also write <...>.json.sig')
     ap.add_argument('zips', nargs='+', help='full packages')
     args = ap.parse_args()
@@ -173,7 +173,7 @@ def main():
         update = {
             'datetime': int(meta['post-timestamp']),
             'version': m.group(1),
-            'files': [file_entry(path, '%s/%s/download' % (folder, name), meta,
+            'files': [file_entry(path, '%s/%s/%s/download' % (folder, m.group(2), name), meta,
                                  streaming=False)],
         }
         inc = incrementals.pop((m.group(1), m.group(2), bool(m.group(3))), None)
@@ -193,7 +193,7 @@ def main():
                     base.get('pre-device') != meta.get('pre-device')):
                 sys.exit('%s is not an incremental to %s' % (os.path.basename(inc), name))
             update['incremental'] = [file_entry(
-                inc, '%s/%s/download' % (folder, os.path.basename(inc)), inc_meta,
+                inc, '%s/%s/%s/download' % (folder, m.group(2), os.path.basename(inc)), inc_meta,
                 streaming=True)]
         data = (json.dumps([update], indent=2) + '\n').encode()
         base = os.path.splitext(path)[0]

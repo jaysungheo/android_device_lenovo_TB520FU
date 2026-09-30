@@ -1,4 +1,5 @@
 diff --git a/app/src/main/java/net/pixelos/ota/data/source/network/UpdatesNetworkDataSource.kt b/app/src/main/java/net/pixelos/ota/data/source/network/UpdatesNetworkDataSource.kt
+index 92fe6ad..785d679 100644
 --- a/app/src/main/java/net/pixelos/ota/data/source/network/UpdatesNetworkDataSource.kt
 +++ b/app/src/main/java/net/pixelos/ota/data/source/network/UpdatesNetworkDataSource.kt
 @@ -5,12 +5,18 @@
@@ -20,7 +21,7 @@ diff --git a/app/src/main/java/net/pixelos/ota/data/source/network/UpdatesNetwor
  import java.util.concurrent.TimeUnit
  
  class UpdatesNetworkDataSource(private val context: Context) {
-@@ -37,35 +43,157 @@
+@@ -37,35 +43,161 @@ class UpdatesNetworkDataSource(private val context: Context) {
      private val client = OkHttpClient.Builder()
          .callTimeout(10, TimeUnit.SECONDS)
          .followRedirects(false)
@@ -31,21 +32,6 @@ diff --git a/app/src/main/java/net/pixelos/ota/data/source/network/UpdatesNetwor
 -        val request = Request.Builder()
 -            .url(serverUrl)
 -            .build()
--
--        val responseBody = client.newCall(request).execute().use { response ->
--            if (!response.isSuccessful) {
--                throw IOException("Unexpected HTTP status: ${response.code}")
--            }
--
--            val body = response.body ?: throw IOException("Empty response body")
--            val contentLength = body.contentLength()
--            if (contentLength > MAX_RESPONSE_BYTES) {
--                throw IOException("Update response is too large: $contentLength bytes")
--            }
--            val source = body.source()
--            val hasMore = source.request(MAX_RESPONSE_BYTES + 1)
--            if (hasMore) {
--                throw IOException("Update response exceeds $MAX_RESPONSE_BYTES bytes")
 +        val url = serverUrl
 +        if (isSourceForgeFolder(url)) return fetchSourceForgeFolder(url)
 +        return Json.decodeFromString<List<NetworkUpdate>>(fetch(url).decodeToString())
@@ -54,17 +40,19 @@ diff --git a/app/src/main/java/net/pixelos/ota/data/source/network/UpdatesNetwor
 +
 +    /**
 +     * SourceForge folder mode (updater_server_url is the RSS feed of the folder,
-+     * https://sourceforge.net/projects/<project>/rss?path=<dir>): every build in the folder
-+     * has "<package>.json" (the usual update list, full package and optional incremental), and
-+     * "<package>.json.sig" when a signing key is configured.
-+     * The newest description for this device's package variant is used; the repository shows
-+     * it only when it is newer than the running build.
++     * https://sourceforge.net/projects/<project>/rss?path=<dir>): every build has its own
++     * folder <dir>/<yyyyMMdd-HHmm>/ with "<package>.json" (the usual update list, full package
++     * and optional incremental), the packages it lists, and "<package>.json.sig" when a signing
++     * key is configured.
++     * The newest build folder with a description for this device's package variant is used;
++     * the repository shows it only when it is newer than the running build.
 +     *
 +     * Security: the feed URL and the signing key come from this app's resources (system
 +     * partition, verified boot); everything is fetched over HTTPS from sourceforge.net only;
 +     * links must stay in the project folder; with updater_signing_public_key set, the
 +     * description must carry a valid Ed25519 signature of that key; the packages must be files
-+     * of the same project and a downloaded package's SHA-256 is checked (UpdaterController).
++     * of the same build folder and a downloaded package's SHA-256 is checked
++     * (UpdaterController).
 +     */
 +    private fun isSourceForgeFolder(url: String) =
 +        url.startsWith("https://sourceforge.net/projects/") && url.contains("/rss")
@@ -85,7 +73,9 @@ diff --git a/app/src/main/java/net/pixelos/ota/data/source/network/UpdatesNetwor
 +            .filter { path ->
 +                val name = path.substringAfterLast('/')
 +                val match = NAME_REGEX.matchEntire(name) ?: return@filter false
-+                match.groupValues[1] == DeviceInfoUtils.device &&
++                // <dir>/<yyyyMMdd-HHmm>/<package>.json, folder named after the build
++                path.substringBeforeLast('/').substringAfterLast('/') == match.groupValues[2] &&
++                    match.groupValues[1] == DeviceInfoUtils.device &&
 +                    (match.groupValues[3] == "-ROW") == (variant == "ROW")
 +            }
 +            .maxByOrNull { NAME_REGEX.matchEntire(it.substringAfterLast('/'))!!.groupValues[2] }
@@ -97,22 +87,29 @@ diff --git a/app/src/main/java/net/pixelos/ota/data/source/network/UpdatesNetwor
 +            val signature = fetch("$newest.sig/download")
 +            require(verifySignature(key, json, signature)) { "Bad signature for $newest" }
 +        }
-+
+ 
+-        val responseBody = client.newCall(request).execute().use { response ->
+-            if (!response.isSuccessful) {
+-                throw IOException("Unexpected HTTP status: ${response.code}")
++        val buildFolder = newest.substringBeforeLast('/')
 +        return Json.decodeFromString<List<NetworkUpdate>>(json.decodeToString()).onEach { update ->
 +            update.validate()
-+            // Full packages stay in the dated release folders, incrementals sit in the OTA
-+            // folder; both must be files of this project.
++            // The full and incremental packages sit next to the description.
 +            (update.files + update.incremental.orEmpty()).forEach { file ->
 +                require(
-+                    file.url.startsWith(filesPrefix) && !file.url.contains("..") &&
-+                        file.url.endsWith("/" + file.filename + "/download")
++                    !file.filename.contains('/') &&
++                        file.url == "$buildFolder/${file.filename}/download"
 +                ) {
-+                    "Package URL outside the project: ${file.url}"
++                    "Package URL outside the build folder: ${file.url}"
 +                }
-+            }
+             }
 +        }
 +    }
-+
+ 
+-            val body = response.body ?: throw IOException("Empty response body")
+-            val contentLength = body.contentLength()
+-            if (contentLength > MAX_RESPONSE_BYTES) {
+-                throw IOException("Update response is too large: $contentLength bytes")
 +    /** Ed25519 signature (raw 64 bytes or Base64) of [data] with [key] (Base64 X.509). */
 +    private fun verifySignature(key: String, data: ByteArray, signature: ByteArray): Boolean {
 +        return try {
@@ -122,7 +119,11 @@ diff --git a/app/src/main/java/net/pixelos/ota/data/source/network/UpdatesNetwor
 +                signature
 +            } else {
 +                Base64.decode(signature.decodeToString().trim(), Base64.DEFAULT)
-+            }
+             }
+-            val source = body.source()
+-            val hasMore = source.request(MAX_RESPONSE_BYTES + 1)
+-            if (hasMore) {
+-                throw IOException("Update response exceeds $MAX_RESPONSE_BYTES bytes")
 +            Signature.getInstance("Ed25519").run {
 +                initVerify(publicKey)
 +                update(data)
@@ -133,8 +134,7 @@ diff --git a/app/src/main/java/net/pixelos/ota/data/source/network/UpdatesNetwor
 +            false
          }
 +    }
- 
--        return Json.decodeFromString<List<NetworkUpdate>>(responseBody).onEach { it.validate() }
++
 +    /**
 +     * HTTPS GET with the redirects (SourceForge sends downloads to its mirrors) followed by
 +     * hand: only to HTTPS and only within sourceforge.net for the SourceForge mode.
@@ -159,7 +159,8 @@ diff --git a/app/src/main/java/net/pixelos/ota/data/source/network/UpdatesNetwor
 +                if (!response.isSuccessful) {
 +                    throw IOException("Unexpected HTTP status: ${response.code}")
 +                }
-+
+ 
+-        return Json.decodeFromString<List<NetworkUpdate>>(responseBody).onEach { it.validate() }
 +                val body = response.body ?: throw IOException("Empty response body")
 +                val contentLength = body.contentLength()
 +                if (contentLength > MAX_RESPONSE_BYTES) {
