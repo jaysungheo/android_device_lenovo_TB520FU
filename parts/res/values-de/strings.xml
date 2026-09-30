@@ -36,6 +36,12 @@
     <string name="game_app_add">App hinzufügen</string>
     <string name="game_app_remove">Entfernen</string>
     <string name="game_perf_footer">Ein Profil gilt nur, solange seine App auf dem Bildschirm ist. Beim Verlassen der App kehren die Taktraten zum Normalwert zurück. Der Überhitzungsschutz bleibt immer aktiv.</string>
+    <string name="game_custom_single_title">Limit für einen Kern</string>
+    <string name="game_custom_multi_title">Limit für mehrere Kerne</string>
+    <string name="game_custom_gpu_title">GPU-Limit</string>
+    <string name="game_custom_cpu_summary" formatted="false">Benutzerdefiniert %1$d/%2$d%%</string>
+    <string name="game_custom_gpu_summary" formatted="false">Benutzerdefiniert %1$d%%</string>
+    <string name="game_custom_level">Benutzerdefiniert</string>
     <string name="pen_category">Stift</string>
     <string name="pen_settings_title">Lenovo-Stift</string>
     <string name="pen_settings_summary">Stifttasten, Schreibvibration, Kopplung</string>
@@ -58,17 +64,19 @@
     <string-array name="game_level_entries">
         <item>Energiesparen</item>
         <item>Ausgewogen</item>
-        <item>Hohe Leistung</item>
+        <item>Standard</item>
     </string-array>
     <string-array name="game_cpu_level_summaries">
         <item>Niedrigere Taktraten für weniger Wärme und längere Spielzeit</item>
-        <item>Begrenzt Spitzentakt für stabile Bildraten bei langen Sitzungen</item>
-        <item>Voller Takt mit angehobenem Minimum für schnelle Reaktion</item>
+        <item>Begrenzt den Einzelkern und die übrigen Kerne auf etwa 80 % für lange, stabile Sitzungen</item>
+        <item>Serienmäßige Taktraten; Überhitzungsschutz bleibt aktiv</item>
+        <item>Einzel- und Mehrkern-Limit selbst festlegen</item>
     </string-array>
     <string-array name="game_gpu_level_summaries">
         <item>Niedrigerer Grafiktakt für weniger Wärme</item>
-        <item>Begrenzter Grafiktakt für lange, stabile Sitzungen</item>
-        <item>Voller Grafiktakt mit angehobenem Minimum</item>
+        <item>Begrenzter Grafiktakt auf etwa 80 % für lange, stabile Sitzungen</item>
+        <item>Serienmäßiger Grafiktakt</item>
+        <item>Grafiktakt-Limit selbst festlegen</item>
     </string-array>
     <string-array name="app_key_entries">
         <item>Keine</item>

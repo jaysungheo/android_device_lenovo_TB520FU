@@ -42,6 +42,13 @@
     <string name="game_cpu_category">CPU</string>
     <string name="game_gpu_category">GPU</string>
     <string name="game_perf_footer">Settings apply only while the app is on screen. Clocks return to normal when you leave the app. Thermal protection always stays active.</string>
+    <string name="game_custom_single_title">Single core limit</string>
+    <string name="game_custom_multi_title">Multi core limit</string>
+    <string name="game_custom_gpu_title">GPU limit</string>
+    <string name="game_custom_range_summary" formatted="false">30–100 %</string>
+    <string name="game_custom_cpu_summary" formatted="false">Custom %1$d/%2$d%%</string>
+    <string name="game_custom_gpu_summary" formatted="false">Custom %1$d%%</string>
+    <string name="game_custom_level">Custom</string>
     <string name="pen_category">Pen</string>
     <string name="pen_settings_title">Lenovo pen</string>
     <string name="pen_settings_summary">Pen buttons, writing vibration, pairing</string>
@@ -66,17 +73,19 @@
     <string-array name="game_level_entries">
         <item>Power saving</item>
         <item>Balanced</item>
-        <item>High performance</item>
+        <item>Default</item>
     </string-array>
     <string-array name="game_cpu_level_summaries">
         <item>Lower clocks for less heat and longer play time</item>
-        <item>Keeps single core speed and caps the other cores to about 85 % for steady long sessions</item>
-        <item>No clock caps; thermal protection still applies</item>
+        <item>Caps the single core and the other cores to about 80 % for steady long sessions</item>
+        <item>Stock clocks; thermal protection still applies</item>
+        <item>Set the single core and multi core limits yourself</item>
     </string-array>
     <string-array name="game_gpu_level_summaries">
         <item>Lower graphics clock for less heat</item>
-        <item>Caps the graphics clock to about 85 % for less heat in long sessions</item>
-        <item>No graphics clock cap</item>
+        <item>Caps the graphics clock to about 80 % for less heat in long sessions</item>
+        <item>Stock graphics clock</item>
+        <item>Set the graphics clock limit yourself</item>
     </string-array>
     <string-array name="app_key_entries">
         <item>None</item>

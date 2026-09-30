@@ -39,6 +39,13 @@
     <string name="game_app_add">アプリを追加</string>
     <string name="game_app_remove">削除</string>
     <string name="game_perf_footer">プロファイルはそのアプリが画面に表示されている間だけ適用されます。アプリを離れるとクロックは元に戻ります。熱保護は常に有効です。</string>
+    <string name="game_custom_single_title">シングルコア制限</string>
+    <string name="game_custom_multi_title">マルチコア制限</string>
+    <string name="game_custom_gpu_title">GPU制限</string>
+    <string name="game_custom_range_summary" formatted="false">30～100%</string>
+    <string name="game_custom_cpu_summary" formatted="false">カスタム %1$d/%2$d%%</string>
+    <string name="game_custom_gpu_summary" formatted="false">カスタム %1$d%%</string>
+    <string name="game_custom_level">カスタム</string>
     <string name="pen_category">ペン</string>
     <string name="pen_settings_title">Lenovo ペン</string>
     <string name="pen_settings_summary">ペンボタン、書き心地の振動、ペアリング</string>
@@ -62,17 +69,19 @@
     <string-array name="game_level_entries">
         <item>省電力</item>
         <item>バランス</item>
-        <item>高パフォーマンス</item>
+        <item>デフォルト</item>
     </string-array>
     <string-array name="game_cpu_level_summaries">
         <item>クロックを下げて発熱を抑え、プレイ時間を延ばします</item>
-        <item>最大クロックを制限し、長時間でもフレームレートを安定させます</item>
-        <item>最大クロックと高めの最小クロックで素早く反応します</item>
+        <item>シングルコアとその他のコアを約80%に制限し、長時間でも安定させます</item>
+        <item>標準のクロックを使用します（熱保護は有効）</item>
+        <item>シングルコアとマルチコアの制限を自分で設定します</item>
     </string-array>
     <string-array name="game_gpu_level_summaries">
         <item>グラフィッククロックを下げて発熱を抑えます</item>
-        <item>グラフィッククロックを制限し、長時間でも安定させます</item>
-        <item>最大グラフィッククロックと高めの最小クロック</item>
+        <item>グラフィッククロックを約80%に制限し、長時間でも安定させます</item>
+        <item>標準のグラフィッククロックを使用します</item>
+        <item>グラフィッククロックの制限を自分で設定します</item>
     </string-array>
     <string-array name="app_key_entries">
         <item>なし</item>

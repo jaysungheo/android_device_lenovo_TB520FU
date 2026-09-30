@@ -39,6 +39,13 @@
     <string name="game_app_add">앱 추가</string>
     <string name="game_app_remove">목록에서 삭제</string>
     <string name="game_perf_footer">설정은 해당 앱이 화면에 있을 때만 적용됩니다. 앱에서 나가면 클럭이 원래대로 돌아옵니다. 발열 보호는 항상 동작합니다.</string>
+    <string name="game_custom_single_title">싱글 코어 제한</string>
+    <string name="game_custom_multi_title">멀티 코어 제한</string>
+    <string name="game_custom_gpu_title">GPU 제한</string>
+    <string name="game_custom_range_summary" formatted="false">30~100%</string>
+    <string name="game_custom_cpu_summary" formatted="false">사용자 설정 %1$d/%2$d%%</string>
+    <string name="game_custom_gpu_summary" formatted="false">사용자 설정 %1$d%%</string>
+    <string name="game_custom_level">사용자 설정</string>
     <string name="pen_category">펜</string>
     <string name="pen_settings_title">Lenovo 펜</string>
     <string name="pen_settings_summary">펜 버튼, 필기 진동, 연결</string>
@@ -62,17 +69,19 @@
     <string-array name="game_level_entries">
         <item>절전</item>
         <item>균형</item>
-        <item>고성능</item>
+        <item>기본값</item>
     </string-array>
     <string-array name="game_cpu_level_summaries">
         <item>클럭을 낮춰 발열을 줄이고 플레이 시간을 늘립니다</item>
-        <item>싱글 코어 속도는 유지하고 나머지 코어를 약 85%로 제한해 오래 플레이해도 안정적입니다</item>
-        <item>클럭 상한을 풀어 최대 성능을 냅니다 (발열 보호는 유지)</item>
+        <item>싱글 코어와 나머지 코어를 약 80%로 제한해 오래 플레이해도 안정적입니다</item>
+        <item>순정 클럭을 사용합니다 (발열 보호는 유지)</item>
+        <item>싱글·멀티 코어 제한을 직접 설정합니다</item>
     </string-array>
     <string-array name="game_gpu_level_summaries">
         <item>그래픽 클럭을 낮춰 발열을 줄입니다</item>
-        <item>그래픽 클럭을 약 85%로 제한해 오래 플레이할 때 발열을 줄입니다</item>
-        <item>그래픽 클럭 상한을 풉니다</item>
+        <item>그래픽 클럭을 약 80%로 제한해 오래 플레이할 때 발열을 줄입니다</item>
+        <item>순정 그래픽 클럭을 사용합니다</item>
+        <item>GPU 클럭 제한을 직접 설정합니다</item>
     </string-array>
     <string-array name="app_key_entries">
         <item>없음</item>

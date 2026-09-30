@@ -37,6 +37,13 @@
     <string name="game_app_add">Adicionar app</string>
     <string name="game_app_remove">Remover</string>
     <string name="game_perf_footer">Um perfil só se aplica enquanto o app está na tela. As frequências voltam ao normal quando você sai do app. A proteção térmica continua sempre ativa.</string>
+    <string name="game_custom_single_title">Limite de um núcleo</string>
+    <string name="game_custom_multi_title">Limite de vários núcleos</string>
+    <string name="game_custom_gpu_title">Limite da GPU</string>
+    <string name="game_custom_range_summary" formatted="false">30–100%</string>
+    <string name="game_custom_cpu_summary" formatted="false">Personalizado %1$d/%2$d%%</string>
+    <string name="game_custom_gpu_summary" formatted="false">Personalizado %1$d%%</string>
+    <string name="game_custom_level">Personalizado</string>
     <string name="pen_category">Caneta</string>
     <string name="pen_settings_title">Caneta Lenovo</string>
     <string name="pen_settings_summary">Botões da caneta, vibração de escrita, pareamento</string>
@@ -59,17 +66,19 @@
     <string-array name="game_level_entries">
         <item>Economia de energia</item>
         <item>Equilibrado</item>
-        <item>Alto desempenho</item>
+        <item>Padrão</item>
     </string-array>
     <string-array name="game_cpu_level_summaries">
         <item>Frequências menores para menos calor e mais tempo de jogo</item>
-        <item>Limita picos de frequência para taxa de quadros estável</item>
-        <item>Frequência máxima com mínimo elevado para resposta rápida</item>
+        <item>Limita o núcleo principal e os demais a cerca de 80% para sessões longas estáveis</item>
+        <item>Frequências originais; a proteção térmica continua ativa</item>
+        <item>Defina você mesmo os limites de um e vários núcleos</item>
     </string-array>
     <string-array name="game_gpu_level_summaries">
         <item>Frequência gráfica menor para menos calor</item>
-        <item>Frequência gráfica limitada para sessões longas estáveis</item>
-        <item>Frequência gráfica máxima com mínimo elevado</item>
+        <item>Frequência gráfica limitada a cerca de 80% para sessões longas estáveis</item>
+        <item>Frequência gráfica original</item>
+        <item>Defina você mesmo o limite de frequência gráfica</item>
     </string-array>
     <string-array name="app_key_entries">
         <item>Nenhuma</item>

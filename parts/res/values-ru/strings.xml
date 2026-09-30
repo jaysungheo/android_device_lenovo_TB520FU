@@ -39,6 +39,12 @@
     <string name="game_app_add">Добавить приложение</string>
     <string name="game_app_remove">Удалить</string>
     <string name="game_perf_footer">Профиль действует, только пока его приложение на экране. После выхода из приложения частоты возвращаются к норме. Защита от перегрева всегда активна.</string>
+    <string name="game_custom_single_title">Лимит одного ядра</string>
+    <string name="game_custom_multi_title">Лимит нескольких ядер</string>
+    <string name="game_custom_gpu_title">Лимит GPU</string>
+    <string name="game_custom_cpu_summary" formatted="false">Свой %1$d/%2$d%%</string>
+    <string name="game_custom_gpu_summary" formatted="false">Свой %1$d%%</string>
+    <string name="game_custom_level">Свой</string>
     <string name="pen_category">Стилус</string>
     <string name="pen_settings_title">Стилус Lenovo</string>
     <string name="pen_settings_summary">Кнопки стилуса, вибрация при письме, сопряжение</string>
@@ -63,17 +69,19 @@
     <string-array name="game_level_entries">
         <item>Энергосбережение</item>
         <item>Баланс</item>
-        <item>Высокая производительность</item>
+        <item>По умолчанию</item>
     </string-array>
     <string-array name="game_cpu_level_summaries">
         <item>Пониженные частоты: меньше нагрев, дольше игра</item>
-        <item>Ограничивает пиковые частоты для стабильного FPS в долгих сессиях</item>
-        <item>Полные частоты с повышенным минимумом для быстрого отклика</item>
+        <item>Ограничивает главное и остальные ядра примерно до 80 % для стабильности</item>
+        <item>Заводские частоты; защита от перегрева остаётся активной</item>
+        <item>Задайте лимиты одного и нескольких ядер вручную</item>
     </string-array>
     <string-array name="game_gpu_level_summaries">
         <item>Пониженная частота графики: меньше нагрев</item>
-        <item>Ограниченная частота графики для долгой стабильной игры</item>
-        <item>Полная частота графики с повышенным минимумом</item>
+        <item>Ограниченная частота графики примерно до 80 % для долгой игры</item>
+        <item>Заводская частота графики</item>
+        <item>Задайте лимит частоты графики вручную</item>
     </string-array>
     <string-array name="app_key_entries">
         <item>Нет</item>

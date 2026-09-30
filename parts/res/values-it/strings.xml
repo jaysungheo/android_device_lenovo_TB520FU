@@ -38,6 +38,13 @@
     <string name="game_app_add">Aggiungi app</string>
     <string name="game_app_remove">Rimuovi</string>
     <string name="game_perf_footer">Un profilo si applica solo mentre la sua app è sullo schermo. Le frequenze tornano normali quando esci dall\'app. La protezione termica resta sempre attiva.</string>
+    <string name="game_custom_single_title">Limite singolo core</string>
+    <string name="game_custom_multi_title">Limite multi core</string>
+    <string name="game_custom_gpu_title">Limite GPU</string>
+    <string name="game_custom_range_summary" formatted="false">30–100%</string>
+    <string name="game_custom_cpu_summary" formatted="false">Personalizzato %1$d/%2$d%%</string>
+    <string name="game_custom_gpu_summary" formatted="false">Personalizzato %1$d%%</string>
+    <string name="game_custom_level">Personalizzato</string>
     <string name="pen_category">Penna</string>
     <string name="pen_settings_title">Penna Lenovo</string>
     <string name="pen_settings_summary">Tasti della penna, vibrazione di scrittura, associazione</string>
@@ -60,17 +67,19 @@
     <string-array name="game_level_entries">
         <item>Risparmio energetico</item>
         <item>Bilanciato</item>
-        <item>Prestazioni elevate</item>
+        <item>Predefinito</item>
     </string-array>
     <string-array name="game_cpu_level_summaries">
         <item>Frequenze più basse per meno calore e più tempo di gioco</item>
-        <item>Limita i picchi di frequenza per frame rate stabili nelle sessioni lunghe</item>
-        <item>Frequenza massima con minimo aumentato per una risposta rapida</item>
+        <item>Limita il core principale e gli altri all\'80% per sessioni lunghe stabili</item>
+        <item>Frequenze originali; la protezione termica resta attiva</item>
+        <item>Imposta tu i limiti singolo e multi core</item>
     </string-array>
     <string-array name="game_gpu_level_summaries">
         <item>Frequenza grafica più bassa per meno calore</item>
-        <item>Frequenza grafica limitata per sessioni lunghe stabili</item>
-        <item>Frequenza grafica massima con minimo aumentato</item>
+        <item>Frequenza grafica limitata all\'80% per sessioni lunghe stabili</item>
+        <item>Frequenza grafica originale</item>
+        <item>Imposta tu il limite di frequenza grafica</item>
     </string-array>
     <string-array name="app_key_entries">
         <item>Nessuna</item>

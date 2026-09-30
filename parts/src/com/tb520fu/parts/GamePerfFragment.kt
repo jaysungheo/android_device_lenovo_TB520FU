@@ -30,6 +30,9 @@ class GamePerfFragment : SettingsBasePreferenceFragment() {
         mainSwitch.isChecked = LenovoSettings.getInt(ctx, LenovoSettings.GAME_PERF, 0) != 0
         mainSwitch.addOnSwitchChangeListener { _, checked ->
             LenovoSettings.putInt(requireContext(), LenovoSettings.GAME_PERF, if (checked) 1 else 0)
+            // No profile applies while the master switch is off, so the per-app
+            // custom profiles are dropped with it.
+            if (!checked) GameApps.clearCustom(requireContext())
             updateEnabled(checked)
         }
 
@@ -68,7 +71,7 @@ class GamePerfFragment : SettingsBasePreferenceFragment() {
                 key = "app_$pkg"
                 title = info?.loadLabel(pm) ?: pkg
                 icon = info?.loadIcon(pm)
-                summary = GameApps.describe(ctx, levels)
+                summary = GameApps.describe(ctx, pkg, levels)
                 setOnPreferenceClickListener { openApp(pkg); true }
             })
         }

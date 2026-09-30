@@ -24,6 +24,7 @@ object LenovoSettings {
     const val STANDBY_SAVER = "tb520fu_standby_saver"
     const val GAME_PERF = "tb520fu_game_perf"
     const val GAME_PERF_APPS = "tb520fu_game_perf_apps"
+    const val GAME_PERF_CUSTOM = "tb520fu_game_perf_custom"
     const val GAME_MEM_CLEAN = "tb520fu_game_mem_clean"
 
     /** Settings.Secure, AOSP adaptive white balance (DisplayWhiteBalanceController). */

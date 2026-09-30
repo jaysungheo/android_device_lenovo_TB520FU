@@ -39,6 +39,13 @@
     <string name="game_app_add">添加应用</string>
     <string name="game_app_remove">移除</string>
     <string name="game_perf_footer">配置仅在对应应用显示在屏幕上时生效，离开应用后频率恢复正常。温控保护始终有效。</string>
+    <string name="game_custom_single_title">单核限制</string>
+    <string name="game_custom_multi_title">多核限制</string>
+    <string name="game_custom_gpu_title">GPU 限制</string>
+    <string name="game_custom_range_summary" formatted="false">30～100%</string>
+    <string name="game_custom_cpu_summary" formatted="false">自定义 %1$d/%2$d%%</string>
+    <string name="game_custom_gpu_summary" formatted="false">自定义 %1$d%%</string>
+    <string name="game_custom_level">自定义</string>
     <string name="pen_category">手写笔</string>
     <string name="pen_settings_title">Lenovo 手写笔</string>
     <string name="pen_settings_summary">笔按键、书写振动、配对</string>
@@ -62,17 +69,19 @@
     <string-array name="game_level_entries">
         <item>省电</item>
         <item>均衡</item>
-        <item>高性能</item>
+        <item>默认</item>
     </string-array>
     <string-array name="game_cpu_level_summaries">
         <item>降低频率，减少发热，延长游戏时间</item>
-        <item>限制最高频率，长时间游戏帧率更稳定</item>
-        <item>满频率并提高最低频率，响应更快</item>
+        <item>将单核和其他核心限制在约 80%，长时间游戏更稳定</item>
+        <item>使用原厂频率（温控仍然有效）</item>
+        <item>自行设置单核和多核限制</item>
     </string-array>
     <string-array name="game_gpu_level_summaries">
         <item>降低图形频率，减少发热</item>
-        <item>限制图形频率，长时间更稳定</item>
-        <item>图形满频率并提高最低频率</item>
+        <item>将图形频率限制在约 80%，长时间更稳定</item>
+        <item>使用原厂图形频率</item>
+        <item>自行设置图形频率限制</item>
     </string-array>
     <string-array name="app_key_entries">
         <item>无</item>

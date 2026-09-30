@@ -39,6 +39,13 @@
     <string name="game_app_add">新增應用程式</string>
     <string name="game_app_remove">移除</string>
     <string name="game_perf_footer">設定檔僅在該應用程式顯示於螢幕上時生效，離開後時脈恢復正常。溫度保護始終有效。</string>
+    <string name="game_custom_single_title">單核限制</string>
+    <string name="game_custom_multi_title">多核限制</string>
+    <string name="game_custom_gpu_title">GPU 限制</string>
+    <string name="game_custom_range_summary" formatted="false">30～100%</string>
+    <string name="game_custom_cpu_summary" formatted="false">自訂 %1$d/%2$d%%</string>
+    <string name="game_custom_gpu_summary" formatted="false">自訂 %1$d%%</string>
+    <string name="game_custom_level">自訂</string>
     <string name="pen_category">觸控筆</string>
     <string name="pen_settings_title">Lenovo 觸控筆</string>
     <string name="pen_settings_summary">筆按鍵、書寫震動、配對</string>
@@ -62,17 +69,19 @@
     <string-array name="game_level_entries">
         <item>省電</item>
         <item>平衡</item>
-        <item>高效能</item>
+        <item>預設</item>
     </string-array>
     <string-array name="game_cpu_level_summaries">
         <item>降低時脈，減少發熱，延長遊戲時間</item>
-        <item>限制最高時脈，長時間遊戲幀率更穩定</item>
-        <item>全速時脈並提高最低時脈，反應更快</item>
+        <item>將單核與其他核心限制在約 80%，長時間遊戲更穩定</item>
+        <item>使用原廠時脈（溫度保護仍有效）</item>
+        <item>自行設定單核與多核限制</item>
     </string-array>
     <string-array name="game_gpu_level_summaries">
         <item>降低圖形時脈，減少發熱</item>
-        <item>限制圖形時脈，長時間更穩定</item>
-        <item>圖形全速時脈並提高最低時脈</item>
+        <item>將圖形時脈限制在約 80%，長時間更穩定</item>
+        <item>使用原廠圖形時脈</item>
+        <item>自行設定圖形時脈限制</item>
     </string-array>
     <string-array name="app_key_entries">
         <item>無</item>
