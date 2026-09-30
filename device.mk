@@ -287,6 +287,7 @@ PRODUCT_PACKAGES += \
     FrameworksResTB520FU \
     SettingsProviderResTB520FU \
     SettingsResTB520FU \
+    SystemUIResTB520FU \
     WifiResTB520FU
 
 # Partitions
