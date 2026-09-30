@@ -24,4 +24,7 @@
     <color name="system_primary_color_on_hovered_zui">@android:color/system_accent1_700</color>
     <color name="system_primary_color_off_pressed_zui">@android:color/system_neutral2_600</color>
     <color name="system_icon_off_color_zui">@android:color/system_neutral2_300</color>
+    <!-- Page and navigation bar background: the PixelOS Settings background
+         (settingslib_materialColorSurfaceContainer). -->
+    <color name="background_zui">@android:color/system_surface_container_light</color>
 </resources>
