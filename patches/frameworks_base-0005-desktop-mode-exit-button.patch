@@ -1,9 +1,9 @@
 diff --git a/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/DesktopModeExitButton.java b/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/DesktopModeExitButton.java
 new file mode 100644
-index 000000000..ecec595f0
+index 000000000..e3408c606
 --- /dev/null
 +++ b/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/DesktopModeExitButton.java
-@@ -0,0 +1,248 @@
+@@ -0,0 +1,292 @@
 +/*
 + * Copyright (C) 2026 The Android Open Source Project
 + * SPDX-License-Identifier: Apache-2.0
@@ -29,19 +29,24 @@ index 000000000..ecec595f0
 +import android.graphics.Typeface;
 +import android.graphics.drawable.GradientDrawable;
 +import android.graphics.drawable.Drawable;
++import android.graphics.drawable.LayerDrawable;
 +import android.graphics.drawable.RippleDrawable;
 +import android.os.Handler;
 +import android.util.Log;
 +import android.view.Display;
 +import android.view.Gravity;
++import android.view.View;
 +import android.view.WindowInsets;
 +import android.view.WindowManager;
++import android.widget.FrameLayout;
 +import android.widget.TextView;
++
++import com.android.internal.graphics.drawable.BackgroundBlurDrawable;
 +
 +import java.util.function.BooleanSupplier;
 +import java.util.function.Supplier;
 +
-+/** A tablet-mode exit control beside the taskbar, owned by WM Shell. */
++/** A tablet-mode exit control above the taskbar, owned by WM Shell. */
 +public final class DesktopModeExitButton {
 +    private static final String TAG = "DesktopModeExitButton";
 +    private static final int WINDOW_TYPE = WindowManager.LayoutParams.TYPE_NAVIGATION_BAR_PANEL;
@@ -53,7 +58,7 @@ index 000000000..ecec595f0
 +    private final Runnable mExit;
 +    private final WindowManager mWindowManager;
 +    private final KeyguardManager mKeyguard;
-+    private TextView mButton;
++    private View mButton;
 +    private final Runnable mUpdate = this::update;
 +
 +    public DesktopModeExitButton(Context context, Handler handler, BooleanSupplier desktopVisible,
@@ -156,17 +161,47 @@ index 000000000..ecec595f0
 +            button.setGravity(Gravity.CENTER);
 +            button.setPadding(dp(18), 0, dp(18), 0);
 +            button.setSingleLine(true);
-+            button.setElevation(dp(3));
++            button.setElevation(dp(6));
 +            Drawable icon = new ExitIcon(foregroundColor);
 +            icon.setBounds(0, 0, dp(24), dp(24));
 +            button.setCompoundDrawablesRelative(icon, null, null, null);
 +            button.setCompoundDrawablePadding(dp(8));
-+            GradientDrawable background = new GradientDrawable();
-+            background.setColor(backgroundColor);
-+            background.setCornerRadius(dp(24));
 +            int rippleColor = (foregroundColor & 0x00ffffff) | 0x22000000;
++            int outlineColor = (foregroundColor & 0x00ffffff) | 0x1f000000;
++            GradientDrawable mask = new GradientDrawable();
++            mask.setColor(Color.WHITE);
++            mask.setCornerRadius(dp(24));
++            // Frosted glass: translucent taskbar color with a hairline outline.
++            GradientDrawable background = new GradientDrawable();
++            background.setColor((backgroundColor & 0x00ffffff) | 0xd9000000);
++            background.setCornerRadius(dp(24));
++            background.setStroke(Math.max(1, dp(1) / 2), outlineColor);
 +            button.setBackground(new RippleDrawable(ColorStateList.valueOf(rippleColor),
-+                    background, null));
++                    background, mask));
++            button.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
++                @Override
++                public void onViewAttachedToWindow(View view) {
++                    // Blur what is behind the button when window blurs are available.
++                    if (!mWindowManager.isCrossWindowBlurEnabled()
++                            || view.getViewRootImpl() == null) {
++                        return;
++                    }
++                    BackgroundBlurDrawable blur =
++                            view.getViewRootImpl().createBackgroundBlurDrawable();
++                    blur.setBlurRadius(dp(30));
++                    blur.setCornerRadius(dp(24));
++                    blur.setColor((backgroundColor & 0x00ffffff) | 0x8c000000);
++                    GradientDrawable outline = new GradientDrawable();
++                    outline.setCornerRadius(dp(24));
++                    outline.setStroke(Math.max(1, dp(1) / 2), outlineColor);
++                    view.setBackground(new RippleDrawable(ColorStateList.valueOf(rippleColor),
++                            new LayerDrawable(
++                                    new Drawable[] {blur, outline}), mask));
++                }
++
++                @Override
++                public void onViewDetachedFromWindow(View view) {}
++            });
 +            button.setOnClickListener(view -> {
 +                try {
 +                    mExit.run();
@@ -177,26 +212,35 @@ index 000000000..ecec595f0
 +                }
 +            });
 +
++            // Room around the button for its shadow.
++            int shadow = dp(10);
++            FrameLayout container = new FrameLayout(mContext);
++            container.setPadding(shadow, shadow, shadow, shadow);
++            container.setClipToPadding(false);
++            container.addView(button, new FrameLayout.LayoutParams(
++                    FrameLayout.LayoutParams.WRAP_CONTENT, dp(48)));
++
 +            WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-+                    WindowManager.LayoutParams.WRAP_CONTENT, dp(48), WINDOW_TYPE,
++                    WindowManager.LayoutParams.WRAP_CONTENT, dp(48) + 2 * shadow, WINDOW_TYPE,
 +                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
 +                            | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
 +                            | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
 +                    PixelFormat.TRANSLUCENT);
 +            params.gravity = Gravity.BOTTOM | Gravity.LEFT;
-+            params.x = dp(24);
++            params.x = dp(24) - shadow;
 +            int taskbarHeight = dp(64);
 +            if (taskbar != null) {
 +                int id = taskbar.getIdentifier("taskbar_size", "dimen",
 +                        "com.google.android.apps.nexuslauncher");
 +                if (id != 0) taskbarHeight = taskbar.getDimensionPixelSize(id);
 +            }
-+            params.y = Math.max(dp(8), (taskbarHeight - dp(48)) / 2);
++            // Above the taskbar, like the stock ZUI exit button.
++            params.y = taskbarHeight + dp(12) - shadow;
 +            params.setFitInsetsTypes(WindowInsets.Type.displayCutout());
 +            params.privateFlags |= WindowManager.LayoutParams.PRIVATE_FLAG_TRUSTED_OVERLAY;
 +            params.setTitle(TAG);
-+            mWindowManager.addView(button, params);
-+            mButton = button;
++            mWindowManager.addView(container, params);
++            mButton = container;
 +        } catch (Exception e) {
 +            Log.e(TAG, "Cannot update desktop exit button", e);
 +        }
