@@ -7,6 +7,7 @@ package com.tb520fu.parts
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.hardware.display.ColorDisplayManager
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
@@ -51,8 +52,9 @@ class PartsFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceC
         // Adaptive white balance (the Settings > Display switch is hidden) and how
         // strongly it follows the ambient light (patches/frameworks_base-0002)
         findPreference<SwitchPreferenceCompat>(KEY_WHITE_BALANCE)!!.apply {
-            isChecked = Settings.Secure.getInt(ctx.contentResolver,
-                LenovoSettings.DISPLAY_WHITE_BALANCE, 0) != 0
+            // Unset means the framework default (config_displayWhiteBalanceEnabledDefault)
+            isChecked = ctx.getSystemService(ColorDisplayManager::class.java)!!
+                .isDisplayWhiteBalanceEnabled
             setOnPreferenceChangeListener { _, newValue ->
                 Settings.Secure.putInt(requireContext().contentResolver,
                     LenovoSettings.DISPLAY_WHITE_BALANCE, if (newValue as Boolean) 1 else 0)
