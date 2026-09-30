@@ -6,13 +6,23 @@
 #
 # Patch files are named <project path with / -> _>-NNNN-<description>.patch
 # and are applied with `git apply` to the matching project. Nothing is
-# committed in the PixelOS projects, so `repo sync` keeps working; a patch
-# that no longer applies stops the script with an error.
+# committed in the PixelOS projects, so `repo sync` keeps working. A patch
+# for a project the ROM does not have is skipped; a patch that no longer
+# applies is reported and left out, the others are still applied, and the
+# script ends with a list of them (the feature is then missing from the
+# build; TB520FUParts hides the settings of missing framework patches).
+#
+# The optional customizations in vendor/lenovo/TB520FU-custom have their own
+# patches/apply.sh, run at the end. It records what it applied in
+# .tb520fu-custom-applied/ at the source root; when that repository is
+# removed, this script reverts those patches first.
 set -euo pipefail
 PATCHES=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 TOP=${1:-$(cd "$PATCHES/../../../.." && pwd)}
 cd "$TOP"
 [ -f build/envsetup.sh ] || { echo "ERROR: $TOP is not a source root" >&2; exit 1; }
+
+FAILED=()
 
 apply_patch() { # repo-dir patch-file
     local dir=$1 patch=$2
@@ -26,10 +36,25 @@ apply_patch() { # repo-dir patch-file
     elif git -C "$dir" apply --reverse --check "$patch" 2>/dev/null; then
         echo "already applied: $(basename "$patch")"
     else
-        echo "ERROR: $(basename "$patch") does not apply to $dir" >&2
-        exit 1
+        echo "ERROR: $(basename "$patch") does not apply to $dir, left out" >&2
+        FAILED+=("$dir: $(basename "$patch")")
     fi
 }
+
+# Customizations removed: revert what vendor/lenovo/TB520FU-custom applied
+# (the state is written by its patches/apply.sh), newest first.
+CUSTOM="$TOP/vendor/lenovo/TB520FU-custom"
+STATE="$TOP/.tb520fu-custom-applied"
+if [ ! -f "$CUSTOM/patches/apply.sh" ] && [ -f "$STATE/applied.list" ]; then
+    echo "vendor/lenovo/TB520FU-custom is gone, reverting its patches"
+    tac "$STATE/applied.list" | while read -r dir name; do
+        [ -n "$name" ] || continue
+        if git -C "$dir" apply --reverse --check "$STATE/$name" 2>/dev/null; then
+            git -C "$dir" apply --reverse "$STATE/$name" && echo "reverted $name"
+        fi
+    done
+    rm -rf "$STATE"
+fi
 
 # frameworks/base
 # 0001: Lenovo PenService support. Adds android.app.haptic.ZuiPenHapticManager
@@ -138,3 +163,14 @@ apply_patch vendor/lineage \
 apply_patch vendor/lineage \
     "$PATCHES/vendor_lineage-0002-clean-sched-param-from-kernel-headers.patch"
 
+# Optional customizations (vendor/lenovo/TB520FU-custom), when present
+if [ -f "$CUSTOM/patches/apply.sh" ]; then
+    bash "$CUSTOM/patches/apply.sh" "$TOP" || FAILED+=("vendor/lenovo/TB520FU-custom/patches/apply.sh")
+fi
+
+if [ ${#FAILED[@]} -gt 0 ]; then
+    echo
+    echo "WARNING: these patches were left out:" >&2
+    printf '  %s\n' "${FAILED[@]}" >&2
+fi
+exit 0
