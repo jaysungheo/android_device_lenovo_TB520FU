@@ -17,14 +17,16 @@ BASIC.
 
 ## Downloads
 
-Latest build: (https://github.com/wnduddld0513/android_device_lenovo_TB520FU/releases/),
+Latest build: see [Releases](https://github.com/wnduddld0513/android_device_lenovo_TB520FU/releases/),
 installation steps in the release notes. Files are on
 [SourceForge](https://sourceforge.net/projects/pixelos-unofficial-tb520fu/files/seventeen/).
 Pick the region of your device: ROW and PRC only differ in the device tree
 (dtb) and the signed images that carry it.
 
 The `.zip` installs from TWRP or the PixelOS recovery; the `ltbox_*.7z` is a
-full firmware package for LTBox (EDL) and wipes the device.
+firmware package for LTBox (EDL). Both keep the user data when updating an
+installed build; coming from the stock firmware or another ROM, format data.
+Installed builds also update themselves (Settings > System > System update).
 
 ## Repositories
 
@@ -89,11 +91,20 @@ setsid nohup device/lenovo/TB520FU/tools/build.sh > /dev/null 2>&1 < /dev/null &
 
 ## OTA publishing
 
-The updater reads the newest `<full-zip-name>.json` in the SourceForge
-`seventeen/OTA` RSS folder (`PixelOS_TB520FU-<version>-<date>[-ROW].json`,
-matching the running dtb region). Publish the JSON together with its packages
-in that folder. The updater checks the package SHA-256; update_engine checks
-the AOSP OTA signature.
+Each build is published in two SourceForge folders:
+
+| Folder | Files |
+|---|---|
+| `seventeen/<date>/` | full packages `PixelOS_TB520FU-<version>-<date>[-ROW].zip` (recovery / TWRP / full OTA) and the LTBox archives |
+| `seventeen/OTA/<date>/` | updater descriptions `PixelOS_TB520FU-<version>-<date>[-ROW].json` and the incremental packages |
+
+The updater reads the RSS feed of `seventeen/OTA`, takes the newest build
+folder with a description of the running variant (PRC / ROW, from the running
+dtb) and offers it when it is newer than the running build. It downloads the
+incremental package from `seventeen/OTA/<date>/` when update_engine accepts its
+payload metadata for the running build, otherwise the full package from
+`seventeen/<date>/`; packages from anywhere else are refused. The package
+SHA-256 is checked, update_engine checks the AOSP OTA signature.
 
 An incremental OTA is built from the **target files of both builds**, so keep
 the target files of every published build (the full OTA ZIP cannot replace
@@ -106,12 +117,12 @@ ota_from_target_files -k build/make/target/product/security/testkey \
 python3 device/lenovo/TB520FU/tools/ota_json.py \
     --base-full BASE_FULL.zip \
     --incremental PixelOS_TB520FU-17.0-TARGET_DATE-incremental-BASE_DATE.zip \
-    TARGET_FULL.zip
+    --out-dir OTA_FOLDER TARGET_FULL.zip
 ```
 
-ota_json.py rejects a delta whose source/target metadata or streaming ranges
-do not match. The updater offers the delta only if update_engine accepts its
-payload metadata for the running build, otherwise the full ZIP.
+`--base-build DIR` (`DIR/target_files`) can replace `--base-full`. ota_json.py
+rejects a delta whose source/target metadata or streaming ranges do not match,
+and writes the package URLs for the folder layout above.
 
 ## Installing
 
