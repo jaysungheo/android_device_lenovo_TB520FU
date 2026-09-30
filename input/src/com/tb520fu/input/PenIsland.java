@@ -18,6 +18,7 @@ import android.view.ContextThemeWrapper;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewRootImpl;
 import android.view.WindowManager;
 import android.graphics.drawable.Drawable;
@@ -44,6 +45,12 @@ final class PenIsland {
     private static final long FADE_MS = 250;
     private static final int PILL_COLOR_LIGHT = 0xD9FFFFFF;
     private static final int PILL_COLOR_DARK = 0xCC1E1E1E;
+    /**
+     * Stock ZUI island size factor: the whole popup is this much smaller than
+     * the sizes the constants below were taken from. Applied to every size, so
+     * the layout stays proportional (nothing is scaled after rendering).
+     */
+    private static final float SCALE = 0.85f;
     private static final int PILL_HEIGHT_DP = 68;
     private static final int PEN_HEIGHT_DP = 34;
     private static final int TIP_WIDTH_DP = 120;
@@ -79,7 +86,7 @@ final class PenIsland {
                 & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
         Context ui = new ContextThemeWrapper(window, android.R.style.Theme_DeviceDefault_DayNight);
         float dp = ui.getResources().getDisplayMetrics().density;
-        int height = (int) (PILL_HEIGHT_DP * dp);
+        int height = (int) (PILL_HEIGHT_DP * SCALE * dp);
         int bgColor = night ? PILL_COLOR_DARK : PILL_COLOR_LIGHT;
 
         // Like the ZUI island: name and battery on the left, a close-up of the
@@ -92,7 +99,7 @@ final class PenIsland {
         bg.setCornerRadius(height / 2f);
         pill.setBackground(bg);
         pill.setClipToOutline(true);
-        pill.setPaddingRelative((int) (26 * dp), 0, 0, 0);
+        pill.setPaddingRelative((int) (26 * SCALE * dp), 0, 0, 0);
 
         LinearLayout text = new LinearLayout(ui);
         text.setOrientation(LinearLayout.VERTICAL);
@@ -102,7 +109,7 @@ final class PenIsland {
             TextView label = new TextView(ui);
             label.setText(name);
             label.setTextColor(night ? 0xFFF2F2F2 : 0xFF1F1F1F);
-            label.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            label.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16 * SCALE);
             label.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
             label.setMaxLines(1);
             nameWidth = (int) Math.ceil(label.getPaint().measureText(name));
@@ -111,12 +118,13 @@ final class PenIsland {
         }
         FrameLayout battery = new FrameLayout(ui);
         View view = content.apply(ui, battery);
+        scaleSizes(view, SCALE);
         battery.addView(view, new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT,
                 Gravity.CENTER_VERTICAL | Gravity.START));
         LinearLayout.LayoutParams lpBattery = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lpBattery.topMargin = text.getChildCount() > 0 ? (int) (4 * dp) : 0;
+        lpBattery.topMargin = text.getChildCount() > 0 ? (int) (4 * SCALE * dp) : 0;
         text.addView(battery, lpBattery);
         pill.addView(text, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -127,19 +135,20 @@ final class PenIsland {
             ImageView image = new ImageView(ui);
             image.setImageDrawable(picture);
             image.setScaleType(ImageView.ScaleType.MATRIX);
-            int penHeight = (int) (PEN_HEIGHT_DP * dp);
-            float scale = (float) penHeight / picture.getIntrinsicHeight();
+            int penHeight = (int) (PEN_HEIGHT_DP * SCALE * dp);
+            float penScale = (float) penHeight / picture.getIntrinsicHeight();
             Matrix m = new Matrix();
-            m.setScale(scale, scale);
+            m.setScale(penScale, penScale);
             m.postTranslate(0, (height - penHeight) / 2f);
             image.setImageMatrix(m);
             LinearLayout.LayoutParams lpImage =
-                    new LinearLayout.LayoutParams((int) (TIP_WIDTH_DP * dp), height);
-            lpImage.setMarginStart((int) (28 * dp));
+                    new LinearLayout.LayoutParams((int) (TIP_WIDTH_DP * SCALE * dp), height);
+            lpImage.setMarginStart((int) (28 * SCALE * dp));
             pill.addView(image, lpImage);
             imageWidth = lpImage.width + lpImage.getMarginStart();
         } else {
-            pill.setPaddingRelative((int) (26 * dp), 0, (int) (26 * dp), 0);
+            pill.setPaddingRelative((int) (26 * SCALE * dp), 0,
+                    (int) (26 * SCALE * dp), 0);
         }
 
         // A WRAP_CONTENT window is first measured at the preferred dialog width,
@@ -158,7 +167,7 @@ final class PenIsland {
                         | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                 PixelFormat.TRANSLUCENT);
         lp.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
-        lp.y = (int) (TOP_MARGIN_DP * dp);
+        lp.y = (int) (TOP_MARGIN_DP * SCALE * dp);
         lp.layoutInDisplayCutoutMode =
                 WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS;
         lp.setTitle("PenIsland");
@@ -185,12 +194,56 @@ final class PenIsland {
             ViewRootImpl root = pill.getViewRootImpl();
             if (root == null || !wm.isCrossWindowBlurEnabled()) return;
             BackgroundBlurDrawable blur = root.createBackgroundBlurDrawable();
-            blur.setBlurRadius((int) (BLUR_DP * dp));
+            blur.setBlurRadius((int) (BLUR_DP * SCALE * dp));
             blur.setCornerRadius(radius);
             blur.setColor(color);
             pill.setBackground(blur);
         } catch (RuntimeException e) {
             Log.w(TAG, "blur", e);
+        }
+    }
+
+    /**
+     * Shrinks the inflated PenService battery view to match the pill. The layout
+     * of PenService (pen_pair_layout_for_notification_new) uses real dp and sp
+     * sizes, so they are rewritten instead of scaling the rendered view: that
+     * keeps the battery percentage text crisp.
+     */
+    private static void scaleSizes(View view, float scale) {
+        ViewGroup.LayoutParams lp = view.getLayoutParams();
+        if (lp != null) {
+            if (lp.width > 0) lp.width = Math.round(lp.width * scale);
+            if (lp.height > 0) lp.height = Math.round(lp.height * scale);
+            if (lp instanceof ViewGroup.MarginLayoutParams) {
+                ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) lp;
+                int top = Math.round(mlp.topMargin * scale);
+                int bottom = Math.round(mlp.bottomMargin * scale);
+                if (mlp.isMarginRelative()) {
+                    // layout_marginStart/End (what the PenService layout uses,
+                    // resolved by the inflater): keep them relative.
+                    mlp.setMarginsRelative(Math.round(mlp.getMarginStart() * scale), top,
+                            Math.round(mlp.getMarginEnd() * scale), bottom);
+                } else {
+                    mlp.setMargins(Math.round(mlp.leftMargin * scale), top,
+                            Math.round(mlp.rightMargin * scale), bottom);
+                }
+            }
+        }
+        view.setPadding(Math.round(view.getPaddingLeft() * scale),
+                Math.round(view.getPaddingTop() * scale),
+                Math.round(view.getPaddingRight() * scale),
+                Math.round(view.getPaddingBottom() * scale));
+        if (view instanceof TextView) {
+            TextView tv = (TextView) view;
+            tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, tv.getTextSize() * scale);
+            tv.setMinWidth(Math.round(tv.getMinimumWidth() * scale));
+            tv.setMinHeight(Math.round(tv.getMinimumHeight() * scale));
+        }
+        if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                scaleSizes(group.getChildAt(i), scale);
+            }
         }
     }
 
