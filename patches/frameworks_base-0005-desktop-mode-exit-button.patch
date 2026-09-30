@@ -1,9 +1,9 @@
 diff --git a/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/DesktopModeExitButton.java b/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/DesktopModeExitButton.java
 new file mode 100644
-index 000000000..e3408c606
+index 000000000..0d3e3cf35
 --- /dev/null
 +++ b/libs/WindowManager/Shell/src/com/android/wm/shell/desktopmode/DesktopModeExitButton.java
-@@ -0,0 +1,292 @@
+@@ -0,0 +1,265 @@
 +/*
 + * Copyright (C) 2026 The Android Open Source Project
 + * SPDX-License-Identifier: Apache-2.0
@@ -29,7 +29,6 @@ index 000000000..e3408c606
 +import android.graphics.Typeface;
 +import android.graphics.drawable.GradientDrawable;
 +import android.graphics.drawable.Drawable;
-+import android.graphics.drawable.LayerDrawable;
 +import android.graphics.drawable.RippleDrawable;
 +import android.os.Handler;
 +import android.util.Log;
@@ -40,8 +39,6 @@ index 000000000..e3408c606
 +import android.view.WindowManager;
 +import android.widget.FrameLayout;
 +import android.widget.TextView;
-+
-+import com.android.internal.graphics.drawable.BackgroundBlurDrawable;
 +
 +import java.util.function.BooleanSupplier;
 +import java.util.function.Supplier;
@@ -171,37 +168,13 @@ index 000000000..e3408c606
 +            GradientDrawable mask = new GradientDrawable();
 +            mask.setColor(Color.WHITE);
 +            mask.setCornerRadius(dp(24));
-+            // Frosted glass: translucent taskbar color with a hairline outline.
++            // Translucent taskbar color with a hairline outline.
 +            GradientDrawable background = new GradientDrawable();
-+            background.setColor((backgroundColor & 0x00ffffff) | 0xd9000000);
++            background.setColor((backgroundColor & 0x00ffffff) | 0xcc000000);
 +            background.setCornerRadius(dp(24));
 +            background.setStroke(Math.max(1, dp(1) / 2), outlineColor);
 +            button.setBackground(new RippleDrawable(ColorStateList.valueOf(rippleColor),
 +                    background, mask));
-+            button.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-+                @Override
-+                public void onViewAttachedToWindow(View view) {
-+                    // Blur what is behind the button when window blurs are available.
-+                    if (!mWindowManager.isCrossWindowBlurEnabled()
-+                            || view.getViewRootImpl() == null) {
-+                        return;
-+                    }
-+                    BackgroundBlurDrawable blur =
-+                            view.getViewRootImpl().createBackgroundBlurDrawable();
-+                    blur.setBlurRadius(dp(30));
-+                    blur.setCornerRadius(dp(24));
-+                    blur.setColor((backgroundColor & 0x00ffffff) | 0x8c000000);
-+                    GradientDrawable outline = new GradientDrawable();
-+                    outline.setCornerRadius(dp(24));
-+                    outline.setStroke(Math.max(1, dp(1) / 2), outlineColor);
-+                    view.setBackground(new RippleDrawable(ColorStateList.valueOf(rippleColor),
-+                            new LayerDrawable(
-+                                    new Drawable[] {blur, outline}), mask));
-+                }
-+
-+                @Override
-+                public void onViewDetachedFromWindow(View view) {}
-+            });
 +            button.setOnClickListener(view -> {
 +                try {
 +                    mExit.run();
