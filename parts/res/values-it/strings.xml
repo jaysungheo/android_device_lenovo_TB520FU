@@ -48,8 +48,8 @@
     <string name="vram_summary">%1$s. Usa parte dello spazio di archiviazione come memoria per le app in background.</string>
     <string name="vram_summary_pending">%1$s dopo il riavvio (ora: %2$s)</string>
     <string name="memory_status_title">Memoria attuale</string>
-    <string name="memory_status_summary">RAM %1$s · Memoria compressa %2$s (in uso %3$s)</string>
-    <string name="memory_status_summary_off">RAM %1$s · Memoria compressa disattivata</string>
+    <string name="memory_status_summary">RAM %1$s + %2$s (in uso %3$s)</string>
+    <string name="memory_status_summary_off">RAM %1$s (in uso %2$s)</string>
     <string name="reboot_title">Riavvio necessario</string>
     <string name="reboot_message">La nuova dimensione dell\'estensione di memoria si applica dopo il riavvio del tablet. Riavviare ora?</string>
     <string name="reboot_now">Riavvia</string>

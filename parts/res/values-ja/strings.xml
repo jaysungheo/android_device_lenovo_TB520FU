@@ -49,8 +49,8 @@
     <string name="vram_summary">%1$s。ストレージの一部をバックグラウンドアプリ用のメモリとして使います。</string>
     <string name="vram_summary_pending">再起動後 %1$s（現在: %2$s）</string>
     <string name="memory_status_title">現在のメモリ</string>
-    <string name="memory_status_summary">RAM %1$s · 圧縮メモリ %2$s（使用中 %3$s）</string>
-    <string name="memory_status_summary_off">RAM %1$s · 圧縮メモリ オフ</string>
+    <string name="memory_status_summary">RAM %1$s + %2$s（使用中 %3$s）</string>
+    <string name="memory_status_summary_off">RAM %1$s（使用中 %2$s）</string>
     <string name="reboot_title">再起動が必要です</string>
     <string name="reboot_message">新しいメモリ拡張サイズはタブレットの再起動後に適用されます。今すぐ再起動しますか？</string>
     <string name="reboot_now">再起動</string>

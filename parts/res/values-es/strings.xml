@@ -48,8 +48,8 @@
     <string name="vram_summary">%1$s. Usa parte del almacenamiento como memoria para las aplicaciones en segundo plano.</string>
     <string name="vram_summary_pending">%1$s tras reiniciar (ahora: %2$s)</string>
     <string name="memory_status_title">Memoria actual</string>
-    <string name="memory_status_summary">RAM %1$s · Memoria comprimida %2$s (en uso %3$s)</string>
-    <string name="memory_status_summary_off">RAM %1$s · Memoria comprimida desactivada</string>
+    <string name="memory_status_summary">RAM %1$s + %2$s (en uso %3$s)</string>
+    <string name="memory_status_summary_off">RAM %1$s (en uso %2$s)</string>
     <string name="reboot_title">Reinicio necesario</string>
     <string name="reboot_message">El nuevo tamaño de ampliación de memoria se aplica tras reiniciar la tableta. ¿Reiniciar ahora?</string>
     <string name="reboot_now">Reiniciar</string>

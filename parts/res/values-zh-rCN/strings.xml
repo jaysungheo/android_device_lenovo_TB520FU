@@ -49,8 +49,8 @@
     <string name="vram_summary">%1$s。将部分存储空间用作后台应用的内存。</string>
     <string name="vram_summary_pending">重启后为 %1$s（当前：%2$s）</string>
     <string name="memory_status_title">当前内存</string>
-    <string name="memory_status_summary">RAM %1$s · 压缩内存 %2$s（已用 %3$s）</string>
-    <string name="memory_status_summary_off">RAM %1$s · 压缩内存已关闭</string>
+    <string name="memory_status_summary">RAM %1$s + %2$s（已用 %3$s）</string>
+    <string name="memory_status_summary_off">RAM %1$s（已用 %2$s）</string>
     <string name="reboot_title">需要重启</string>
     <string name="reboot_message">新的内存扩展大小将在平板重启后生效。立即重启？</string>
     <string name="reboot_now">重启</string>

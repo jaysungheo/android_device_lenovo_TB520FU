@@ -50,8 +50,8 @@
     <string name="vram_summary">%1$s. Utilise une partie du stockage comme mémoire pour les applications en arrière-plan.</string>
     <string name="vram_summary_pending">%1$s après redémarrage (actuellement : %2$s)</string>
     <string name="memory_status_title">Mémoire actuelle</string>
-    <string name="memory_status_summary">RAM %1$s · Mémoire compressée %2$s (utilisée %3$s)</string>
-    <string name="memory_status_summary_off">RAM %1$s · Mémoire compressée désactivée</string>
+    <string name="memory_status_summary">RAM %1$s + %2$s (utilisée %3$s)</string>
+    <string name="memory_status_summary_off">RAM %1$s (utilisée %2$s)</string>
     <string name="reboot_title">Redémarrage requis</string>
     <string name="reboot_message">La nouvelle taille d\'extension de mémoire s\'applique après le redémarrage de la tablette. Redémarrer maintenant ?</string>
     <string name="reboot_now">Redémarrer</string>

@@ -53,8 +53,8 @@
     <string name="vram_summary">%1$s. Uses storage as extra memory for apps kept in the background.</string>
     <string name="vram_summary_pending">%1$s after restart (now: %2$s)</string>
     <string name="memory_status_title">Current memory</string>
-    <string name="memory_status_summary">RAM %1$s · Compressed memory %2$s (in use %3$s)</string>
-    <string name="memory_status_summary_off">RAM %1$s · Compressed memory off</string>
+    <string name="memory_status_summary">RAM %1$s + %2$s (in use %3$s)</string>
+    <string name="memory_status_summary_off">RAM %1$s (in use %2$s)</string>
     <string name="reboot_title">Restart required</string>
     <string name="reboot_message">The new memory extension size is used after the tablet restarts. Restart now?</string>
     <string name="reboot_now">Restart</string>

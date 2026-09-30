@@ -47,8 +47,8 @@
     <string name="vram_summary">%1$s. Usa parte do armazenamento como memória para apps em segundo plano.</string>
     <string name="vram_summary_pending">%1$s após reiniciar (agora: %2$s)</string>
     <string name="memory_status_title">Memória atual</string>
-    <string name="memory_status_summary">RAM %1$s · Memória compactada %2$s (em uso %3$s)</string>
-    <string name="memory_status_summary_off">RAM %1$s · Memória compactada desativada</string>
+    <string name="memory_status_summary">RAM %1$s + %2$s (em uso %3$s)</string>
+    <string name="memory_status_summary_off">RAM %1$s (em uso %2$s)</string>
     <string name="reboot_title">Reinicialização necessária</string>
     <string name="reboot_message">O novo tamanho da extensão de memória é usado após reiniciar o tablet. Reiniciar agora?</string>
     <string name="reboot_now">Reiniciar</string>

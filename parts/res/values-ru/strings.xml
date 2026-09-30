@@ -50,8 +50,8 @@
     <string name="vram_summary">%1$s. Часть хранилища используется как память для фоновых приложений.</string>
     <string name="vram_summary_pending">%1$s после перезапуска (сейчас: %2$s)</string>
     <string name="memory_status_title">Текущая память</string>
-    <string name="memory_status_summary">ОЗУ %1$s · Сжатая память %2$s (занято %3$s)</string>
-    <string name="memory_status_summary_off">ОЗУ %1$s · Сжатая память выкл.</string>
+    <string name="memory_status_summary">ОЗУ %1$s + %2$s (занято %3$s)</string>
+    <string name="memory_status_summary_off">ОЗУ %1$s (занято %2$s)</string>
     <string name="reboot_title">Требуется перезапуск</string>
     <string name="reboot_message">Новый размер расширения памяти применится после перезапуска планшета. Перезапустить сейчас?</string>
     <string name="reboot_now">Перезапустить</string>

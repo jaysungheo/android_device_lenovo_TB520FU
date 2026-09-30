@@ -49,8 +49,8 @@
     <string name="vram_summary">%1$s. 백그라운드 앱을 위해 저장공간 일부를 메모리로 사용합니다.</string>
     <string name="vram_summary_pending">재시작 후 %1$s (현재: %2$s)</string>
     <string name="memory_status_title">현재 메모리</string>
-    <string name="memory_status_summary">RAM %1$s · 압축 메모리 %2$s (사용 중 %3$s)</string>
-    <string name="memory_status_summary_off">RAM %1$s · 압축 메모리 꺼짐</string>
+    <string name="memory_status_summary">RAM %1$s + %2$s (사용 중 %3$s)</string>
+    <string name="memory_status_summary_off">RAM %1$s (사용 중 %2$s)</string>
     <string name="reboot_title">재시작 필요</string>
     <string name="reboot_message">새 메모리 확장 크기는 태블릿을 다시 시작한 뒤 적용됩니다. 지금 다시 시작할까요?</string>
     <string name="reboot_now">다시 시작</string>

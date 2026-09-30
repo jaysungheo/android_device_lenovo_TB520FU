@@ -49,8 +49,8 @@
     <string name="vram_summary">%1$s。將部分儲存空間作為背景應用程式的記憶體。</string>
     <string name="vram_summary_pending">重新啟動後為 %1$s（目前：%2$s）</string>
     <string name="memory_status_title">目前記憶體</string>
-    <string name="memory_status_summary">RAM %1$s · 壓縮記憶體 %2$s（已用 %3$s）</string>
-    <string name="memory_status_summary_off">RAM %1$s · 壓縮記憶體已關閉</string>
+    <string name="memory_status_summary">RAM %1$s + %2$s（已用 %3$s）</string>
+    <string name="memory_status_summary_off">RAM %1$s（已用 %2$s）</string>
     <string name="reboot_title">需要重新啟動</string>
     <string name="reboot_message">新的記憶體擴充大小會在平板重新啟動後生效。要立即重新啟動嗎？</string>
     <string name="reboot_now">重新啟動</string>

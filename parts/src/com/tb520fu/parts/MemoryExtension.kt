@@ -45,19 +45,30 @@ object MemoryExtension {
             null
         }
 
-    data class Status(val ramBytes: Long, val swapBytes: Long, val swapUsedBytes: Long)
+    data class Status(val ramBytes: Long, val availableBytes: Long, val writebackBytes: Long)
 
     fun readStatus(): Status? = try {
         val info = File("/proc/meminfo").readLines().associate { line ->
             val (key, value) = line.split(":", limit = 2)
             key.trim() to value.trim().substringBefore(' ').toLong() * 1024
         }
-        val swap = info["SwapTotal"] ?: 0
-        Status(info.getValue("MemTotal"), swap, swap - (info["SwapFree"] ?: swap))
+        val total = info.getValue("MemTotal")
+        Status(total, info["MemAvailable"] ?: total, readWritebackBytes())
     } catch (e: Exception) {
         Log.w(TAG, "Cannot read /proc/meminfo", e)
         null
     }
 
+    /** Bytes written back to the zram backing device, or 0 if it can't be read. */
+    private fun readWritebackBytes(): Long = try {
+        // bd_stat: bd_count bd_reads bd_writes, all counted in pages on the backing device
+        val pages = File("/sys/block/zram0/bd_stat").readText().trim().split(" ")[0].toLong()
+        pages * PAGE_SIZE
+    } catch (e: Exception) {
+        Log.w(TAG, "Cannot read the zram backing device stats", e)
+        0
+    }
+
+    private const val PAGE_SIZE = 4096L
     private const val GIB = 1024L * 1024 * 1024
 }

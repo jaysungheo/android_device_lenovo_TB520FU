@@ -174,15 +174,15 @@ class PartsFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceC
         val status = MemoryExtension.readStatus() ?: return
         val ctx = requireContext()
         val ram = Formatter.formatShortFileSize(ctx, status.ramBytes)
-        statusPref.summary = if (status.swapBytes == 0L) {
-            getString(R.string.memory_status_summary_off, ram)
+        val used = Formatter.formatShortFileSize(
+            ctx,
+            status.ramBytes - status.availableBytes + status.writebackBytes,
+        )
+        val active = MemoryExtension.activeGb ?: 0
+        statusPref.summary = if (active > 0) {
+            getString(R.string.memory_status_summary, ram, sizeLabel(active), used)
         } else {
-            getString(
-                R.string.memory_status_summary,
-                ram,
-                Formatter.formatShortFileSize(ctx, status.swapBytes),
-                Formatter.formatShortFileSize(ctx, status.swapUsedBytes),
-            )
+            getString(R.string.memory_status_summary_off, ram, used)
         }
     }
 
