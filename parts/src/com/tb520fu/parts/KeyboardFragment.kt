@@ -171,9 +171,11 @@ class KeyboardFragment : SettingsBasePreferenceFragment(), InputManager.InputDev
     override fun onInputDeviceChanged(deviceId: Int) = updateFirmwareUpdate()
 
     /**
-     * Stock: the firmware update entry is shown only with a Lenovo keyboard connected.
-     * The updater reads the keyboard state through LenovoKeyboardManager
-     * (patches/frameworks_base-0003), so hide the category on ROMs without it as well.
+     * Stock shows the firmware update entry only with a Lenovo keyboard connected; here it
+     * is always there, so the updater (and the installed firmware version) can be opened
+     * before the keyboard is attached. The updater reads the keyboard state through
+     * LenovoKeyboardManager (patches/frameworks_base-0003), so hide the category on ROMs
+     * without it.
      */
     private fun updateFirmwareUpdate() {
         val intent = LenovoKeyboard.firmwareUpdateIntent(requireContext())

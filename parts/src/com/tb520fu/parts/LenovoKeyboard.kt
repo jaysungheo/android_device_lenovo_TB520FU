@@ -94,15 +94,15 @@ object LenovoKeyboard {
         Settings.System.putStringForUser(ctx.contentResolver, key, value, UserHandle.USER_CURRENT)
 
     /**
-     * Firmware update screen for the connected Lenovo keyboard (stock
-     * PhysicalKeyboardFragment.startKeyboardUpdateActivity), or null when no
-     * Lenovo keyboard is connected or its updater is missing.
+     * Firmware update screen (stock PhysicalKeyboardFragment.startKeyboardUpdateActivity):
+     * the Olympia updater for a connected Olympia keyboard, otherwise the pogo pin keyboard
+     * updater, also with no keyboard connected (it then shows the last known version and
+     * waits for the keyboard). Null when the updater is missing.
      */
     fun firmwareUpdateIntent(ctx: Context): Intent? {
         val im = ctx.getSystemService(InputManager::class.java)
         val keyboards = im.inputDeviceIds.toList().mapNotNull { im.getInputDevice(it) }
             .filter { !it.isVirtual && it.isFullKeyboard && it.vendorId == VENDOR_LENOVO }
-        if (keyboards.isEmpty()) return null
         val olympia = keyboards.any { it.productId == PRODUCT_OLYMPIA }
         val intent = if (olympia) {
             Intent().setClassName(UPDATE_OLYMPIA_PACKAGE, UPDATE_OLYMPIA_ACTIVITY)
