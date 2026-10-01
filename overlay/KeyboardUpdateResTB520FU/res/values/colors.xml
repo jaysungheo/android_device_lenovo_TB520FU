@@ -3,13 +3,11 @@
      SPDX-FileCopyrightText: The LineageOS Project
      SPDX-License-Identifier: Apache-2.0
 -->
-<!-- The stock Lenovo keyboard-update app targets SDK 34 and paints the
-     navigation bar with the framework default (black), which shows as a black
-     band inside the Settings right pane. Its own background (@color/background_zui)
-     is the theme colorBackground, so the bar is re-pointed at the same colour
-     and the page background is mapped onto the PixelOS Settings surface. Both
-     are plain colour resources, so the selectors that layer on top of them keep
-     their states. -->
+<!-- Map the page background of the stock Lenovo keyboard-update app onto
+     the PixelOS Settings surface. Only the plain colour resource is
+     overlaid: a style overlay cannot name the app private parent theme
+     (Theme.AppCompat.Zui), its 0x7f reference resolves inside the overlay
+     and MainActivity then crashes without an AppCompat theme. -->
 <resources>
     <color name="background_zui">@android:color/system_surface_container_light</color>
 </resources>
