@@ -108,6 +108,18 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="folio"
+        android:title="@string/folio_category">
+
+        <SwitchPreferenceCompat
+            android:key="folio_case_mode"
+            android:title="@string/lkb_folio_case_mode"
+            android:summary="@string/lkb_folio_case_mode_summary"
+            android:persistent="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:key="memory"
         android:title="@string/memory_category">
 

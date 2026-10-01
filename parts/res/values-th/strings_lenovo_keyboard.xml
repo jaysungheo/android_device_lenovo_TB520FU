@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">แป้นพิมพ์จริง</string>
     <string name="lkb_keyboard_assistance_category">ความช่วยเหลือเกี่ยวกับแป้นพิมพ์</string>
+    <string name="lkb_folio_case_mode">โหมดเคสโฟลิโอ</string>
+    <string name="lkb_folio_case_mode_summary">หากเปิดใช้งานตัวเลือกนี้ อุปกรณ์จะปิดหน้าจอและล็อคโดยอัตโนมัติทุกครั้งที่มีเคสโฟลิโอปิดหน้าจอ เพื่อประหยัดแบตเตอรี่</string>
     <string name="lkb_keyboard_shortcuts_helper">ดูแป้นพิมพ์ลัด</string>
     <string name="lkb_keyboard_shortcuts_summary">กดปุ่ม Ctrl ค้างไว้ 3 เพื่อดูปุ่มลัดคีย์บอร์ดได้ทุกเมื่อ</string>
     <string name="lkb_keyboard_shortcuts_switch">การตั้งค่าทางลัด</string>

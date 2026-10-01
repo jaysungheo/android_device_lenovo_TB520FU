@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Klawiatura fizyczna</string>
     <string name="lkb_keyboard_assistance_category">Asystent klawiatury</string>
+    <string name="lkb_folio_case_mode">Tryb etui z klapką</string>
+    <string name="lkb_folio_case_mode_summary">Gdy ta opcja jest włączona, urządzenie automatycznie wyłączy ekran i zablokuje się za każdym razem gdy klapka etui zasłania ekran, aby zaoszczędzić baterię</string>
     <string name="lkb_keyboard_shortcuts_helper">Wyświetl skróty klawiszowe</string>
     <string name="lkb_keyboard_shortcuts_summary">Naciśnij i przytrzymaj przycisk Ctrl przez 3 sekundy, aby wyświetlić skróty klawiaturowe w dowolnym momencie</string>
     <string name="lkb_keyboard_shortcuts_switch">Ustawienia skrótów</string>

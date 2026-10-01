@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Фізична клавіатура</string>
     <string name="lkb_keyboard_assistance_category">Допомога для клавіатури</string>
+    <string name="lkb_folio_case_mode">Режим фліп-чохла</string>
+    <string name="lkb_folio_case_mode_summary">Якщо його активовано, у разі закриття кришки чохла пристрій автоматично вимикатиме й блокуватиме екран, щоб зекономити заряд.</string>
     <string name="lkb_keyboard_shortcuts_helper">Переглянути комбінації клавіш</string>
     <string name="lkb_keyboard_shortcuts_summary">Ви можете в будь-який час переглянути комбінації клавіш. Для цього натисніть і втримуйте Ctrl протягом 3 секунд.</string>
     <string name="lkb_keyboard_shortcuts_switch">Налаштування ярликів</string>

@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Tastatură fizică</string>
     <string name="lkb_keyboard_assistance_category">Asistență pentru tastatură</string>
+    <string name="lkb_folio_case_mode">Mod husă tip folio</string>
+    <string name="lkb_folio_case_mode_summary">Dacă această opțiune este activată, dispozitivul va opri ecranul și se va bloca automat atunci când husa tip folio acoperă ecranul, pentru a economisi bateria.</string>
     <string name="lkb_keyboard_shortcuts_helper">Vezi comenzi rapide de la tastatură</string>
     <string name="lkb_keyboard_shortcuts_summary">Ţineţi apăsată tasta Ctrl timp de 3 secunde pentru a vizualiza oricând comenzile rapide de la tastatură</string>
     <string name="lkb_keyboard_shortcuts_switch">Setare scurtături</string>

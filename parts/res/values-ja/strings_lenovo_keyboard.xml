@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">物理キーボード</string>
     <string name="lkb_keyboard_assistance_category">キーボード補助機能</string>
+    <string name="lkb_folio_case_mode">フォリオケースモード</string>
+    <string name="lkb_folio_case_mode_summary">この機能が有効になっている場合、フォリオケースが画面を覆っている間、デバイスの画面が自動的にオフになってロックされ、バッテリーを節約します。</string>
     <string name="lkb_keyboard_shortcuts_helper">キーボード ショートカットを表示</string>
     <string name="lkb_keyboard_shortcuts_summary">Ctrl キーを 3 秒間長押しすると、キーボードショートカットが表示されます</string>
     <string name="lkb_keyboard_shortcuts_switch">ショートカット設定</string>

@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Fysisk tastatur</string>
     <string name="lkb_keyboard_assistance_category">Hjælp til tastaturet</string>
+    <string name="lkb_folio_case_mode">Folioetui-funktion</string>
+    <string name="lkb_folio_case_mode_summary">Hvis denne funktion er aktiveret, slukker enheden for skærmen og låser automatisk, når folioetuiet dækker skærmen, for at spare på batteriet.</string>
     <string name="lkb_keyboard_shortcuts_helper">Se tastaturgenveje</string>
     <string name="lkb_keyboard_shortcuts_summary">Tryk på Ctrl, og hold nede i 3 sekunder for når som helst at få vist tastaturgenveje</string>
     <string name="lkb_keyboard_shortcuts_switch">Indstillinger for genveje</string>

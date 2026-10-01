@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Fysiskt tangentbord</string>
     <string name="lkb_keyboard_assistance_category">Hjälp med tangentbord</string>
+    <string name="lkb_folio_case_mode">Fodralläge</string>
+    <string name="lkb_folio_case_mode_summary">Om detta är aktiverat stänger enheten av skärmen och låser den automatiskt när fodralet täcker skärmen för att spara batteri.</string>
     <string name="lkb_keyboard_shortcuts_helper">Visa kortkommandon</string>
     <string name="lkb_keyboard_shortcuts_summary">Håll Ctrl nedtryckt i 3 sekunder varje gång du vill visa kortkommandon</string>
     <string name="lkb_keyboard_shortcuts_switch">Inställning för genvägar</string>

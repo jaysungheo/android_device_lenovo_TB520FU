@@ -22,6 +22,8 @@ object LenovoKeyboard {
     const val SINGLE_FINGER_TAP = "physical_keyboard_single_finger_touch"
     /** Stock "System mode when a keyboard is connected": 0 tablet, 1 PC mode. */
     const val SYSTEM_MODE = "enter_work_mode_from_keyboard"
+    /** Stock "Folio case mode": the cover turns the screen off and on, 1 (unset) on. */
+    const val FOLIO_CASE_MODE = "zui_lid_enable"
     const val APP1 = "keyboard_shortcut_value_app1"
     const val APP2 = "keyboard_shortcut_value_app2"
 

@@ -48,6 +48,17 @@ class PartsFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceC
         maintenancePref = switch(KEY_MAINTENANCE, LenovoSettings.BATTERY_MAINTENANCE, 1)
         batteryInfoPref = findPreference(KEY_BATTERY_INFO)!!
 
+        // Folio case mode (stock Settings.System key, per user), applied by
+        // tb520fu-input (FolioCover) when the hall sensor reports the cover.
+        findPreference<SwitchPreferenceCompat>(KEY_FOLIO)!!.apply {
+            isChecked = LenovoKeyboard.getInt(ctx, LenovoKeyboard.FOLIO_CASE_MODE, 1) != 0
+            setOnPreferenceChangeListener { _, value ->
+                LenovoKeyboard.putInt(requireContext(), LenovoKeyboard.FOLIO_CASE_MODE,
+                    if (value as Boolean) 1 else 0)
+                true
+            }
+        }
+
         // Adaptive white balance (the Settings > Display switch is hidden) and how
         // strongly it follows the ambient light (patches/frameworks_base-0002)
         findPreference<SwitchPreferenceCompat>(KEY_WHITE_BALANCE)!!.apply {
@@ -191,6 +202,7 @@ class PartsFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceC
         const val KEY_STANDBY = "standby_saver"
         const val KEY_MAINTENANCE = "battery_maintenance"
         const val KEY_BATTERY_INFO = "battery_info"
+        const val KEY_FOLIO = "folio_case_mode"
         const val KEY_WHITE_BALANCE = "white_balance"
         const val KEY_WHITE_BALANCE_STRENGTH = "white_balance_strength"
         const val KEY_PEN_CATEGORY = "pen"

@@ -52,6 +52,7 @@ public final class InputCore {
     final KeyboardController mKeyboard;
     final BatteryController mBattery;
     final DoubleTapWake mDoubleTapWake;
+    final FolioCover mFolio;
     final StandbyController mStandby;
     final PalmController mPalm;
     final KeyboardDesktopMode mDesktopMode;
@@ -84,6 +85,7 @@ public final class InputCore {
         mKeyboard = new KeyboardController(context, mHandler);
         mBattery = new BatteryController(context, mHandler);
         mDoubleTapWake = new DoubleTapWake(context, mHandler);
+        mFolio = new FolioCover(context, mHandler);
         mStandby = new StandbyController(context, mHandler);
         mPalm = new PalmController(context, mHandler);
         mDesktopMode = new KeyboardDesktopMode(context, mHandler);
@@ -159,7 +161,9 @@ public final class InputCore {
     /** Called on the input dispatcher's policy thread; must stay cheap. */
     boolean handleKey(KeyEvent event) {
         if (!mStarted) return false;
-        if (mPenKeys.handle(event) || mKeyboard.handle(event)) return true;
+        if (mFolio.handle(event) || mPenKeys.handle(event) || mKeyboard.handle(event)) {
+            return true;
+        }
         return mExtension != null && mExtension.handleKey(event);
     }
 }

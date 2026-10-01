@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Fizička tipkovnica</string>
     <string name="lkb_keyboard_assistance_category">Pomoć za tipkovnicu</string>
+    <string name="lkb_folio_case_mode">Način rada s futrolom Folio Case</string>
+    <string name="lkb_folio_case_mode_summary">Ako se ovaj način rada omogući, zaslon uređaja automatski će se isključiti i zaključati kada futrola bude prekrivala zaslon u svrhu uštede baterije.</string>
     <string name="lkb_keyboard_shortcuts_helper">Prikaži tipkovne prečace</string>
     <string name="lkb_keyboard_shortcuts_summary">Pritisnite Ctrl i zadržite pritisak na tri sekunde kako bi vam se prikazali tipkovni prečaci</string>
     <string name="lkb_keyboard_shortcuts_switch">Postavljanje prečaca</string>

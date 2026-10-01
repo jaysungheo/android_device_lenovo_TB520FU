@@ -3,6 +3,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Pisikal na keyboard</string>
     <string name="lkb_keyboard_assistance_category">Tulong sa keyboard</string>
+    <string name="lkb_folio_case_mode_summary">Kung naka-enable ito, io-off ng device ang screen at awtomatiko itong magla-lock sa tuwing natatakpan ng folio case ang screen para makatipid ng baterya.</string>
     <string name="lkb_keyboard_shortcuts_helper">Tingnan ang mga keyboard shortcut</string>
     <string name="lkb_keyboard_shortcuts_summary">Pindutin nang matagal ang Ctrl sa loob ng 3 segundo upang tingnan ang mga shortcut sa keyboard anumang oras</string>
     <string name="lkb_keyboard_shortcuts_switch">Setting ng mga shortcut</string>

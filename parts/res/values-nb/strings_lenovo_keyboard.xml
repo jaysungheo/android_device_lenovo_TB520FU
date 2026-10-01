@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Fysisk tastatur</string>
     <string name="lkb_keyboard_assistance_category">Tastaturhjelp</string>
+    <string name="lkb_folio_case_mode">Skjermdekselmodus</string>
+    <string name="lkb_folio_case_mode_summary">Hvis dette er aktivert, slår enheten skjermen av og låser seg automatisk når dekselet dekker skjermen, for å spare batteri.</string>
     <string name="lkb_keyboard_shortcuts_helper">Se hurtigtastene</string>
     <string name="lkb_keyboard_shortcuts_summary">Trykk på og hold nede Ctrl-tasten i 3 sekunder når som helst for å vise hurtigtaster</string>
     <string name="lkb_keyboard_shortcuts_switch">Innstilling for snarveier</string>

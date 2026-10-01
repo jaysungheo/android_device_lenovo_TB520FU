@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Fiziskā tastatūra</string>
     <string name="lkb_keyboard_assistance_category">Palīdzība par tastatūru</string>
+    <string name="lkb_folio_case_mode">Folio futrāļa režīms</string>
+    <string name="lkb_folio_case_mode_summary">Kad ir iespējots šis režīms, ierīce automātiski izslēgs ekrānu un bloķēs darbību, tiklīdz Folio futrālis segs ierīces ekrānu, lai taupītu akumulatora enerģijas līmeni.</string>
     <string name="lkb_keyboard_shortcuts_helper">Skatīt īsinājumtaustiņus</string>
     <string name="lkb_keyboard_shortcuts_summary">Nospiediet un 3 sekundes turiet nospiestu taustiņu Ctrl, lai jebkurā laikā skatītu īsinājumtaustiņus</string>
     <string name="lkb_keyboard_shortcuts_switch">Saīšņu iestatījums</string>

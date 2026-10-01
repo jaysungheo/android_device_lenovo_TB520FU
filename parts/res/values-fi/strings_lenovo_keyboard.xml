@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Fyysinen näppäimistö</string>
     <string name="lkb_keyboard_assistance_category">Näppäimistön apuvälineet</string>
+    <string name="lkb_folio_case_mode">Taittokotelotila</string>
+    <string name="lkb_folio_case_mode_summary">Jos tämä on käytössä, laitteen näyttö sammuu ja lukkiutuu automaattisesti akkuvirran säästämiseksi aina, kun taittokotelo peittää näytön.</string>
     <string name="lkb_keyboard_shortcuts_helper">Näytä pikanäppäimet</string>
     <string name="lkb_keyboard_shortcuts_summary">Voit näyttää pikanäppäimet milloin tahansa painamalla Ctrl-näppäintä 3 sekuntia</string>
     <string name="lkb_keyboard_shortcuts_switch">Pikavalinta-asetus</string>

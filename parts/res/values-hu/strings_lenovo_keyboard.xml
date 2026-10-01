@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Fizikai billentyűzet</string>
     <string name="lkb_keyboard_assistance_category">Billentyűzetsegéd</string>
+    <string name="lkb_folio_case_mode">Folio tok üzemmód</string>
+    <string name="lkb_folio_case_mode_summary">Ha ez engedélyezve van, a készülék automatikusan kikapcsolja a képernyőt és lezárja magát, amikor a folio tok lefedi a kijelzőt, hogy energiát takarítson meg.</string>
     <string name="lkb_keyboard_shortcuts_helper">Billentyűparancsok megtekintése</string>
     <string name="lkb_keyboard_shortcuts_summary">A billentyűparancsokat bármikor megjelenítheti, ha lenyomva tartja a Ctrl billentyűt 3 másodpercig</string>
     <string name="lkb_keyboard_shortcuts_switch">Parancsikonok beállítása</string>

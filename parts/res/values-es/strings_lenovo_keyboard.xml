@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Teclado físico</string>
     <string name="lkb_keyboard_assistance_category">Ayuda del teclado</string>
+    <string name="lkb_folio_case_mode">Modo Funda plegable</string>
+    <string name="lkb_folio_case_mode_summary">Si está habilitado, el dispositivo apagará la pantalla y se bloqueará automáticamente cada vez que la funda plegable cubra la pantalla para ahorrar batería.</string>
     <string name="lkb_keyboard_shortcuts_helper">Ver combinaciones de teclas</string>
     <string name="lkb_keyboard_shortcuts_summary">Mantenga presionada la tecla Control durante 3 segundos para ver los accesos directos del teclado en cualquier momento</string>
     <string name="lkb_keyboard_shortcuts_switch">Configuración de accesos directos</string>

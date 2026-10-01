@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">מקלדת פיזית</string>
     <string name="lkb_keyboard_assistance_category">סיוע למקלדת</string>
+    <string name="lkb_folio_case_mode">מצב כיסוי פוליו</string>
+    <string name="lkb_folio_case_mode_summary">במצב מופעל, המכשיר יכבה את המסך ויינעל אוטומטית כאשר כיסוי הפוליו מכסה את המסך, כדי לחסוך בסוללה.</string>
     <string name="lkb_keyboard_shortcuts_helper">צפייה במקשי הקיצור</string>
     <string name="lkb_keyboard_shortcuts_summary">לחץ והחזק את מקש Ctrl למשך 3 שניות כדי להציג קיצורי מקשים בכל עת</string>
     <string name="lkb_keyboard_shortcuts_switch">הגדרת קיצורי דרך</string>

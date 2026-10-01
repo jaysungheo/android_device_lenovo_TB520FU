@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Teclado físico</string>
     <string name="lkb_keyboard_assistance_category">Assistência do teclado</string>
+    <string name="lkb_folio_case_mode">Modo de capa do tipo fólio</string>
+    <string name="lkb_folio_case_mode_summary">Se esta opção estiver ativada, o dispositivo desliga o ecrã e bloqueia automaticamente sempre que a capa do tipo fólio cobrir o ecrã, para poupar bateria.</string>
     <string name="lkb_keyboard_shortcuts_helper">Ver atalhos de teclado</string>
     <string name="lkb_keyboard_shortcuts_summary">Mantenha premida a tecla Ctrl durante 3 segundos para visualizar os atalhos do teclado em qualquer altura</string>
     <string name="lkb_keyboard_shortcuts_switch">Definição de atalhos</string>

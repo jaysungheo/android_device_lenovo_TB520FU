@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Fizična tipkovnica</string>
     <string name="lkb_keyboard_assistance_category">Pomoč za tipkovnico</string>
+    <string name="lkb_folio_case_mode">Način za ovitek Folio</string>
+    <string name="lkb_folio_case_mode_summary">Če je ta možnost omogočena, naprava z namenom varčevanja baterije zaslon izklopi in ga samodejno zaklene, kadar koli je uporabljen način za ovitek Folio.</string>
     <string name="lkb_keyboard_shortcuts_helper">Ogled bližnjičnih tipk</string>
     <string name="lkb_keyboard_shortcuts_summary">Pritisnite in za 3 sekunde pridržite tipko Ctrl za prikaz bližnjic na tipkovnici</string>
     <string name="lkb_keyboard_shortcuts_switch">Nastavitev bližnjic</string>

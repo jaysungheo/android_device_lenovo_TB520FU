@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">물리적 키보드</string>
     <string name="lkb_keyboard_assistance_category">키보드 지원</string>
+    <string name="lkb_folio_case_mode">폴리오 케이스 모드</string>
+    <string name="lkb_folio_case_mode_summary">이 옵션이 활성화되면 폴리오 케이스로 화면을 덮을 때마다 장치의 화면이 꺼지고 자동으로 잠기므로 배터리를 절약할 수 있습니다.</string>
     <string name="lkb_keyboard_shortcuts_helper">단축키 보기</string>
     <string name="lkb_keyboard_shortcuts_summary">Ctrl 키를 3초 동안 누르면 언제든지 키보드 단축키를 볼 수 있습니다</string>
     <string name="lkb_keyboard_shortcuts_switch">바로 가기 설정</string>

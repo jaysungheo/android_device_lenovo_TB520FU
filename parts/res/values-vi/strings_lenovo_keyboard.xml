@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Bàn phím vật lý</string>
     <string name="lkb_keyboard_assistance_category">Trợ giúp về bàn phím</string>
+    <string name="lkb_folio_case_mode">Chế độ Ốp Folio</string>
+    <string name="lkb_folio_case_mode_summary">Nếu chế độ này được bật, thiết bị sẽ tắt màn hình và tự động khóa bất cứ khi nào ốp folio che phủ màn hình để tiết kiệm pin.</string>
     <string name="lkb_keyboard_shortcuts_helper">Xem phím tắt</string>
     <string name="lkb_keyboard_shortcuts_summary">Nhấn giữ Ctrl trong 3 giây để xem phím tắt bàn phím vào mọi lúc</string>
     <string name="lkb_keyboard_shortcuts_switch">Cài đặt phím tắt</string>

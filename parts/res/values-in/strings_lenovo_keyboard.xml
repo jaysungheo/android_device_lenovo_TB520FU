@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Keyboard fisik</string>
     <string name="lkb_keyboard_assistance_category">Bantuan keyboard</string>
+    <string name="lkb_folio_case_mode">Mode Casing Folio</string>
+    <string name="lkb_folio_case_mode_summary">Jika mode ini diaktifkan, layar akan mati dan perangkat akan terkunci secara otomatis setiap kali casing folio menutupi layar guna menghemat baterai.</string>
     <string name="lkb_keyboard_shortcuts_helper">Tampilkan pintasan keyboard</string>
     <string name="lkb_keyboard_shortcuts_summary">Tekan dan tahan Ctrl selama 3 detik untuk melihat pintasan keyboard kapan saja</string>
     <string name="lkb_keyboard_shortcuts_switch">Pengaturan pintasan</string>

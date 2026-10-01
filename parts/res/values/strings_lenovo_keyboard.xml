@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Physical keyboard</string>
     <string name="lkb_keyboard_assistance_category">Keyboard assistance</string>
+    <string name="lkb_folio_case_mode">Folio Case Mode</string>
+    <string name="lkb_folio_case_mode_summary">If this is enabled, the device will turn the screen off and lock automatically whenever the folio case is covering the screen, to save battery.</string>
     <string name="lkb_keyboard_shortcuts_helper">Keyboard shortcuts</string>
     <string name="lkb_keyboard_shortcuts_summary">Press and hold Ctrl for 3 seconds to keyboard shortcuts at any time</string>
     <string name="lkb_keyboard_shortcuts_switch">Shortcuts setting</string>

@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Физическая клавиатура</string>
     <string name="lkb_keyboard_assistance_category">Подсказки клавиатуры</string>
+    <string name="lkb_folio_case_mode">Режим чехла-книжки</string>
+    <string name="lkb_folio_case_mode_summary">Если эта функция включена, устройство автоматически отключает экран и блокирует его, когда чехол-книжка закрывает экран, чтобы сэкономить заряд аккумулятора.</string>
     <string name="lkb_keyboard_shortcuts_helper">Посмотреть быстрые клавиши</string>
     <string name="lkb_keyboard_shortcuts_summary">Нажмите и удерживайте клавишу Ctrl в течение 3 секунд, чтобы в любое время просмотреть клавиши быстрого доступа</string>
     <string name="lkb_keyboard_shortcuts_switch">Настройка ярлыков</string>

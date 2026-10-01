@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Fysiek toetsenbord</string>
     <string name="lkb_keyboard_assistance_category">Toetsenbordondersteuning</string>
+    <string name="lkb_folio_case_mode">Modus Foliohoes</string>
+    <string name="lkb_folio_case_mode_summary">Als deze optie is ingeschakeld, schakelt het apparaat het scherm uit en wordt het automatisch vergrendeld wanneer de foliohoes het scherm bedekt om de batterij te sparen.</string>
     <string name="lkb_keyboard_shortcuts_helper">Sneltoetsen bekijken</string>
     <string name="lkb_keyboard_shortcuts_summary">Houd Ctrl 3 seconden ingedrukt om op elk gewenst moment sneltoetsen weer te geven</string>
     <string name="lkb_keyboard_shortcuts_switch">Instelling voor snelkoppelingen</string>

@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Физическа клавиатура</string>
     <string name="lkb_keyboard_assistance_category">Помощ за клавиатурата</string>
+    <string name="lkb_folio_case_mode">Режим на сгъваем калъф</string>
+    <string name="lkb_folio_case_mode_summary">Ако тази опция е активирана, устройството ще изключва екрана и ще го заключва автоматично, когато сгъваемият калъф покрива екрана, за да пести батерия.</string>
     <string name="lkb_keyboard_shortcuts_helper">Преглед на клавишните комбинации</string>
     <string name="lkb_keyboard_shortcuts_summary">Натиснете и задръжте Ctrl за 3 секунди, за да видите клавишните комбинации по всяко време</string>
     <string name="lkb_keyboard_shortcuts_switch">Настройка на преки пътища</string>

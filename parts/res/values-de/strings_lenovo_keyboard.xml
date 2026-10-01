@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Physische Tastatur</string>
     <string name="lkb_keyboard_assistance_category">Tastaturhilfe</string>
+    <string name="lkb_folio_case_mode">Schutzhüllenmodus</string>
+    <string name="lkb_folio_case_mode_summary">Wenn diese Option aktiviert ist, schaltet das Gerät zur Schonung des Akkus den Bildschirm aus und wird automatisch gesperrt, sobald die Schutzhülle den Bildschirm abdeckt.</string>
     <string name="lkb_keyboard_shortcuts_helper">Tastenkombinationen ansehen</string>
     <string name="lkb_keyboard_shortcuts_summary">Halten Sie die Strg-Taste 3 Sekunden lang gedrückt, um Tastenkombinationen jederzeit anzuzeigen</string>
     <string name="lkb_keyboard_shortcuts_switch">Verknüpfungseinstellungen</string>

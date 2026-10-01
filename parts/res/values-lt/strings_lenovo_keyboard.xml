@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Fizinė klaviatūra</string>
     <string name="lkb_keyboard_assistance_category">Klaviatūros pagalba</string>
+    <string name="lkb_folio_case_mode">Užverčiamo dėklo režimas</string>
+    <string name="lkb_folio_case_mode_summary">Jei ši funkcija įjungta, įrenginys automatiškai išjungs ir užrakins ekraną, kai jį uždengia užverčiamo dėklo viršelis, kad būtų taupoma akumuliatoriaus energija.</string>
     <string name="lkb_keyboard_shortcuts_helper">Peržiūrėti sparčiuosius klavišus</string>
     <string name="lkb_keyboard_shortcuts_summary">Klaviatūros spartieji klavišai parodomi, 3 sekundėms nuspaudus CTRL mygtuką</string>
     <string name="lkb_keyboard_shortcuts_switch">Sparčiųjų klavišų nustatymas</string>

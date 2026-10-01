@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Fiziksel klavye</string>
     <string name="lkb_keyboard_assistance_category">Klavye yardımı</string>
+    <string name="lkb_folio_case_mode">Kapaklı Kılıf Modu</string>
+    <string name="lkb_folio_case_mode_summary">Bu etkinleştirilirse cihaz pil tasarrufu sağlamak için kapaklı kılıf ekranı kapattığında ekranı otomatik olarak kapatır ve kilitler.</string>
     <string name="lkb_keyboard_shortcuts_helper">Klavye kısayollarını göster</string>
     <string name="lkb_keyboard_shortcuts_summary">Klavye kısayollarını görüntülemek için istediğiniz zaman Ctrl tuşunu 3 saniye basılı tutun</string>
     <string name="lkb_keyboard_shortcuts_switch">Kısayollar ayarı</string>

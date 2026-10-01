@@ -16,6 +16,7 @@ APK = sys.argv[1] if len(sys.argv) > 1 else os.path.expanduser(
 
 KEYS = [
     'physical_keyboard_title', 'keyboard_assistance_category',
+    'folio_case_mode', 'folio_case_mode_summary',
     'keyboard_shortcuts_helper', 'keyboard_shortcuts_summary', 'keyboard_shortcuts_switch',
     'modifier_keys_settings', 'modifier_keys_settings_summary',
     'keyboard_auto_brightness', 'keyboard_auto_brightness_summary',

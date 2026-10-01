@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Füüsiline klaviatuur</string>
     <string name="lkb_keyboard_assistance_category">Klaviatuuri abi</string>
+    <string name="lkb_folio_case_mode">Katte tuvastamise režiim</string>
+    <string name="lkb_folio_case_mode_summary">Selle lubamisel lülitab seade aku säästmiseks automaatselt ekraani välja ja lukustub, kui ekraani katab ümbris.</string>
     <string name="lkb_keyboard_shortcuts_helper">Kuva klaviatuuri otseteed</string>
     <string name="lkb_keyboard_shortcuts_summary">Hoidke igal ajal klahvi Ctrl kolm sekundit all, et kuvada klaviatuuri otseteed</string>
     <string name="lkb_keyboard_shortcuts_switch">Otseteede seadistus</string>

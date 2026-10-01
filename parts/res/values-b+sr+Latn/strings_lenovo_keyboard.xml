@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Fizička tastatura</string>
     <string name="lkb_keyboard_assistance_category">Помоћ за тастатуру</string>
+    <string name="lkb_folio_case_mode">Režim futrole</string>
+    <string name="lkb_folio_case_mode_summary">Ako je ovo omogućeno, uređaj će automatski isključiti ekran i zaključati se kad god futrola pokrije ekran, radi uštede baterije.</string>
     <string name="lkb_keyboard_shortcuts_helper">Prikaži tasterske prečice</string>
     <string name="lkb_keyboard_shortcuts_summary">Pritisnite Ctrl i držite 3 sekunde da biste u svakom trenutku prikazali prečice na tastaturi</string>
     <string name="lkb_keyboard_shortcuts_switch">Podešavanje prečica</string>

@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Fyzická klávesnice</string>
     <string name="lkb_keyboard_assistance_category">Asistence ke klávesnici</string>
+    <string name="lkb_folio_case_mode">Režim pouzdra s krytem</string>
+    <string name="lkb_folio_case_mode_summary">Pokud je tato funkce zapnutá, zařízení automaticky vypne displej a uzamkne se, kdykoli je displej zakrytý pouzdrem s krytem, aby se šetřila baterie.</string>
     <string name="lkb_keyboard_shortcuts_helper">Zobrazit klávesové zkratky</string>
     <string name="lkb_keyboard_shortcuts_summary">Stisknutím a podržením klávesy Ctrl na 3 sekundy kdykoli zobrazíte klávesové zkratky</string>
     <string name="lkb_keyboard_shortcuts_switch">Nastavení zkratek</string>

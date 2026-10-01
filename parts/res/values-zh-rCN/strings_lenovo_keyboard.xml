@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">实体键盘</string>
     <string name="lkb_keyboard_assistance_category">键盘辅助功能</string>
+    <string name="lkb_folio_case_mode">皮套模式</string>
+    <string name="lkb_folio_case_mode_summary">开启后，可以实现皮套合上时的自动锁屏和休眠功能，有助于节省电量。</string>
     <string name="lkb_keyboard_shortcuts_helper">查看键盘快捷键</string>
     <string name="lkb_keyboard_shortcuts_summary">长按Ctrl 3s，随时查看键盘快捷键说明。</string>
     <string name="lkb_keyboard_shortcuts_switch">快捷键开关</string>

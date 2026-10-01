@@ -32,6 +32,7 @@
     <string name="pen_settings_title">Lenovo pen</string>
     <string name="pen_settings_summary">Pen buttons, writing vibration, pairing</string>
     <string name="keyboard_category">Keyboard</string>
+    <string name="folio_category">Folio case</string>
     <string name="memory_category">Memory</string>
     <string name="vram_title">Memory extension</string>
     <string name="vram_off">Off</string>

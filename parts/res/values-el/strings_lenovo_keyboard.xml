@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Φυσικό πληκτρολόγιο</string>
     <string name="lkb_keyboard_assistance_category">Βοήθεια πληκτρολογίου</string>
+    <string name="lkb_folio_case_mode">Λειτουργία θήκης Folio</string>
+    <string name="lkb_folio_case_mode_summary">Εάν είναι ενεργοποιημένη αυτή η επιλογή, η συσκευή θα απενεργοποιεί την οθόνη και θα κλειδώνει αυτόματα κάθε φορά που η θήκη folio καλύπτει την οθόνη, για εξοικονόμηση μπαταρίας.</string>
     <string name="lkb_keyboard_shortcuts_helper">Προβολή συντομεύσεων πληκτρολογίου</string>
     <string name="lkb_keyboard_shortcuts_summary">Για να δείτε τις συντομεύσεις πληκτρολογίου, πατήστε παρατεταμένα το πλήκτρο Ctrl για 3 δευτερόλεπτα οποιαδήποτε στιγμή</string>
     <string name="lkb_keyboard_shortcuts_switch">Ρύθμιση συντομεύσεων</string>

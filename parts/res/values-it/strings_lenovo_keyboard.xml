@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Tastiera fisica</string>
     <string name="lkb_keyboard_assistance_category">Supporto tastiera</string>
+    <string name="lkb_folio_case_mode">Modalità custodia Folio</string>
+    <string name="lkb_folio_case_mode_summary">Se questa opzione è attivata, il dispositivo spegnerà lo schermo e si bloccherà automaticamente ogni volta che la custodia Folio copre lo schermo, per risparmiare batteria.</string>
     <string name="lkb_keyboard_shortcuts_helper">Visualizza scorciatoie da tastiera</string>
     <string name="lkb_keyboard_shortcuts_summary">Tieni premuto il tasto Ctrl per 3 secondi per visualizzare i tasti di scelta rapida in qualsiasi momento</string>
     <string name="lkb_keyboard_shortcuts_switch">Impostazione dei tasti di scelta rapida</string>

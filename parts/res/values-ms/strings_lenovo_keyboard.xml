@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Papan kekunci fizikal</string>
     <string name="lkb_keyboard_assistance_category">Bantuan papan kekunci</string>
+    <string name="lkb_folio_case_mode">Mod Penutup Folio</string>
+    <string name="lkb_folio_case_mode_summary">Jika mod ini didayakan, peranti akan mematikan skrin dan mengunci secara automatik apabila penutup folio melitupi skrin untuk menjimatkan bateri.</string>
     <string name="lkb_keyboard_shortcuts_helper">Lihat pintasan papan kekunci</string>
     <string name="lkb_keyboard_shortcuts_summary">Tekan dan tahan Ctrl selama 3 saat untuk melihat pintasan papan kekunci pada bila-bila masa</string>
     <string name="lkb_keyboard_shortcuts_switch">Tetapan pintasan</string>

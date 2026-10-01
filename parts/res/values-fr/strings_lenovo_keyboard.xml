@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">Clavier physique</string>
     <string name="lkb_keyboard_assistance_category">Assistance relative au clavier</string>
+    <string name="lkb_folio_case_mode">Mode étui Folio</string>
+    <string name="lkb_folio_case_mode_summary">Si cette option est activée, l\'appareil éteint et verrouille automatiquement l\'écran lorsque l\'étui folio recouvre l\'écran, afin d\'économiser la batterie.</string>
     <string name="lkb_keyboard_shortcuts_helper">Voir les raccourcis clavier</string>
     <string name="lkb_keyboard_shortcuts_summary">Maintenez la touche Ctrl enfoncée pendant 3 secondes pour afficher les raccourcis clavier à tout moment.</string>
     <string name="lkb_keyboard_shortcuts_switch">Paramètre de raccourcis</string>

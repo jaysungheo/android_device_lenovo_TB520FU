@@ -32,6 +32,7 @@
     <string name="pen_settings_title">Lenovo 펜</string>
     <string name="pen_settings_summary">펜 버튼, 필기 진동, 연결</string>
     <string name="keyboard_category">키보드</string>
+    <string name="folio_category">폴리오 케이스</string>
     <string name="memory_category">메모리</string>
     <string name="vram_title">메모리 확장</string>
     <string name="vram_off">사용 안함</string>

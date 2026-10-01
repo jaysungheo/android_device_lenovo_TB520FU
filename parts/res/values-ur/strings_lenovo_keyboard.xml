@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">فزیکل کی بورڈ</string>
     <string name="lkb_keyboard_assistance_category">کیی بورڈ کی معاونت</string>
+    <string name="lkb_folio_case_mode">فولیو کیس موڈ</string>
+    <string name="lkb_folio_case_mode_summary">اگر یہ فعال ہو، تو جب بھی فولیو کیس اسکرین کو ڈھانپے گا، ڈیوائس خود بخود اسکرین کو بند کر دے گا اور لاک کر دے گا، تاکہ بیٹری کی بچت ہو سکے۔</string>
     <string name="lkb_keyboard_shortcuts_helper">کی بورڈ شارٹ کٹس دیکھیں</string>
     <string name="lkb_keyboard_shortcuts_summary">کسی بھی وقت کی بورڈ شارٹ کٹ دیکھنے کے لیے 3 سیکنڈز تک Ctrl دبائیں اور ہولڈ کریں</string>
     <string name="lkb_keyboard_shortcuts_switch">شارٹ کٹس کی سیٹنگ</string>

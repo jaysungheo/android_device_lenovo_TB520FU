@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">實體鍵盤</string>
     <string name="lkb_keyboard_assistance_category">鍵盤協助工具</string>
+    <string name="lkb_folio_case_mode">對開護套模式</string>
+    <string name="lkb_folio_case_mode_summary">如果啟用，每當對開護套蓋住螢幕時，裝置會關閉螢幕並自動鎖定，以節省電池電力。</string>
     <string name="lkb_keyboard_shortcuts_helper">查看鍵盤快速鍵</string>
     <string name="lkb_keyboard_shortcuts_summary">按住 Ctrl 鍵 3 秒鐘，可隨時檢視鍵盤快速鍵</string>
     <string name="lkb_keyboard_shortcuts_switch">快速鍵</string>

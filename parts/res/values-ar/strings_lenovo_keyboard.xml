@@ -3,6 +3,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="lkb_physical_keyboard_title">لوحة المفاتيح الخارجية</string>
     <string name="lkb_keyboard_assistance_category">مساعدة لوحة المفاتيح</string>
+    <string name="lkb_folio_case_mode">وضع حالة فوليو</string>
+    <string name="lkb_folio_case_mode_summary">في حالة التمكين، سيقوم الجهاز بإيقاف تشغيل الشاشة وقفلها تلقائيًا كلما كانت حافظة فوليو تغطي الشاشة، لتوفير طاقة البطارية.</string>
     <string name="lkb_keyboard_shortcuts_helper">عرض اختصارات لوحة المفاتيح</string>
     <string name="lkb_keyboard_shortcuts_summary">اضغط باستمرار على Ctrl لمدة 3 ثوانٍ لعرض اختصارات لوحة المفاتيح في أي وقت</string>
     <string name="lkb_keyboard_shortcuts_switch">تعيين الاختصارات</string>
