@@ -36,7 +36,7 @@ import android.view.InputDevice;
 final class KeyboardDesktopMode {
     private static final String TAG = "TB520FUDesktop";
 
-    /** Settings.System, stock: 0 tablet mode, 1 PC mode (unset: PC mode, as AOSP). */
+    /** Settings.System, stock: 0 tablet mode, 1 PC mode (unset: tablet mode, like stock ZUI). */
     private static final String SYSTEM_MODE = "enter_work_mode_from_keyboard";
     /** Settings.Global, read by DesktopDisplayModeController. */
     private static final String EXITED = "tb520fu_keyboard_desktop_mode_exited";
@@ -132,7 +132,7 @@ final class KeyboardDesktopMode {
         if (mAttached && !attached) setExited(false);
         mAttached = attached;
         boolean pcMode = Settings.System.getIntForUser(mContext.getContentResolver(),
-                SYSTEM_MODE, 1, UserHandle.USER_CURRENT) != 0;
+                SYSTEM_MODE, 0, UserHandle.USER_CURRENT) != 0;
         if (attached && pcMode && !isExited()) {
             showNotification();
         } else {

@@ -34,7 +34,7 @@ index c5580da84..bfeaf0fa4 100644
 +
 +    private fun isKeyboardDesktopFirstAllowed(): Boolean {
 +        val resolver = context.contentResolver
-+        return Settings.System.getInt(resolver, KEYBOARD_SYSTEM_MODE, 1) != 0 &&
++        return Settings.System.getInt(resolver, KEYBOARD_SYSTEM_MODE, 0) != 0 &&
 +            Settings.Global.getInt(resolver, KEYBOARD_DESKTOP_MODE_EXITED, 0) == 0
 +    }
 +

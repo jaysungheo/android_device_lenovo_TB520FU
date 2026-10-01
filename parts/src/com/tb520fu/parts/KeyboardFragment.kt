@@ -85,9 +85,8 @@ class KeyboardFragment : SettingsBasePreferenceFragment(), InputManager.InputDev
             }
         }
 
-        // Stock "System mode when a keyboard is connected": tablet (0) or PC mode (1, the
-        // default here as on AOSP, which switches to desktop windowing with keyboard and
-        // touchpad attached). The category only makes sense with the desktop-first opt-out
+        // Stock "System mode when a keyboard is connected": tablet (0, the default, as on
+        // stock ZUI) or PC mode (1, desktop windowing with keyboard and touchpad attached). The category only makes sense with the desktop-first opt-out
         // (patches/frameworks_base-0004), so hide the whole thing without it.
         val systemModePref: ListPreference = findPreference(KEY_SYSTEM_MODE)!!
         systemModePref.isVisible = FrameworkPatches.desktopOptOut
@@ -99,7 +98,7 @@ class KeyboardFragment : SettingsBasePreferenceFragment(), InputManager.InputDev
                 getString(R.string.lkb_pc_mode_settings_title_name),
             )
             entryValues = arrayOf("0", "1")
-            value = if (LenovoKeyboard.getInt(ctx, LenovoKeyboard.SYSTEM_MODE, 1) == 0) "0" else "1"
+            value = if (LenovoKeyboard.getInt(ctx, LenovoKeyboard.SYSTEM_MODE, 0) == 0) "0" else "1"
             summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
             setOnPreferenceChangeListener { _, v ->
                 LenovoKeyboard.putInt(requireContext(), LenovoKeyboard.SYSTEM_MODE, (v as String).toInt())

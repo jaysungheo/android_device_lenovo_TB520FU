@@ -74,7 +74,7 @@ class PcModeTileService : TileService() {
 
     /** Same condition as DesktopDisplayModeController for keyboard + touchpad. */
     private fun isKeyboardPcMode(): Boolean {
-        if (Settings.System.getInt(contentResolver, LenovoKeyboard.SYSTEM_MODE, 1) == 0 ||
+        if (Settings.System.getInt(contentResolver, LenovoKeyboard.SYSTEM_MODE, 0) == 0 ||
             Settings.Global.getInt(contentResolver, KEYBOARD_EXITED, 0) != 0
         ) {
             return false
