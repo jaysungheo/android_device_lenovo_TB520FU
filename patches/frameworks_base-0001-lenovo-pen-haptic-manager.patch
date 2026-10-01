@@ -58,10 +58,10 @@ index 000000000..399e1cc08
 +}
 diff --git a/core/java/android/app/haptic/ZuiPenHapticManager.java b/core/java/android/app/haptic/ZuiPenHapticManager.java
 new file mode 100644
-index 000000000..758983afb
+index 000000000..ce3840d13
 --- /dev/null
 +++ b/core/java/android/app/haptic/ZuiPenHapticManager.java
-@@ -0,0 +1,118 @@
+@@ -0,0 +1,134 @@
 +/*
 + * SPDX-FileCopyrightText: 2026 The LineageOS Project
 + * SPDX-License-Identifier: Apache-2.0
@@ -69,6 +69,7 @@ index 000000000..758983afb
 +
 +package android.app.haptic;
 +
++import android.compat.annotation.UnsupportedAppUsage;
 +import android.content.Context;
 +import android.graphics.Rect;
 +import android.os.IBinder;
@@ -85,17 +86,26 @@ index 000000000..758983afb
 + * with {@code context.getSystemService("zui_pen_haptic")}. The service is
 + * looked up lazily, calls fail soft while it is not there.
 + *
++ * <p>Third-party note apps call it too (Notein checks {@link #isHapticReady()}
++ * on every pen touch). Being {@code @hide}, its members would be in the
++ * blocked hidden API list and such an app crashes with NoSuchMethodError on
++ * the first stroke, so the members an app can call are
++ * {@link UnsupportedAppUsage}: the "unsupported" list, callable at any
++ * target SDK, as on ZUI.
++ *
 + * @hide
 + */
 +public class ZuiPenHapticManager {
 +    private static final String TAG = "ZuiPenHapticManager";
 +
 +    /** Service name. */
++    @UnsupportedAppUsage
 +    public static final String SERVICE = "zui_pen_haptic";
 +
 +    private IZuiPenHapticManager mService;
 +    private boolean mSdkRegistered;
 +
++    @UnsupportedAppUsage
 +    public ZuiPenHapticManager(Context context) {
 +    }
 +
@@ -115,6 +125,7 @@ index 000000000..758983afb
 +        return mService;
 +    }
 +
++    @UnsupportedAppUsage
 +    public boolean setHapticImpactParams(int waveFormId, int level, int repeatCount,
 +            int cutOffTime) {
 +        IZuiPenHapticManager s = service();
@@ -127,6 +138,7 @@ index 000000000..758983afb
 +        }
 +    }
 +
++    @UnsupportedAppUsage
 +    public boolean setHapticContinuousParams(int waveFormId, int level, int startFriction) {
 +        IZuiPenHapticManager s = service();
 +        if (s == null) return false;
@@ -138,6 +150,7 @@ index 000000000..758983afb
 +        }
 +    }
 +
++    @UnsupportedAppUsage
 +    public boolean stopHaptic(int waveFormId) {
 +        IZuiPenHapticManager s = service();
 +        if (s == null) return false;
@@ -149,6 +162,7 @@ index 000000000..758983afb
 +        }
 +    }
 +
++    @UnsupportedAppUsage
 +    public boolean isHapticReady() {
 +        IZuiPenHapticManager s = service();
 +        if (s == null) return false;
@@ -160,6 +174,7 @@ index 000000000..758983afb
 +        }
 +    }
 +
++    @UnsupportedAppUsage
 +    public void setUseHaptic(boolean use) {
 +        IZuiPenHapticManager s = service();
 +        if (s == null) return;
@@ -170,6 +185,7 @@ index 000000000..758983afb
 +        }
 +    }
 +
++    @UnsupportedAppUsage
 +    public void setEraserRect(List<Rect> eraserRects, List<Rect> maskedRects) {
 +        IZuiPenHapticManager s = service();
 +        if (s == null) return;
