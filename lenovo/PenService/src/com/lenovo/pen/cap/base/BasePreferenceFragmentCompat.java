@@ -34,8 +34,9 @@ import com.lenovo.pen.cap.util.ZuiVersions;
  * no scroll bar). On top of it the rows get the PixelOS Settings look
  * (SettingsLib expressive, settingslib_round_background_*): consecutive rows
  * between two categories form one group of surface-bright cards, 20dp corners
- * on the outside of the group, 4dp inside, 2dp apart. Categories stay
- * outside the cards. The backgrounds are set per adapter position from an
+ * on the outside of the group, 4dp inside, 2dp apart. Categories and the
+ * stock bottom spacer rows (pen_settings_preference_space) stay outside the
+ * cards and end a group. The backgrounds are set per adapter position from an
  * item decoration, so rows hidden or shown later regroup on the next layout.
  */
 public class BasePreferenceFragmentCompat extends zui.appcompat.preference.PreferenceFragmentCompat {
@@ -73,6 +74,7 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
         private final int mGap;
         private final int mCardColor;
         private final ColorStateList mRippleColor;
+        private final int mSpacerLayout;
         private RecyclerView.Adapter mObserved;
 
         CardDecoration(Context context) {
@@ -91,6 +93,9 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
             ColorStateList ripple = a.getColorStateList(0);
             a.recycle();
             mRippleColor = ripple != null ? ripple : ColorStateList.valueOf(0x1f000000);
+            // Empty row at the end of the stock pen pages (bottom padding).
+            mSpacerLayout = res.getIdentifier("pen_settings_preference_space", "layout",
+                    context.getPackageName());
         }
 
         @Override
@@ -105,7 +110,7 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
             PreferenceGroupAdapter prefs = (PreferenceGroupAdapter) adapter;
             int position = parent.getChildAdapterPosition(view);
             Preference preference = item(prefs, position);
-            if (preference == null || preference instanceof PreferenceCategory) {
+            if (isGroupEdge(preference)) {
                 return;
             }
             boolean first = isGroupEdge(item(prefs, position - 1));
@@ -168,8 +173,9 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
             return adapter.getItem(position);
         }
 
-        private static boolean isGroupEdge(Preference neighbour) {
-            return neighbour == null || neighbour instanceof PreferenceCategory;
+        private boolean isGroupEdge(Preference preference) {
+            return preference == null || preference instanceof PreferenceCategory
+                    || (mSpacerLayout != 0 && preference.getLayoutResource() == mSpacerLayout);
         }
 
         private Drawable card(int shape) {
