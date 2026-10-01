@@ -1930,8 +1930,8 @@ system/etc/sysconfig/hiddenapi-whitelist-com.zui.udevice.xml:system_ext/etc/sysc
 system/etc/default-permissions/default-permissions-com.zui.udevice.xml:system_ext/etc/default-permissions/default-permissions-com.zui.udevice.xml
 
 # Lenovo keyboard firmware update (pogo keyboards; Olympia = Bluetooth keyboard 17ef:619e)
-system/app/ZuiKeyboardUpdate/ZuiKeyboardUpdate.apk:system_ext/app/ZuiKeyboardUpdate/ZuiKeyboardUpdate.apk
-system/app/ZuiKeyboardUpdateOlympia/ZuiKeyboardUpdateOlympia.apk:system_ext/app/ZuiKeyboardUpdateOlympia/ZuiKeyboardUpdateOlympia.apk;PRESIGNED
+system/app/ZuiKeyboardUpdate/ZuiKeyboardUpdate.apk:system_ext/app/ZuiKeyboardUpdate/ZuiKeyboardUpdate.apk;EXTRACT_ONLY;FILEGROUP=ZuiKeyboardUpdate-stock
+system/app/ZuiKeyboardUpdateOlympia/ZuiKeyboardUpdateOlympia.apk:system_ext/app/ZuiKeyboardUpdateOlympia/ZuiKeyboardUpdateOlympia.apk;EXTRACT_ONLY;FILEGROUP=ZuiKeyboardUpdateOlympia-stock
 
 # Dependencies (auto)
 vendor/lib64/libBSTDSLR.so

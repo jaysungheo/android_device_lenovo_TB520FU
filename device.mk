@@ -143,7 +143,9 @@ PRODUCT_PACKAGES += \
 # Lenovo pen / keyboard / battery bridge (input/)
 PRODUCT_PACKAGES += \
     PenService \
-    tb520fu-input
+    tb520fu-input \
+    ZuiKeyboardUpdate \
+    ZuiKeyboardUpdateOlympia
 
 # Stock Lenovo pen/keyboard keylayouts, ZUI-only keycodes remapped
 # (tools/bringup/convert_keylayouts.py)
@@ -279,8 +281,6 @@ PRODUCT_ENFORCE_RRO_TARGETS := *
 PRODUCT_PACKAGES += \
     DolbyAtmosResTB520FU \
     FrameworksResTB520FU \
-    KeyboardUpdateOlympiaResTB520FU \
-    KeyboardUpdateResTB520FU \
     PenServiceResTB520FU \
     SettingsProviderResTB520FU \
     SettingsResTB520FU \
@@ -358,6 +358,7 @@ PRODUCT_SHIPPING_API_LEVEL := $(BOARD_SHIPPING_API_LEVEL)
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
     device/lenovo/TB520FU \
+    device/lenovo/TB520FU/lenovo/KeyboardUpdate \
     device/lenovo/TB520FU/lenovo/PenService
 
 # Storage
