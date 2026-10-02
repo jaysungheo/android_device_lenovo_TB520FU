@@ -1,0 +1,10 @@
+[
+  {
+    "repository": "android_kernel_lenovo_J607F",
+    "target_path": "kernel/lenovo/J607F"
+  },
+  {
+    "repository": "android_vendor_lenovo_J607F",
+    "target_path": "vendor/lenovo/J607F"
+  }
+]

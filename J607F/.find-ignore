@@ -1,0 +1,2 @@
+# Keeps soong / product lookup from scanning this draft while it lives under
+# device/lenovo/TB520FU. Delete when J607F moves to its own repository.

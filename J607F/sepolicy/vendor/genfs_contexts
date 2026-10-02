@@ -1,0 +1,7 @@
+# Display (lito MDSS)
+genfscon sysfs /devices/platform/soc/ae00000.qcom,mdss_mdp/idle_encoder_mask         u:object_r:vendor_sysfs_graphics:s0
+genfscon sysfs /devices/platform/soc/ae00000.qcom,mdss_mdp/idle_state                u:object_r:vendor_sysfs_graphics:s0
+genfscon sysfs /devices/platform/soc/ae00000.qcom,mdss_mdp/idle_timeout_ms           u:object_r:vendor_sysfs_graphics:s0
+
+# TODO(J607F): USB Type-C (PMIC pdphy path) and the wakeup sources of the
+# touch / sensor i2c devices, from a booted device.

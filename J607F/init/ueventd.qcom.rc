@@ -1,0 +1,226 @@
+# Copyright (c) 2012-2015, 2017-2020, The Linux Foundation. All rights reserved.
+#
+# Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#     * Neither the name of The Linux Foundation nor
+#       the names of its contributors may be used to endorse or promote
+#       products derived from this software without specific prior written
+#       permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NON-INFRINGEMENT ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+# Firmware directory Path
+# Below macro will be read by uevent and path will
+# be added to search path for firmware loading
+firmware_directories /vendor/firmware_mnt/image/
+
+# the DIAG device node is not world writable/readable.
+/dev/xlog                 0660   system     audio
+/dev/diag                 0660   system     oem_2901
+/dev/wlan                 0660   wifi       wifi
+/dev/kgsl-3d0             0666   system     system
+/dev/ion                  0664   system     system
+/dev/rtc0                 0660   system     system
+/dev/smd7                 0660   bluetooth  bluetooth
+/dev/ipa                  0660   radio      radio
+/dev/wwan_ioctl           0660   radio      radio
+/dev/ipaNatTable          0660   radio      radio
+/dev/rmnet_ctrl           0660   usb        usb
+/dev/dpl_ctrl             0660   usb        usb
+/dev/ipa_odl_ctl          0660   radio      radio
+/dev/ipa_adpl             0660   system     oem_2905
+
+#permissions for CSVT
+/dev/smd11                0660   radio      radio
+
+#permsissions for BT/FM
+/dev/btpower              0660   bluetooth  system
+
+/dev/smdcntl8             0640   radio      radio
+/dev/at_usb0              0640   radio      radio
+/dev/at_mdm0              0640   radio      radio
+/dev/video*               0660   system     camera
+/dev/media*               0660   system     camera
+/dev/v4l-subdev*          0660   system     camera
+/dev/qseecom              0660   system     drmrpc
+/dev/qce                  0660   system     drmrpc
+/dev/smcinvoke            0660   system     drmrpc
+/dev/adsprpc-smd          0664   system     system
+/dev/adsprpc-smd-secure   0644   system     system
+
+# FP
+/dev/goodix_fp            0666   system     system
+
+/sys/bus/platform/devices/soc:fingerprint_fpc irq            0700  system  system
+/sys/bus/platform/devices/soc:fingerprint_fpc irq_enable     0660  system  system
+/sys/bus/platform/devices/soc:fingerprint_fpc wakeup_enable  0700  system  system
+/sys/bus/platform/devices/soc:fingerprint_fpc hw_reset       0700  system  system
+/sys/bus/platform/devices/soc:fingerprint_fpc device_prepare 0700  system  system
+/sys/bus/platform/devices/soc:fingerprint_fpc vendor         0700  system  system
+/sys/bus/platform/devices/soc:fingerprint_fpc request_vreg   0700  system  system
+
+/dev/ttyHS0               0660   bluetooth  net_bt
+
+/sys/class/rfkill/rfkill0 type          0660  bluetooth  net_bt
+/sys/class/rfkill/rfkill0 state         0660  bluetooth  net_bt
+/sys/class/rfkill/rfkill0 device/extldo 0660  bluetooth  net_bt
+
+
+#qg
+/dev/qg                   0660  system     system
+/dev/qg_battery           0660  system     system
+
+#qvr
+/dev/bus/usb/*                      0660  root    usb
+/dev/hidraw*                        0660  root    usb
+
+#rawdump
+/dev/block/platform/soc/*/by-name/rawdump       0660   root     system
+
+# wlan
+/sys/devices/platform/soc/*.qcom,icnss/net/wlan*/queues/rx-* rps_cpus             0660   system     system
+
+#permissions for audio
+/dev/msm_qcelp            0660   system     audio
+/dev/msm_evrc             0660   system     audio
+/dev/msm_wma              0660   system     audio
+/dev/msm_wmapro           0660   system     audio
+/dev/msm_alac             0660   system     audio
+/dev/msm_ape              0660   system     audio
+/dev/msm_amrnb            0660   system     audio
+/dev/msm_amrwb            0660   system     audio
+/dev/msm_amrwbplus        0660   system     audio
+/dev/msm_aac              0660   system     audio
+/dev/msm_multi_aac        0660   system     audio
+/dev/msm_aac_in           0660   system     audio
+/dev/msm_qcelp_in         0660   system     audio
+/dev/msm_evrc_in          0660   system     audio
+/dev/msm_amrnb_in         0660   system     audio
+/dev/msm_amrwb_in         0660   system     audio
+/dev/msm_audio_cal        0660   system     audio
+/dev/msm_hweffects        0660   system     audio
+/dev/msm_rtac             0660   system     audio
+/dev/avtimer              0660   system     audio
+
+# wigig
+/sys/devices/virtual/net/bond0 queues/rx-0/rps_cpus 0660 system system
+
+#nfc permissions
+/dev/nq-nci               0660    nfc         nfc
+
+# UIO devices
+/dev/uio0                 0660   system     system
+
+#spi ir nodes
+/dev/ir_spi               0660   system     system
+
+# SSR devices
+/dev/subsys_*         0640   system     system
+
+# Ultrasound device
+/dev/usf1                 0660   system     system
+
+# Ramdump devices
+/dev/ramdump*             0640   system     system
+
+# Add device block for FRP
+/dev/block/platform/soc/1d84000.ufshc/by-name/frp       0600   system     system
+
+# Kmsg device
+/dev/kmsg                                               0620   root       system
+
+# mius iio devices
+/dev/iio:device*                                        0660   system     system
+
+# NPU device
+/dev/msm_npu             0644   system     system
+
+/sys/devices/virtual/hdcp/msm_hdcp  min_level_change 0664    system  graphics
+
+#KGSL
+/sys/class/kgsl/kgsl-3d0    perfcounter              0660    root    shell
+
+# socinfo
+/sys/devices/soc0           serial_number            0000    root    root
+
+# sys-fs display
+/sys/class/drm/sde-crtc-*   lineptr_value            0664    system  graphics
+/sys/devices/platform/soc/ae00000.qcom,mdss_mdp power/control 0664 system graphics
+
+#asm330 sensor
+#common sensors files
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   buffer/enable                   0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   buffer/length                   0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   buffer/watermark                0664   system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   discharded_samples              0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   current_timestamp_clock         0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   hwfifo_flush                    0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   hwfifo_watermark                0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   hwfifo_watermark_max            0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   mount_matrix                    0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   name                            0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   sampling_frequency              0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   sampling_frequency_available    0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_timestamp_en   0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_timestamp_index 0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_timestamp_type 0664    system  system
+
+# standard iio accel attributes
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   in_accel_scale_available        0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   in_accel_x_raw                  0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   in_accel_x_scale                0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   in_accel_y_raw                  0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   in_accel_y_scale                0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   in_accel_z_raw                  0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   in_accel_z_scale                0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_accel_x_en     0664   system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_accel_x_index  0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_accel_x_type   0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_accel_y_en     0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_accel_y_index  0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_accel_y_type   0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_accel_z_en     0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_accel_z_index  0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_accel_z_type   0664    system  system
+
+# standard iio gyro attributes
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   in_anglvel_scale_available      0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   in_anglvel_x_raw                0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   in_anglvel_x_scale              0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   in_anglvel_y_raw                0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   in_anglvel_y_scale              0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   in_anglvel_z_raw                0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   in_anglvel_z_scale              0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_anglvel_x_en   0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_anglvel_x_index 0664   system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_anglvel_x_type  0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_anglvel_y_en    0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_anglvel_y_index 0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_anglvel_y_type  0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_anglvel_z_en    0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_anglvel_z_index 0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   scan_elements/in_anglvel_z_type  0664    system  system
+
+# standard iio temp attributes
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   in_temp_offset                  0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   in_temp_raw                     0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   in_temp_scale                   0664    system  system
+/sys/devices/platform/soc/*.i2c/i2c-*/*-*/iio:device*   in_temp_scale_available         0664    system  system

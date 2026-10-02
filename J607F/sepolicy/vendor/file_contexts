@@ -1,0 +1,20 @@
+# DRAFT: generic lito entries (from gauguin). Device nodes for the Lenovo
+# touch, pen, keyboard dock and audio amplifier get added once the stock
+# vendor file_contexts and a booted dmesg are available.
+
+# Audio
+/dev/socket/audio_hw_socket                                             u:object_r:vendor_audio_socket:s0
+
+# Camera
+/mnt/vendor/persist/camera(/.*)?                                        u:object_r:vendor_persist_camera_file:s0
+/vendor/lib64/libipebpsstriping\.so                                     u:object_r:same_process_hal_file:s0
+
+# Persist subsystem
+/mnt/vendor/persist/subsys(/.*)?                                        u:object_r:vendor_persist_subsys_file:s0
+
+# Sysfs (Wakeup)
+/sys/devices/virtual/input/input[0-9]+/wakeup[0-9]+(/.*)?               u:object_r:sysfs_wakeup:s0
+
+# WiFi
+/data/vendor/mac_addr(/.*)?                                             u:object_r:vendor_wifi_vendor_data_file:s0
+/vendor/bin/nv_mac                                                      u:object_r:vendor_wcnss_service_exec:s0

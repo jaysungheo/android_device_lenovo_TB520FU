@@ -1,0 +1,2 @@
+# TODO(J607F): match the stock zram size (stock ZUI uses its own swap setup).
+/dev/block/zram0                                        none                   swap    defaults                                             zramsize=50%

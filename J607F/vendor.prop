@@ -1,0 +1,18 @@
+# DRAFT vendor properties for TB-J607F.
+# TODO(J607F): regenerate from the stock vendor/odm build.prop with
+# tools/bringup/mkprops.py (TB520FU flow); these are the lito basics only.
+
+# Display
+ro.sf.lcd_density=240
+debug.sf.enable_hwc_vds=1
+debug.sf.hw=1
+vendor.display.disable_rotator_downscale=1
+
+# Graphics
+ro.hardware.egl=adreno
+ro.hardware.vulkan=adreno
+ro.opengles.version=196610
+
+# Wi-Fi only
+ro.radio.noril=yes
+ro.telephony.default_network=-1
