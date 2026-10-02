@@ -319,7 +319,8 @@ vendor.camera.packagename.zui=com.zui.camera
 # PenService picks the settings screen (Pen Pro: battery, writing vibration,
 # brush effects) from pen.compat.project + pen_info; without them every pen
 # showed the generic capacitive pen page. ZuiUDevice uses the keyboard names.
-# ro.config.lgsi.* (system) is left out on purpose: apps treat it as ZUI.
+# ro.config.lgsi.* (system) is left out on purpose: apps treat it as ZUI
+# (except ro.config.lgsi.device.type, see system_ext.prop).
 ro.vendor.config.lgsi.cap_pen_info=monet_2
 ro.vendor.config.lgsi.pen.bluetooth_key.support=1
 ro.vendor.config.lgsi.pen.compat.project=1
