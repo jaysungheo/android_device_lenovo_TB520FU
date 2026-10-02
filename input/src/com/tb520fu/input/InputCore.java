@@ -141,6 +141,7 @@ public final class InputCore {
         Safe.run("battery", mBattery::start).run();
         Safe.run("keyboard", mKeyboard::start).run();
         Safe.run("double tap wake", mDoubleTapWake::start).run();
+        Safe.run("folio cover", mFolio::start).run();
         Safe.run("standby saver", mStandby::start).run();
         Safe.run("palm rejection", mPalm::start).run();
         Safe.run("keyboard desktop mode", mDesktopMode::start).run();
@@ -161,9 +162,7 @@ public final class InputCore {
     /** Called on the input dispatcher's policy thread; must stay cheap. */
     boolean handleKey(KeyEvent event) {
         if (!mStarted) return false;
-        if (mFolio.handle(event) || mPenKeys.handle(event) || mKeyboard.handle(event)) {
-            return true;
-        }
+        if (mPenKeys.handle(event) || mKeyboard.handle(event)) return true;
         return mExtension != null && mExtension.handleKey(event);
     }
 }
