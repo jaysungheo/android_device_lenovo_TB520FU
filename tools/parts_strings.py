@@ -28,6 +28,7 @@ KEYS = [
  ('white_balance_strength_title', None), ('white_balance_strength_summary', None),
  ('pen_category', 'Pen'), ('pen_settings_title', None), ('pen_settings_summary', None),
  ('keyboard_category', 'Keyboard'),
+ ('folio_category', None),
  ('memory_category', 'Memory'), ('vram_title', None), ('vram_off', None), ('vram_size', None),
  ('vram_summary', None), ('vram_summary_pending', None),
  ('memory_status_title', None), ('memory_status_summary', None),
@@ -41,7 +42,7 @@ L = {}
 L['en'] = dict(
  white_balance_strength_title='Strength', white_balance_strength_summary='How strongly the screen follows the ambient light. 100 % matches the stock Lenovo setting.',
  app_name='Lenovo features',
- app_summary='Battery, pen, keyboard, memory',
+ app_summary='Battery, pen, physical keyboard, virtual memory',
  charging_category='Charging',
  charging_normal_title='Normal', charging_normal_summary='Charges to 100%',
  charging_limit_title='Stop at 80%', charging_limit_summary='Charging stops at 80% and resumes below 76%',
@@ -61,6 +62,7 @@ L['en'] = dict(
  pen_category='Pen', pen_settings_title='Lenovo pen',
  pen_settings_summary='Pen buttons, writing vibration, pairing',
  keyboard_category='Keyboard',
+ folio_category='Folio case',
  memory_category='Memory', vram_title='Memory extension', vram_off='Off', vram_size='%1$d GB',
  vram_summary='%1$s. Uses storage as extra memory for apps kept in the background.',
  vram_summary_pending='%1$s after restart (now: %2$s)',
@@ -77,7 +79,7 @@ L['en'] = dict(
 L['ko'] = dict(
  white_balance_strength_title='강도', white_balance_strength_summary='주변 조명에 따라 화면 색을 바꾸는 정도입니다. 100%는 순정 Lenovo 설정과 같습니다.',
  app_name='Lenovo 기능',
- app_summary='배터리, 펜, 키보드, 메모리',
+ app_summary='배터리, 펜, 물리 키보드, 가상 메모리',
  charging_category='충전',
  charging_normal_title='일반', charging_normal_summary='100%까지 충전합니다',
  charging_limit_title='80%에서 충전 중지', charging_limit_summary='80%에서 충전을 멈추고 76% 아래로 내려가면 다시 충전합니다',
@@ -96,6 +98,7 @@ L['ko'] = dict(
  white_balance_summary='주변 조명에 맞춰 화면 색온도를 자연스럽게 조절합니다',
  pen_category='펜', pen_settings_title='Lenovo 펜', pen_settings_summary='펜 버튼, 필기 진동, 연결',
  keyboard_category='키보드',
+ folio_category='폴리오 케이스',
  memory_category='메모리', vram_title='메모리 확장', vram_off='사용 안함', vram_size='%1$d GB',
  vram_summary='%1$s. 백그라운드 앱을 위해 저장공간 일부를 메모리로 사용합니다.',
  vram_summary_pending='재시작 후 %1$s (현재: %2$s)',
@@ -110,7 +113,7 @@ L['ko'] = dict(
 
 L['ja'] = dict(
  white_balance_strength_title='強さ', white_balance_strength_summary='周囲の光に合わせて画面の色を変える度合いです。100%は標準のLenovo設定と同じです。',
- app_name='Lenovo 機能', app_summary='バッテリー、ペン、キーボード、メモリ',
+ app_name='Lenovo 機能', app_summary='バッテリー、ペン、物理キーボード、仮想メモリ',
  charging_category='充電',
  charging_normal_title='標準', charging_normal_summary='100%まで充電します',
  charging_limit_title='80%で充電を停止', charging_limit_summary='80%で充電を停止し、76%を下回ると再開します',
@@ -129,6 +132,7 @@ L['ja'] = dict(
  white_balance_summary='周囲の光に合わせて画面の色温度を自然に調整します',
  pen_category='ペン', pen_settings_title='Lenovo ペン', pen_settings_summary='ペンボタン、書き心地の振動、ペアリング',
  keyboard_category='キーボード',
+ folio_category='Folio case',
  memory_category='メモリ', vram_title='メモリ拡張', vram_off='オフ', vram_size='%1$d GB',
  vram_summary='%1$s。ストレージの一部をバックグラウンドアプリ用のメモリとして使います。',
  vram_summary_pending='再起動後 %1$s（現在: %2$s）',
@@ -144,7 +148,7 @@ L['ja'] = dict(
 
 L['zh-rCN'] = dict(
  white_balance_strength_title='强度', white_balance_strength_summary='屏幕随环境光改变颜色的程度。100% 与原厂 Lenovo 设置相同。',
- app_name='Lenovo 功能', app_summary='电池、手写笔、键盘、内存',
+ app_name='Lenovo 功能', app_summary='电池、笔、物理键盘、虚拟内存',
  charging_category='充电',
  charging_normal_title='标准', charging_normal_summary='充电至 100%',
  charging_limit_title='充至 80% 停止', charging_limit_summary='充至 80% 时停止，低于 76% 时恢复充电',
@@ -163,6 +167,7 @@ L['zh-rCN'] = dict(
  white_balance_summary='根据环境光自动调节屏幕色温，使显示更自然',
  pen_category='手写笔', pen_settings_title='Lenovo 手写笔', pen_settings_summary='笔按键、书写振动、配对',
  keyboard_category='键盘',
+ folio_category='Folio case',
  memory_category='内存', vram_title='内存扩展', vram_off='关闭', vram_size='%1$d GB',
  vram_summary='%1$s。将部分存储空间用作后台应用的内存。',
  vram_summary_pending='重启后为 %1$s（当前：%2$s）',
@@ -176,7 +181,7 @@ L['zh-rCN'] = dict(
 
 L['zh-rTW'] = dict(
  white_balance_strength_title='強度', white_balance_strength_summary='螢幕隨環境光改變色彩的程度。100% 與原廠 Lenovo 設定相同。',
- app_name='Lenovo 功能', app_summary='電池、觸控筆、鍵盤、記憶體',
+ app_name='Lenovo 功能', app_summary='電池、筆、實體鍵盤、虛擬記憶體',
  charging_category='充電',
  charging_normal_title='標準', charging_normal_summary='充電至 100%',
  charging_limit_title='充至 80% 停止', charging_limit_summary='充至 80% 時停止，低於 76% 時恢復充電',
@@ -195,6 +200,7 @@ L['zh-rTW'] = dict(
  white_balance_summary='依環境光自動調整螢幕色溫，讓顯示更自然',
  pen_category='觸控筆', pen_settings_title='Lenovo 觸控筆', pen_settings_summary='筆按鍵、書寫震動、配對',
  keyboard_category='鍵盤',
+ folio_category='Folio case',
  memory_category='記憶體', vram_title='記憶體擴充', vram_off='關閉', vram_size='%1$d GB',
  vram_summary='%1$s。將部分儲存空間作為背景應用程式的記憶體。',
  vram_summary_pending='重新啟動後為 %1$s（目前：%2$s）',
@@ -208,7 +214,7 @@ L['zh-rTW'] = dict(
 
 L['de'] = dict(
  white_balance_strength_title='Stärke', white_balance_strength_summary='Wie stark sich der Bildschirm an das Umgebungslicht anpasst. 100 % entspricht der Lenovo-Werkseinstellung.',
- app_name='Lenovo-Funktionen', app_summary='Akku, Stift, Tastatur, Speicher',
+ app_name='Lenovo-Funktionen', app_summary='Akku, Stift, physische Tastatur, virtueller Speicher',
  charging_category='Laden',
  charging_normal_title='Normal', charging_normal_summary='Lädt bis 100 %',
  charging_limit_title='Bei 80 % stoppen', charging_limit_summary='Laden stoppt bei 80 % und wird unter 76 % fortgesetzt',
@@ -227,6 +233,7 @@ L['de'] = dict(
  white_balance_summary='Passt die Farbtemperatur des Bildschirms an das Umgebungslicht an',
  pen_category='Stift', pen_settings_title='Lenovo-Stift', pen_settings_summary='Stifttasten, Schreibvibration, Kopplung',
  keyboard_category='Tastatur',
+ folio_category='Folio case',
  memory_category='Speicher', vram_title='Speichererweiterung', vram_off='Aus', vram_size='%1$d GB',
  vram_summary='%1$s. Nutzt einen Teil des Speicherplatzes als Arbeitsspeicher für Hintergrund-Apps.',
  vram_summary_pending='%1$s nach Neustart (aktuell: %2$s)',
@@ -242,7 +249,7 @@ L['de'] = dict(
 
 L['fr'] = dict(
  white_balance_strength_title='Intensité', white_balance_strength_summary='Degré d\'adaptation de l\'écran à la lumière ambiante. 100 % correspond au réglage Lenovo d\'origine.',
- app_name='Fonctions Lenovo', app_summary='Batterie, stylet, clavier, mémoire',
+ app_name='Fonctions Lenovo', app_summary='Batterie, stylet, clavier physique, mémoire virtuelle',
  charging_category='Charge',
  charging_normal_title='Normale', charging_normal_summary='Charge jusqu\'à 100 %',
  charging_limit_title='Arrêt à 80 %', charging_limit_summary='La charge s\'arrête à 80 % et reprend sous 76 %',
@@ -261,6 +268,7 @@ L['fr'] = dict(
  white_balance_summary='Adapte la température de couleur de l\'écran à la lumière ambiante',
  pen_category='Stylet', pen_settings_title='Stylet Lenovo', pen_settings_summary='Boutons du stylet, vibration d\'écriture, association',
  keyboard_category='Clavier',
+ folio_category='Folio case',
  memory_category='Mémoire', vram_title='Extension de mémoire', vram_off='Désactivée', vram_size='%1$d Go',
  vram_summary='%1$s. Utilise une partie du stockage comme mémoire pour les applications en arrière-plan.',
  vram_summary_pending='%1$s après redémarrage (actuellement : %2$s)',
@@ -276,7 +284,7 @@ L['fr'] = dict(
 
 L['es'] = dict(
  white_balance_strength_title='Intensidad', white_balance_strength_summary='Cuánto se adapta la pantalla a la luz ambiental. 100 % coincide con el ajuste original de Lenovo.',
- app_name='Funciones de Lenovo', app_summary='Batería, lápiz, teclado, memoria',
+ app_name='Funciones de Lenovo', app_summary='Batería, lápiz, teclado físico, memoria virtual',
  charging_category='Carga',
  charging_normal_title='Normal', charging_normal_summary='Carga hasta el 100 %',
  charging_limit_title='Detener al 80 %', charging_limit_summary='La carga se detiene al 80 % y se reanuda por debajo del 76 %',
@@ -295,6 +303,7 @@ L['es'] = dict(
  white_balance_summary='Ajusta la temperatura de color de la pantalla a la luz ambiental',
  pen_category='Lápiz', pen_settings_title='Lápiz Lenovo', pen_settings_summary='Botones del lápiz, vibración de escritura, vinculación',
  keyboard_category='Teclado',
+ folio_category='Folio case',
  memory_category='Memoria', vram_title='Ampliación de memoria', vram_off='Desactivada', vram_size='%1$d GB',
  vram_summary='%1$s. Usa parte del almacenamiento como memoria para las aplicaciones en segundo plano.',
  vram_summary_pending='%1$s tras reiniciar (ahora: %2$s)',
@@ -310,7 +319,7 @@ L['es'] = dict(
 
 L['it'] = dict(
  white_balance_strength_title='Intensità', white_balance_strength_summary='Quanto lo schermo si adatta alla luce ambientale. 100% corrisponde all\'impostazione Lenovo originale.',
- app_name='Funzioni Lenovo', app_summary='Batteria, penna, tastiera, memoria',
+ app_name='Funzioni Lenovo', app_summary='Batteria, penna, tastiera fisica, memoria virtuale',
  charging_category='Ricarica',
  charging_normal_title='Normale', charging_normal_summary='Ricarica fino al 100%',
  charging_limit_title='Interrompi all\'80%', charging_limit_summary='La ricarica si ferma all\'80% e riprende sotto il 76%',
@@ -329,6 +338,7 @@ L['it'] = dict(
  white_balance_summary='Adatta la temperatura colore dello schermo alla luce ambientale',
  pen_category='Penna', pen_settings_title='Penna Lenovo', pen_settings_summary='Tasti della penna, vibrazione di scrittura, associazione',
  keyboard_category='Tastiera',
+ folio_category='Folio case',
  memory_category='Memoria', vram_title='Estensione memoria', vram_off='Disattivata', vram_size='%1$d GB',
  vram_summary='%1$s. Usa parte dello spazio di archiviazione come memoria per le app in background.',
  vram_summary_pending='%1$s dopo il riavvio (ora: %2$s)',
@@ -344,7 +354,7 @@ L['it'] = dict(
 
 L['pt-rBR'] = dict(
  white_balance_strength_title='Intensidade', white_balance_strength_summary='Quanto a tela se adapta à luz ambiente. 100% corresponde à configuração original da Lenovo.',
- app_name='Recursos Lenovo', app_summary='Bateria, caneta, teclado, memória',
+ app_name='Recursos Lenovo', app_summary='Bateria, caneta, teclado físico, memória virtual',
  charging_category='Carregamento',
  charging_normal_title='Normal', charging_normal_summary='Carrega até 100%',
  charging_limit_title='Parar em 80%', charging_limit_summary='O carregamento para em 80% e volta abaixo de 76%',
@@ -363,6 +373,7 @@ L['pt-rBR'] = dict(
  white_balance_summary='Ajusta a temperatura de cor da tela à luz ambiente',
  pen_category='Caneta', pen_settings_title='Caneta Lenovo', pen_settings_summary='Botões da caneta, vibração de escrita, pareamento',
  keyboard_category='Teclado',
+ folio_category='Folio case',
  memory_category='Memória', vram_title='Extensão de memória', vram_off='Desativada', vram_size='%1$d GB',
  vram_summary='%1$s. Usa parte do armazenamento como memória para apps em segundo plano.',
  vram_summary_pending='%1$s após reiniciar (agora: %2$s)',
@@ -378,7 +389,7 @@ L['pt-rBR'] = dict(
 
 L['ru'] = dict(
  white_balance_strength_title='Интенсивность', white_balance_strength_summary='Насколько экран подстраивается под окружающее освещение. 100 % соответствует заводской настройке Lenovo.',
- app_name='Функции Lenovo', app_summary='Батарея, стилус, клавиатура, память',
+ app_name='Функции Lenovo', app_summary='Батарея, перо, физическая клавиатура, виртуальная память',
  charging_category='Зарядка',
  charging_normal_title='Обычная', charging_normal_summary='Заряжает до 100 %',
  charging_limit_title='Остановка на 80 %', charging_limit_summary='Зарядка останавливается на 80 % и возобновляется ниже 76 %',
@@ -397,6 +408,7 @@ L['ru'] = dict(
  white_balance_summary='Подстраивает цветовую температуру экрана под окружающее освещение',
  pen_category='Стилус', pen_settings_title='Стилус Lenovo', pen_settings_summary='Кнопки стилуса, вибрация при письме, сопряжение',
  keyboard_category='Клавиатура',
+ folio_category='Folio case',
  memory_category='Память', vram_title='Расширение памяти', vram_off='Выкл.', vram_size='%1$d ГБ',
  vram_summary='%1$s. Часть хранилища используется как память для фоновых приложений.',
  vram_summary_pending='%1$s после перезапуска (сейчас: %2$s)',
