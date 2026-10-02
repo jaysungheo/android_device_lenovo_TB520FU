@@ -107,7 +107,10 @@ public final class ClickableWhenDisabledSwitchPreference
     }
 
     /** Usual enabled -> stock click, disabled -> the extra listener. */
-    private static void onItemClick(ClickableWhenDisabledSwitchPreference preference, View view) {
+    // Not private: called from OnItemClickListener. The compat dex is built with d8
+    // --no-desugaring, so a private member reached from another class (javac's
+    // nestmate access) is not rewritten and ART throws IllegalAccessError.
+    static void onItemClick(ClickableWhenDisabledSwitchPreference preference, View view) {
         if (preference.isEnabled()) {
             preference.setOnClickWhenDisabledSuperCall();
         } else if (preference.onClickWhenDisabledListener != null) {

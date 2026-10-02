@@ -154,7 +154,10 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
             });
         }
 
-        private static void invalidate(RecyclerView parent) {
+        // Not private: called from the adapter observer in observe(). The compat dex is built with d8
+        // --no-desugaring, so a private member reached from another class (javac's
+        // nestmate access) is not rewritten and ART throws IllegalAccessError.
+        static void invalidate(RecyclerView parent) {
             // No lambdas: the compat dex is built without desugaring.
             parent.post(new Runnable() {
                 @Override
