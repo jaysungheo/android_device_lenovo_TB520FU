@@ -47,12 +47,6 @@ LOCALE_DIR = {'es-rUS': 'es'}
 # shortcut (Action + I) as "Done"; use the Settings app name instead.
 SOURCE = {'keyboard_shortcuts_switch_title_11': 'settings_label'}
 
-# Stock wording replaced per locale: (key, locale) -> text.
-OVERRIDE = {
-    # "물리적 키보드" -> "물리 키보드", like the rest of the Korean UI.
-    ('physical_keyboard_title', 'ko'): '물리 키보드',
-}
-
 
 def dump():
     out = subprocess.run([AAPT, 'dump', 'resources', APK], capture_output=True,
@@ -99,7 +93,7 @@ def main():
         values = 'values' + ('-' + d if d else '')
         rows = []
         for k in KEYS:
-            v = OVERRIDE.get((k, loc), data[k].get(loc))
+            v = data[k].get(loc)
             if v is None or (loc and v == data[k]['']):
                 continue
             rows.append('    <string name="lkb_%s">%s</string>\n' % (k, xml_escape(v)))
