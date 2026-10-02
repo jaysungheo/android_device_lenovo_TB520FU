@@ -37,3 +37,12 @@ remote_provisioning.hostname=remoteprovisioning.googleapis.com
 
 # Default color mode Adaptive (see config_availableColorModes in the overlay)
 persist.sys.sf.native_mode=2
+
+# Device type for the stock Lenovo apps (PenService, keyboard updaters,
+# ZuiUDevice, ZuiNotes). Stock init copies ro.vendor.config.lgsi.device.type
+# (vendor.prop: pad) here through /system/etc/init/lgsi_prop.cfg; our init does
+# not. Their bundled zui library (CommonUtils.isPadProduct) reads it: without
+# it MessageDialog/ActionDialog/AlertActivity fall back to the phone landscape
+# placement, docked bottom-right with a clipped height, instead of the centred
+# tablet dialogs. Only this key, not the rest of ro.config.lgsi.* (vendor.prop).
+ro.config.lgsi.device.type=pad
