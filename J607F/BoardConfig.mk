@@ -68,9 +68,9 @@ TARGET_NO_BOOTLOADER := true
 TARGET_SCREEN_DENSITY := 240
 
 # DTB / DTBO
-# Built from the kernel source. TODO(J607F): switch to prebuilts
-# (BOARD_PREBUILT_DTBIMAGE_DIR / BOARD_PREBUILT_DTBOIMAGE) if the Lenovo source
-# release does not carry the J607F board dts.
+# Built from the kernel source. Its Lagoon_QRD overlay (board-id 0x1000b) is
+# the Lenovo board overlay; it matches the stock J607F dtbo apart from a newer
+# nt36523 panel init sequence (taken from J607Z ROW firmware).
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 BOARD_KERNEL_SEPARATED_DTBO := true
 
@@ -97,14 +97,12 @@ BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_KERNEL_PAGESIZE := 4096
 
-# Stock kernel: 4.19.157-perf+, non-GKI; its full config (IKCONFIG) is kept with
-# the stock dump (kernel-config-4.19.157.txt), and the J607Z kernel config differs
-# in only 22 lines.
-# TODO(J607F): kernel/lenovo/J607F does not exist yet. It would hold Lenovo's
-# TB-J607F kernel source release (open source portal), rebased on the
-# LineageOS lito 4.19 kernel if needed. The device fragment name below is a
-# placeholder until the defconfig of that release is known.
-TARGET_KERNEL_CONFIG := vendor/lito-perf_defconfig vendor/lenovo/j607f.config
+# Stock kernel: 4.19.157-perf+, non-GKI. Lenovo's source release for it is
+# the "arnoz" kernel (vendor/arnoz_*_defconfig); kernel/lenovo/J607F is the
+# community rebase of that release on 4.19.325 + CIP with the Android 17
+# backports (nzlnice/kernel_lenovo_J607Z, CipA17), see tools/local_manifest.xml.
+# Its techpack audio modules are loaded from init.target.rc; WLAN is built in.
+TARGET_KERNEL_CONFIG := vendor/arnoz_defconfig
 TARGET_KERNEL_SOURCE := kernel/lenovo/J607F
 TARGET_KERNEL_NO_GCC := true
 

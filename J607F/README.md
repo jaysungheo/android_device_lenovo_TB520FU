@@ -10,7 +10,7 @@ below.
 | | |
 |---|---|
 | SoC | Qualcomm SM7225 Snapdragon 750G (lito), Adreno 619 |
-| Kernel | msm-4.19 (non-GKI), Lenovo source release, built from source |
+| Kernel | msm-4.19 (non-GKI), Lenovo's "arnoz" source release rebased on 4.19.325 + CIP, built from source |
 | Display | 11" IPS LCD, 1200×2000 portrait-native BOE panel (nt36523 or Himax), 60 Hz, density 240 |
 | Memory | 6 GB RAM, 128 GB UFS, microSD |
 | Audio | 4 speakers (JBL) on 4× Cirrus CS35L41 amps, Dolby Atmos, no 3.5 mm jack |
@@ -44,6 +44,7 @@ checked out at `device/lenovo/J607F` (see `tools/local_manifest.xml` and
 | `vintf/manifest.xml` | gauguin, minus radio / IMS / data / NFC / fingerprint HALs |
 | `proprietary-files.txt` | gauguin platform sections only (see its header) |
 | `sepolicy/` | generic lito rules from gauguin |
+| Kernel choice, module and dtc notes | [bigsaltyfishes/device_lenovo_J607F](https://github.com/bigsaltyfishes/device_lenovo_J607F), an earlier community J607F ROM tree (Android 12/13) on the same kernel lineage |
 
 Not taken from TB520FU: the pen, keyboard and folio code (`input/`,
 `parts/`, `lenovo/`), Dolby, the GKI kernel setup and the pineapple init
@@ -75,7 +76,9 @@ vendor image is two years newer (security patch 2023-01-05).
 | Sensors | accel, gyro, light, proximity, step counter/detector; no compass | `device.mk` |
 | Keymaster | 4.1 | `vintf/manifest.xml`, `proprietary-files.txt` |
 | WLAN firmware | `qca_cld/`, stock symlinks | `Android.bp` |
-| Init | stock SAR permissions, Lenovo ship mode and battery protection triggers | `init/init.target.rc` |
+| Init | stock SAR permissions, Lenovo ship mode and battery protection triggers, audio module loading | `init/init.target.rc` |
+| Kernel | [nzlnice/kernel_lenovo_J607Z](https://github.com/nzlnice/kernel_lenovo_J607Z) `CipA17`, `vendor/arnoz_defconfig` | `BoardConfig.mk`, `tools/local_manifest.xml` |
+| dtb / dtbo | built from the kernel source; its Lenovo board overlay (Lagoon QRD, board-id 0x1000b) matches stock | `BoardConfig.mk` |
 
 The stock dumps, configs and comparison notes live in the project files
 (`j607f-stock/`, `j607z-stock/`).
@@ -84,8 +87,6 @@ The stock dumps, configs and comparison notes live in the project files
 
 | What | Where | How to get it |
 |---|---|---|
-| Kernel source and defconfig name | `BoardConfig.mk`, `lineage.dependencies` | Lenovo open source portal (TB-J607F release); the stock IKCONFIG is in the dump |
-| dtb / dtbo built or prebuilt | `BoardConfig.mk` | does the source release carry the Lenovo Lagoon QRD (board-id 0x1000b) dts? |
 | Extra blob fixups | `extract-files.py` | first `m nothing` / boot |
 | VINTF manifest | `vintf/manifest.xml` | reconcile the rest with the stock manifest and fragments |
 | IRQ numbers for msm_drm / kgsl | `init/init.target.rc` | `/proc/interrupts` on a running device |
@@ -96,11 +97,18 @@ The stock dumps, configs and comparison notes live in the project files
 ## Known risks
 
 - PixelOS `seventeen` (Android 17) on a 4.19 kernel: LineageOS still ships
-  lito 4.19 devices on `lineage-24.0` (gauguin), so it is possible, but the
-  Lenovo kernel source will likely need the same backports those kernels
-  carry (BPF, cgroup v2 / uclamp, newer binder and incremental-fs fixes).
-- The kernel repository does not exist yet. Without Lenovo's source release
-  the fallback is a prebuilt stock kernel, which keeps the 4.19 limits above.
+  lito 4.19 devices on `lineage-24.0` (gauguin), so it is possible. The
+  kernel branch already carries the BPF ring buffer, EROFS and dm-user
+  backports; uclamp is still missing, as on every 4.19 kernel.
+- The kernel is a community branch (4.19.325 + CIP + KernelSU-free
+  Android 17 backports), not Lenovo's own 4.19.157 tree. It builds cleanly
+  with clang 18 and produces the stock module set, but it has not been
+  booted with this tree yet. Lenovo's untouched 4.19.157 release is the
+  `Source Code from Lenovo OpenSource Portal` commit (893a4957927d) in
+  [bigsaltyfishes/kernel_lenovo_J607Z](https://github.com/bigsaltyfishes/kernel_lenovo_J607Z)
+  if a bisect is ever needed.
+- The panel init sequence in the source's board overlay is the J607Z ROW one,
+  which differs from stock J607F in a few nt36523 register values.
 
 ## Next steps
 
@@ -108,5 +116,5 @@ The stock dumps, configs and comparison notes live in the project files
    and fstab placeholders~~ (done, see above).
 2. Run `./extract-files.py <J607Z dump>` to create `vendor/lenovo/J607F`
    from the J607Z vendor, odm, system_ext and product trees.
-3. Set up `kernel/lenovo/J607F` from the Lenovo source release.
+3. ~~Set up `kernel/lenovo/J607F`~~ (done: see `tools/local_manifest.xml`).
 4. `breakfast J607F` and work through `m nothing` errors, then boot.
