@@ -77,7 +77,7 @@ vendor image is two years newer (security patch 2023-01-05).
 | Keymaster | 4.1 | `vintf/manifest.xml`, `proprietary-files.txt` |
 | WLAN firmware | `qca_cld/`, stock symlinks | `Android.bp` |
 | Init | stock SAR permissions, Lenovo ship mode and battery protection triggers, audio module loading | `init/init.target.rc` |
-| Kernel | [nzlnice/kernel_lenovo_J607Z](https://github.com/nzlnice/kernel_lenovo_J607Z) `CipA17`, `vendor/arnoz_defconfig` | `BoardConfig.mk`, `tools/local_manifest.xml` |
+| Kernel | [jaysungheo/kernel_lenovo_J607Z](https://github.com/jaysungheo/kernel_lenovo_J607Z) `CipA17` (fork of nzlnice/kernel_lenovo_J607Z), `vendor/arnoz_defconfig` | `BoardConfig.mk`, `tools/local_manifest.xml` |
 | dtb / dtbo | built from the kernel source; its Lenovo board overlay (Lagoon QRD, board-id 0x1000b) matches stock | `BoardConfig.mk` |
 
 The stock dumps, configs and comparison notes live in the project files
