@@ -100,7 +100,8 @@ BOARD_KERNEL_PAGESIZE := 4096
 # Stock kernel: 4.19.157-perf+, non-GKI. Lenovo's source release for it is
 # the "arnoz" kernel (vendor/arnoz_*_defconfig); kernel/lenovo/J607F is the
 # community rebase of that release on 4.19.325 + CIP with the Android 17
-# backports (nzlnice/kernel_lenovo_J607Z, CipA17), see tools/local_manifest.xml.
+# backports (jaysungheo/kernel_lenovo_J607Z, a fork of nzlnice/kernel_lenovo_J607Z,
+# branch CipA17), see tools/local_manifest.xml.
 # Its techpack audio modules are loaded from init.target.rc; WLAN is built in.
 TARGET_KERNEL_CONFIG := vendor/arnoz_defconfig
 TARGET_KERNEL_SOURCE := kernel/lenovo/J607F

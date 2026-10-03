@@ -8,15 +8,14 @@
 
      Kernel: Lenovo's TB-J607F/J607Z source release (4.19.157, "arnoz"),
      rebased by the community on 4.19.325 + CIP with the Android 17
-     backports. Branch CipA17 has no KernelSU; CipA17Ksu is the same with it.
-     Pin a fork of it once one exists under jaysungheo.
+     backports. jaysungheo/kernel_lenovo_J607Z is a fork of
+     nzlnice/kernel_lenovo_J607Z; its CipA17 branch has no KernelSU.
 -->
 <manifest>
   <remote name="j607f" fetch="https://github.com/jaysungheo" revision="seventeen" />
-  <remote name="nzlnice" fetch="https://github.com/nzlnice" />
 
   <project name="android_device_lenovo_J607F" path="device/lenovo/J607F" remote="j607f" />
-  <project name="kernel_lenovo_J607Z" path="kernel/lenovo/J607F" remote="nzlnice" revision="CipA17" />
+  <project name="kernel_lenovo_J607Z" path="kernel/lenovo/J607F" remote="j607f" revision="CipA17" />
   <project name="android_vendor_lenovo_J607F" path="vendor/lenovo/J607F" remote="j607f" />
 
 
