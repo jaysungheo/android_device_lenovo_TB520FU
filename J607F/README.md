@@ -88,6 +88,8 @@ The stock dumps, configs and comparison notes live in the project files
 | What | Where | How to get it |
 |---|---|---|
 | Extra blob fixups | `extract-files.py` | first `m nothing` / boot |
+| Display blobs pinned or not | `proprietary-files.txt` (Display, Display Postprocessing) | gauguin pins older `libsdm-*`, `libdisplayqos`, `qdcmss` to match the source display HAL; the J607Z ones are taken unpinned, so pin them if the display HAL rejects them |
+| Rear camera EEPROM libs | `proprietary-files.txt` (Camera) | the J607Z camera set has no `com.qti.eeprom.lenovo_ov13b10_*` or `com.qti.node.lenovo` (J607F 2021 firmware does); add them from the J607F dump only if the rear camera fails to read calibration |
 | VINTF manifest | `vintf/manifest.xml` | reconcile the rest with the stock manifest and fragments |
 | IRQ numbers for msm_drm / kgsl | `init/init.target.rc` | `/proc/interrupts` on a running device |
 | Auto-brightness curve, backlight range, power profile | `overlay/FrameworksResJ607F` | stock framework-res overlay APK |
@@ -114,7 +116,8 @@ The stock dumps, configs and comparison notes live in the project files
 
 1. ~~Dump the stock J607F firmware~~ and ~~fill the partition, boot image
    and fstab placeholders~~ (done, see above).
-2. Run `./extract-files.py <J607Z dump>` to create `vendor/lenovo/J607F`
-   from the J607Z vendor, odm, system_ext and product trees.
+2. ~~Run `./extract-files.py <J607Z dump>` to create `vendor/lenovo/J607F`~~
+   (done: 643 blobs from `TB-J607Z_S540663_241109_ROW`, repository
+   `android_vendor_lenovo_J607F`, see `tools/local_manifest.xml`).
 3. ~~Set up `kernel/lenovo/J607F`~~ (done: see `tools/local_manifest.xml`).
 4. `breakfast J607F` and work through `m nothing` errors, then boot.
