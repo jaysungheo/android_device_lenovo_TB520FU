@@ -1,0 +1,10 @@
+libadsprpc.so
+libcdsprpc.so
+libsdsprpc.so
+libfastcvopt.so
+liblistensoundmodel2.so
+libOpenCL.so
+libnpu.so
+libhta_hexagon_runtime.so
+# TODO(J607F): add the 64-bit camera algorithm libs the stock
+# /vendor/etc/public.libraries.txt lists (Lenovo, not Xiaomi).

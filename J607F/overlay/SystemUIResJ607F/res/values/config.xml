@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- Wi-Fi only tablet: no cellular or hotspot-over-cellular tiles. -->
+    <string name="quick_settings_tiles_default" translatable="false">internet,bt,dnd,rotation,battery,screenrecord,cast</string>
+</resources>

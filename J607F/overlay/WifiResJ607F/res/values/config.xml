@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+
+     DRAFT for TB-J607F (Wi-Fi 5, dual band). TODO(J607F): compare with the
+     stock WifiResCommon overlay.
+-->
+<resources>
+    <bool name="config_wifi_background_scan_support">true</bool>
+    <bool name="config_wifi_connected_mac_randomization_supported">true</bool>
+    <bool name="config_wifi_p2p_mac_randomization_supported">true</bool>
+    <bool name="config_wifi_softap_acs_supported">true</bool>
+    <bool name="config_wifi_softap_ieee80211ac_supported">true</bool>
+    <bool name="config_wifi_softap_sae_supported">true</bool>
+    <bool name="config_wifiSaeH2eSupported">true</bool>
+    <string name="config_wifiP2pDeviceNamePrefix" translatable="false">Lenovo-</string>
+</resources>

@@ -1,0 +1,4 @@
+runtime_resource_overlay {
+    name: "SettingsProviderResJ607F",
+    product_specific: true,
+}
