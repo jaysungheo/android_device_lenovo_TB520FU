@@ -11,8 +11,7 @@
 
 DEVICE_PATH := device/lenovo/J607F
 
-# A/B
-# TODO(J607F): confirm A/B from the stock partition table (boot_a/boot_b).
+# A/B (stock has _a/_b slots for boot, recovery, dtbo, vbmeta and super).
 AB_OTA_UPDATER := true
 
 AB_OTA_PARTITIONS += \
@@ -20,6 +19,7 @@ AB_OTA_PARTITIONS += \
     dtbo \
     odm \
     product \
+    recovery \
     system \
     system_ext \
     vbmeta \
@@ -52,9 +52,8 @@ BOARD_USES_ALSA_AUDIO := true
 TARGET_PROVIDES_AUDIO_EXTNS := true
 
 # Boot
-# Android 11 launch on 4.19: boot image header v2, dtb in boot, no vendor_boot.
-# TODO(J607F): confirm with unpack_bootimg on the stock boot.img (header
-# version, page size, base, cmdline, and whether a vendor_boot exists).
+# Stock boot.img: header v2, page size 4096, base 0x0, dtb in boot, no
+# vendor_boot, gzip ramdisk with first-stage init only.
 BOARD_BOOT_HEADER_VERSION := 2
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_RAMDISK_USE_LZ4 := true
@@ -64,8 +63,8 @@ TARGET_BOOTLOADER_BOARD_NAME := lito
 TARGET_NO_BOOTLOADER := true
 
 # Display
-# 2000x1200, 11", ~212 ppi.
-# TODO(J607F): ro.sf.lcd_density from the stock vendor build.prop.
+# 1200x2000 BOE panel (nt36523 or Himax), natively portrait. Stock sets no
+# ro.sf.lcd_density; init.qcom.early_boot.sh derives 240 from the 1200 px width.
 TARGET_SCREEN_DENSITY := 240
 
 # DTB / DTBO
@@ -98,6 +97,9 @@ BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_KERNEL_PAGESIZE := 4096
 
+# Stock kernel: 4.19.157-perf+, non-GKI; its full config (IKCONFIG) is kept with
+# the stock dump (kernel-config-4.19.157.txt), and the J607Z kernel config differs
+# in only 22 lines.
 # TODO(J607F): kernel/lenovo/J607F does not exist yet. It would hold Lenovo's
 # TB-J607F kernel source release (open source portal), rebased on the
 # LineageOS lito 4.19 kernel if needed. The device fragment name below is a
@@ -110,25 +112,23 @@ TARGET_KERNEL_NO_GCC := true
 BOARD_USES_METADATA_PARTITION := true
 
 # Partitions
-# TODO(J607F): every size below is a placeholder (Motorola lito values). Take
-# them from the stock rawprogram*.xml / partition table and the super LP
-# metadata (lpdump), like TB520FU.
+# Sizes from the stock rawprogram*.xml (UFS LUN 4) and the super LP metadata.
 -include vendor/lineage/config/BoardConfigReservedSize.mk
 BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
 BOARD_BOOTIMAGE_PARTITION_SIZE := 100663296
 BOARD_DTBOIMG_PARTITION_SIZE := 25165824
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 100663296
 BOARD_ODMIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_SYSTEM_EXTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_SUPER_PARTITION_SIZE := 9126805504
+BOARD_SUPER_PARTITION_SIZE := 10737418240
 BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
 BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := odm product system system_ext vendor
-# Virtual A/B (device.mk): the whole super holds one slot.
-# TODO(J607F): if stock is plain A/B (ro.virtual_ab.enabled unset), use
-# (BOARD_SUPER_PARTITION_SIZE / 2) - 4 MiB here and drop virtual_ab_ota.
-BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := $(shell echo $$(($(BOARD_SUPER_PARTITION_SIZE) - 4194304))) # (BOARD_SUPER_PARTITION_SIZE - "reasonable overhead of 4 MiB")
+# Virtual A/B (stock ro.virtual_ab.enabled=true): the whole super holds one
+# slot. Stock group size is super - 8 MiB.
+BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 10729029632
 TARGET_COPY_OUT_ODM := odm
 TARGET_COPY_OUT_PRODUCT := product
 TARGET_COPY_OUT_SYSTEM_EXT := system_ext
@@ -145,13 +145,13 @@ TARGET_SYSTEM_EXT_PROP += $(DEVICE_PATH)/system_ext.prop
 TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
 
 # Recovery
-# Recovery lives in boot (no recovery partition on the Lenovo A/B tablets).
-# TODO(J607F): confirm there is no recovery_a/recovery_b partition.
-BOARD_USES_RECOVERY_AS_BOOT := true
+# Stock has separate recovery_a/recovery_b partitions (96 MiB), so recovery
+# is its own image, not recovery-as-boot.
+# Stock recovery.img (header v2) carries its own dtb and recovery_dtbo.
+BOARD_INCLUDE_RECOVERY_DTBO := true
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/init/fstab.qcom
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
-# TODO(J607F): the panel is natively portrait or landscape? Set
-# TARGET_RECOVERY_DEFAULT_ROTATION / _TOUCH_ROTATION once seen on the device.
+# The panel is natively portrait (1200x2000), so recovery needs no rotation.
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
@@ -159,8 +159,9 @@ TARGET_USERIMAGES_USE_F2FS := true
 # Wi-Fi only tablet: no RIL.
 
 # Security
-# TODO(J607F): ro.vendor.build.security_patch of the stock firmware.
-VENDOR_SECURITY_PATCH := 2023-01-01
+# Must match the extracted blobs: J607Z TB-J607Z_S540663_241109_ROW vendor
+# (J607F 12.6.142 stock is 2021-06-01).
+VENDOR_SECURITY_PATCH := 2023-01-05
 
 # SEPolicy
 include device/qcom/sepolicy_vndr/SEPolicy.mk

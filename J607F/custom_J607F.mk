@@ -25,8 +25,9 @@ PRODUCT_CHARACTERISTICS := tablet
 
 PRODUCT_GMS_CLIENTID_BASE := android-lenovo
 
-# TODO(J607F): ro.product.device / ro.product.name and the build fingerprint
-# of the stock firmware (getprop on the device, or the stock build.prop).
+# Stock: ro.product.vendor.device=J607F, ro.product.vendor.name=LenovoTB-J607F_PRC,
+# fingerprint Lenovo/LenovoTB-J607F_PRC/J607F:11/RKQ1.201217.002/12.6.142_210801:user/release-keys.
+# Device names follow the stock vendor device name, like TB520FU.
 PRODUCT_BUILD_PROP_OVERRIDES += \
     DeviceName=J607F \
     DeviceProduct=J607F \

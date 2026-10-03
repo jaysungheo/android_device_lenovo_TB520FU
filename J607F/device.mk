@@ -14,8 +14,7 @@ TARGET_IS_TABLET := true
 $(call inherit-product, hardware/qcom-caf/common/common.mk)
 
 # A/B
-# TODO(J607F): Virtual A/B assumed for an Android 11 launch device; check
-# ro.virtual_ab.enabled in the stock vendor build.prop (BoardConfig.mk).
+# Virtual A/B, as stock (ro.virtual_ab.enabled=true).
 $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
 
 AB_OTA_POSTINSTALL_CONFIG += \
@@ -82,7 +81,8 @@ PRODUCT_PACKAGES += \
     android.hardware.boot-service.qti.recovery
 
 # Camera
-# 13 MP rear (AF), 8 MP front, ToF depth sensor. Camera HAL is stock (CamX).
+# 13 MP rear OV13B10 (AF), 8 MP front OV8856 or S5K4H7. Camera HAL is stock (CamX).
+# The spec sheet's "ToF" is the TMF8801 proximity sensor, not a camera.
 $(call soong_config_set_bool,camera,override_format_from_reserved,true)
 
 PRODUCT_PACKAGES += \
@@ -133,8 +133,7 @@ PRODUCT_PACKAGES += \
     tune2fs_ramdisk
 
 # GPS
-# TODO(J607F): check that the Wi-Fi model has GNSS at all (vendor/bin/xtra-daemon
-# and the loc HAL in the stock dump); drop this section otherwise.
+# The Wi-Fi model has GNSS (stock gnss@2.1-service-qti, xtra-daemon).
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.location.gps.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.location.gps.xml
 
@@ -219,8 +218,9 @@ PRODUCT_COPY_FILES += \
     device/lenovo/J607F/configs/power/powerhint.json:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.json
 
 # Sensors
-# TODO(J607F): trim to the sensors the device really has (no proximity on a
-# tablet is likely; light + accel + gyro + compass assumed).
+# Fitted sensors (the J607Z firmware ships configs only for these): BMI26x or
+# ICM4x6xx accel/gyro, LTR578 light/proximity, TMF8801 ToF proximity.
+# No magnetometer; permissions match the stock J607F list.
 PRODUCT_PACKAGES += \
     android.hardware.sensors-service.multihal \
     sensors.dynamic_sensor_hal
@@ -230,9 +230,11 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.accelerometer.xml \
-    frameworks/native/data/etc/android.hardware.sensor.compass.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.compass.xml \
     frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.gyroscope.xml \
-    frameworks/native/data/etc/android.hardware.sensor.light.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.light.xml
+    frameworks/native/data/etc/android.hardware.sensor.light.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.light.xml \
+    frameworks/native/data/etc/android.hardware.sensor.proximity.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.proximity.xml \
+    frameworks/native/data/etc/android.hardware.sensor.stepcounter.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.stepcounter.xml \
+    frameworks/native/data/etc/android.hardware.sensor.stepdetector.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.stepdetector.xml
 
 # Shipping API
 # Launched with Android 11.
@@ -291,7 +293,7 @@ DEVICE_MANIFEST_FILE := device/lenovo/J607F/vintf/manifest.xml
 DEVICE_MATRIX_FILE := hardware/qcom-caf/common/compatibility_matrix.xml
 
 # Vibrator
-# TODO(J607F): a tablet may have no vibrator; drop if the stock dump has none.
+# Stock has a vibrator (qcom,qpnp-vibrator-ldo, vendor.qti.hardware.vibrator.service).
 $(call inherit-product, vendor/qcom/opensource/vibrator/vibrator-vendor-product.mk)
 
 # WiFi
