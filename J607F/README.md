@@ -1,6 +1,6 @@
 # Lenovo Xiaoxin Pad Plus (TB-J607F) — PixelOS device tree (DRAFT)
 
-**Status: scaffold, never built or booted.** This is a starting point for
+**Status: never built or booted; stock values filled in.** This is a starting point for
 porting the TB520FU tree's setup to the TB-J607F. The layout follows the
 TB520FU tree; the platform parts (lito, msm-4.19) come from the LineageOS
 trees for other SM7225/SM7250 devices. Every value that still has to come
@@ -11,16 +11,18 @@ below.
 |---|---|
 | SoC | Qualcomm SM7225 Snapdragon 750G (lito), Adreno 619 |
 | Kernel | msm-4.19 (non-GKI), Lenovo source release, built from source |
-| Display | 11" IPS LCD, 2000×1200, 60 Hz, ~212 ppi |
+| Display | 11" IPS LCD, 1200×2000 portrait-native BOE panel (nt36523 or Himax), 60 Hz, density 240 |
 | Memory | 6 GB RAM, 128 GB UFS, microSD |
-| Audio | 4 speakers (JBL), no 3.5 mm jack |
-| Cameras | 13 MP rear (AF), 8 MP front, ToF depth |
-| Connectivity | Wi-Fi 5 (dual band), Bluetooth 5.1, no cellular |
+| Audio | 4 speakers (JBL) on 4× Cirrus CS35L41 amps, Dolby Atmos, no 3.5 mm jack |
+| Cameras | 13 MP rear OV13B10 (AF), 8 MP front OV8856 or S5K4H7 |
+| Sensors | BMI26x or ICM4x6xx accel/gyro, LTR578 light/proximity, TMF8801 ToF proximity, Abov SAR, hall |
+| Connectivity | Wi-Fi 5 (dual band), Bluetooth 5.1 (WCN39xx), GNSS, no cellular |
 | Battery | 7700 mAh |
 | Shipped | Android 11, ZUI 12.5 (shipping API 30) |
 
-Hardware facts from [GSMArena](https://m.gsmarena.com/lenovo_pad_plus-10927.php);
-not yet checked against the stock firmware.
+Hardware facts from [GSMArena](https://m.gsmarena.com/lenovo_pad_plus-10927.php),
+checked against the stock J607F firmware (ZUI 12.6.142_210801) and the stock
+firmware of the 5G sibling TB-J607Z (same board, S540663_241109).
 
 ## Where this directory goes
 
@@ -49,37 +51,47 @@ scripts. Those are specific to TB520FU hardware (SM8650, Pen Plus, the
 Bluetooth keyboard). The J607F's pogo-pin keyboard and Precision Pen 2 need
 their own look once the device boots.
 
-## Placeholders to fill from the stock firmware
+## Stock firmware values
+
+Filled from the stock J607F firmware (`TB-J607F_CN_WIFI_USER_Q00010.0_R_ZUI_12.6.142_ST_210801`)
+and, for the blobs, the TB-J607Z firmware (`TB-J607Z_S540663_241109_ROW`).
+The J607Z is the 5G model of the same board: same 4.19.157 kernel (22 config
+lines apart), DTBO, vendor kernel modules, cameras and audio configs, but its
+vendor image is two years newer (security patch 2023-01-05).
+
+| What | Value | Where |
+|---|---|---|
+| A/B, Virtual A/B | yes (`ro.virtual_ab.enabled=true`) | `BoardConfig.mk`, `device.mk` |
+| Recovery | separate `recovery_a/_b` (96 MiB), not recovery-as-boot | `BoardConfig.mk` |
+| Boot image | header v2, page 4096, base 0x0, dtb in boot, no vendor_boot | `BoardConfig.mk` |
+| Partitions | boot 96 MiB, recovery 96 MiB, dtbo 24 MiB, super 10 GiB, group super − 8 MiB | `BoardConfig.mk` |
+| Filesystems | ext4 for every logical partition | `BoardConfig.mk`, `init/fstab.qcom` |
+| fstab | stock `/vendor/etc/fstab.qcom` | `init/fstab.qcom` |
+| Density, rotation | 240; portrait panel, no recovery rotation | `BoardConfig.mk`, `vendor.prop` |
+| Vendor security patch | 2023-01-05 (matches the J607Z blobs) | `BoardConfig.mk` |
+| Vendor / odm props | stock J607Z build.prop, radio props dropped | `vendor.prop`, `odm.prop` |
+| Blob list | gauguin platform entries trimmed to stock, plus Lenovo audio, camera, Dolby, sensors, thermal, touch firmware and their NEEDED libs | `proprietary-files.txt` |
+| GNSS, vibrator | both present | `device.mk` |
+| Sensors | accel, gyro, light, proximity, step counter/detector; no compass | `device.mk` |
+| Keymaster | 4.1 | `vintf/manifest.xml`, `proprietary-files.txt` |
+| WLAN firmware | `qca_cld/`, stock symlinks | `Android.bp` |
+| Init | stock SAR permissions, Lenovo ship mode and battery protection triggers | `init/init.target.rc` |
+
+The stock dumps, configs and comparison notes live in the project files
+(`j607f-stock/`, `j607z-stock/`).
+
+## Still open
 
 | What | Where | How to get it |
 |---|---|---|
-| A/B, Virtual A/B | `BoardConfig.mk`, `device.mk` | partition table (`boot_a`/`boot_b`), `ro.virtual_ab.enabled` in vendor build.prop |
-| Recovery in boot or separate | `BoardConfig.mk` `BOARD_USES_RECOVERY_AS_BOOT` | partition table (`recovery_a`?) |
-| Boot header version, cmdline, base, page size, vendor_boot | `BoardConfig.mk` | `unpack_bootimg --boot_img boot.img` |
-| Partition sizes (boot, dtbo, super) | `BoardConfig.mk` | `rawprogram*.xml` or `/dev/block/by-name` sizes, `lpdump super.img` |
-| System / vendor filesystem (ext4 or erofs) | `BoardConfig.mk`, `fstab.qcom` | stock fstab, `file` on the images |
-| Kernel source and defconfig name | `BoardConfig.mk`, `lineage.dependencies` | Lenovo open source portal (TB-J607F release); `/proc/config.gz` on stock |
-| dtb / dtbo built or prebuilt | `BoardConfig.mk` | does the source release carry the J607F board dts? |
-| fstab (encryption flags, Lenovo partitions, microSD path) | `init/fstab.qcom` | stock `/vendor/etc/fstab.qcom` |
-| zram size | `init/fstab.zram` | stock fstab.zram / init |
-| LCD density | `BoardConfig.mk`, `vendor.prop` | `ro.sf.lcd_density` |
-| Recovery rotation | `BoardConfig.mk` | panel orientation on the device |
-| Vendor security patch, fingerprint, `ro.product.*` | `BoardConfig.mk`, `custom_J607F.mk` | stock build.prop |
-| Vendor / odm / product properties | `*.prop` | `tools/bringup/mkprops.py` from the TB520FU tree, pointed at the J607F dump |
-| Blob list | `proprietary-files.txt` | `tools/bringup/blobdiff.py` (this tree) on the dump, then add the Lenovo audio configs + ACDB, camera, sensor configs, thermal configs, touch firmware |
+| Kernel source and defconfig name | `BoardConfig.mk`, `lineage.dependencies` | Lenovo open source portal (TB-J607F release); the stock IKCONFIG is in the dump |
+| dtb / dtbo built or prebuilt | `BoardConfig.mk` | does the source release carry the Lenovo Lagoon QRD (board-id 0x1000b) dts? |
 | Extra blob fixups | `extract-files.py` | first `m nothing` / boot |
-| VINTF manifest | `vintf/manifest.xml` | stock `/vendor/etc/vintf/manifest.xml` and fragments |
-| GNSS present on the Wi-Fi model | `device.mk`, blob list | loc HAL / xtra-daemon in the dump |
-| Vibrator present | `device.mk` | vibrator HAL / leds node in the dump |
-| Sensor set (proximity, compass, ...) | `device.mk` | stock `/vendor/etc/permissions` |
-| IRQ numbers for msm_drm / kgsl | `init/init.target.rc` | `/proc/interrupts` on stock |
-| WLAN firmware directory (`qca_cld/` or a chip subdirectory) | `Android.bp` | `/vendor/firmware/wlan` on stock |
+| VINTF manifest | `vintf/manifest.xml` | reconcile the rest with the stock manifest and fragments |
+| IRQ numbers for msm_drm / kgsl | `init/init.target.rc` | `/proc/interrupts` on a running device |
 | Auto-brightness curve, backlight range, power profile | `overlay/FrameworksResJ607F` | stock framework-res overlay APK |
-| Camera public libraries | `configs/public.libraries.txt` | stock `/vendor/etc/public.libraries.txt` |
 | Device nodes and sysfs labels (touch, pen, keyboard dock, amp, Type-C) | `sepolicy/vendor` | stock vendor `file_contexts`, booted device |
-
-`configs/power/powerhint.json` also carries gauguin's `/sys/touchpanel/double_tap`
-node, which the Lenovo touch driver probably does not have.
+| Which IMU fits (BMI26x or ICM4x6xx) | none, both configs ship | runtime |
 
 ## Known risks
 
@@ -92,10 +104,9 @@ node, which the Lenovo touch driver probably does not have.
 
 ## Next steps
 
-1. Dump the stock J607F firmware (boot, dtbo, vendor, odm, system_ext,
-   product, partition table).
-2. Fill the partition, boot image and fstab placeholders.
-3. Run `tools/bringup/blobdiff.py`, rebuild `proprietary-files.txt`, run
-   `./extract-files.py <dump>` to create `vendor/lenovo/J607F`.
-4. Set up `kernel/lenovo/J607F` from the Lenovo source release.
-5. `breakfast J607F` and work through `m nothing` errors, then boot.
+1. ~~Dump the stock J607F firmware~~ and ~~fill the partition, boot image
+   and fstab placeholders~~ (done, see above).
+2. Run `./extract-files.py <J607Z dump>` to create `vendor/lenovo/J607F`
+   from the J607Z vendor, odm, system_ext and product trees.
+3. Set up `kernel/lenovo/J607F` from the Lenovo source release.
+4. `breakfast J607F` and work through `m nothing` errors, then boot.

@@ -96,13 +96,35 @@ on early-boot
     start vendor.sensors
 
 on boot
-    chmod 0666 /dev/input/event2
+    # Abov SAR sensor (stock J607F init.target.rc; stock opens these 0666)
+    chown system system /sys/class/capsense/enable
+    chown system system /sys/bus/i2c/devices/1-0020/sar_calibration
+    chmod 0660 /sys/class/capsense/enable
+    chmod 0660 /sys/bus/i2c/devices/1-0020/sar_calibration
+    chmod 0664 /sys/bus/i2c/devices/1-0020/sar_proxstatus_ch0
+    chmod 0664 /sys/bus/i2c/devices/1-0020/sar_proxstatus_ch1
+    chmod 0664 /sys/bus/i2c/devices/1-0020/sar_proxstatus_ch2
+    chmod 0664 /sys/bus/i2c/devices/1-0020/sar_proxstatus_ch3
+    setprop vendor.lenovotb.shipmode.on 0
 
-    # Set the default voltage to 5V
-    setprop persist.vendor.cp.taper_term_mv 5000
-    setprop persist.vendor.qg_cold_temp -150
-    setprop persist.vendor.qg_coff_gain 1
-    setprop persist.vendor.qg_cld_coff_gain 1.5
+# Lenovo ship mode and battery protection (stock J607Z init.target.rc)
+on property:vendor.lenovotb.shipmode.on=1
+    write /sys/module/qpnp_power_on/parameters/ship_mode_en 1
+
+on property:vendor.lenovotb.shipmode.on=0
+    write /sys/module/qpnp_power_on/parameters/ship_mode_en 0
+
+on property:sys.battery.enable_charge=1
+    write /sys/class/power_supply/battery/charging_enabled 1
+
+on property:sys.battery.enable_charge=0
+    write /sys/class/power_supply/battery/charging_enabled 0
+
+on property:sys.battery.enable_battery_supply=1
+    write /sys/class/power_supply/battery/input_suspend 1
+
+on property:sys.battery.enable_battery_supply=0
+    write /sys/class/power_supply/battery/input_suspend 0
 
 on boot && property:persist.vendor.usb.controller.default=*
     setprop vendor.usb.controller ${persist.vendor.usb.controller.default}
@@ -148,13 +170,6 @@ service vendor.per_proxy /vendor/bin/pm-proxy
     user system
     group system
     disabled
-
-# NVMAC
-service nv_mac /vendor/bin/nv_mac
-    class late_start
-    user system
-    group system inet net_admin wifi net_raw
-    oneshot
 
 on property:init.svc.vendor.per_mgr=running
     start vendor.per_proxy

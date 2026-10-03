@@ -1,7 +1,8 @@
 <!--
      DRAFT VINTF manifest for TB-J607F: the gauguin (SM7225) manifest without
      the radio, IMS, data, NFC and fingerprint HALs (Wi-Fi only tablet).
-     TODO(J607F): reconcile with the stock /vendor/etc/vintf/manifest.xml.
+     Keymaster 4.1 and no audiohalext, as stock. TODO(J607F): reconcile the
+     rest with the stock /vendor/etc/vintf/manifest.xml.
 -->
 <manifest version="5.0" type="device" target-level="7">
     <hal format="hidl">
@@ -32,7 +33,7 @@
     <hal format="hidl">
         <name>android.hardware.keymaster</name>
         <transport>hwbinder</transport>
-        <fqname>@4.0::IKeymasterDevice/default</fqname>
+        <fqname>@4.1::IKeymasterDevice/default</fqname>
     </hal>
     <hal format="hidl">
         <name>android.hardware.sensors</name>
@@ -48,11 +49,6 @@
         <name>vendor.qti.hardware.alarm</name>
         <transport>hwbinder</transport>
         <fqname>@1.0::IAlarm/default</fqname>
-    </hal>
-    <hal format="hidl">
-        <name>vendor.qti.hardware.audiohalext</name>
-        <transport>hwbinder</transport>
-        <fqname>@1.0::IAudioHalExt/default</fqname>
     </hal>
     <hal format="hidl">
         <name>vendor.qti.hardware.bluetooth_audio</name>

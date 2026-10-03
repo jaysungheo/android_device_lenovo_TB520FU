@@ -14,8 +14,7 @@ soong_namespace {
     ],
 }
 
-// TODO(J607F): the lito WLAN firmware path is qca_cld/ (no chip subdirectory
-// like TB520FU's kiwi_v2/); check /vendor/firmware/wlan on stock.
+// Same symlinks as stock /vendor/firmware/wlan/qca_cld/ (no chip subdirectory).
 install_symlink {
     name: "firmware_wlan_mac.bin_symlink",
     vendor: true,
