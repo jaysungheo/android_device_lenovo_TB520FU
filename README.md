@@ -13,7 +13,7 @@ Lenovo Yoga Tab Plus / YOGA Pad Pro (TB520FU, Qualcomm Snapdragon 8 Gen 3).
 
 Status: used daily. SELinux enforcing, dm-verity on, and the bootloader can be
 relocked (see "Verified boot"). Widevine L1 (Netflix HD), Play Integrity
-BASIC.
+STRONG(RKP Sign) (Thanks to [sungwon1002](https://github.com/sungwon1002).
 
 ## Downloads
 
