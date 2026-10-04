@@ -46,3 +46,11 @@ persist.sys.sf.native_mode=2
 # placement, docked bottom-right with a clipped height, instead of the centred
 # tablet dialogs. Only this key, not the rest of ro.config.lgsi.* (vendor.prop).
 ro.config.lgsi.device.type=pad
+
+# Brightness slider like stock ZUI: linear instead of the AOSP HLG gamma curve.
+# Stock maps the slider with brightness = a*s^2 + b*s + c (ro.sys.zui.param.*,
+# a=1e-10, b=0.15259, c=0 on the 0-65535 slider, i.e. linear), so 50% on the
+# slider is 50% backlight; HLG gives about 8%, which made 30-70% look much
+# darker than on ZUI while the peak was the same. AOSP SettingsLib has the
+# switch for this; label: sepolicy/private/property_contexts.
+sys.brightness.disable_gamma_conversion=true
