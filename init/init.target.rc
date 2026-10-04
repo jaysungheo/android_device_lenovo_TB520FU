@@ -91,6 +91,11 @@ on fs
     mkdir /mnt/vendor/persist/data 0700 system system
 
 on post-fs
+    # qseecomd rewrites the PFM license store in place: a file left without a
+    # label (seen on data/pfm/storage.txt from the early bring-up) would keep
+    # it unlabeled, so restore the vendor_persist_data_file label first.
+    restorecon_recursive /mnt/vendor/persist/data/pfm
+
     #Execute virtualization manager
     enable vendor.qvirtservice_rs
     start  vendor.qvirtservice_rs

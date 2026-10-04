@@ -5,11 +5,6 @@
 dontaudit hal_camera_default property_type:file { getattr map open read };
 set_prop(hal_camera_default, vendor_camera_prop)
 
-# qseecomd: RPMB over the UFS bsg nodes, PFM storage file created before
-# persist was labeled
-allow tee unlabeled:dir search;
-allow tee unlabeled:file { read write append open getattr };
-
 # e2fsck on lenovocust at boot
 allow fsck lenovocust_block_device:blk_file rw_file_perms;
 
