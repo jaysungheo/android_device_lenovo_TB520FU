@@ -47,8 +47,12 @@ final class FolioCover {
     private SensorManager mSensors;
     private Sensor mLight;
     private boolean mLightRegistered;
-    /** The screen was turned off by the cover; opening it wakes the screen. */
-    private boolean mSleptByCover;
+    /**
+     * The cover was closed on a dark screen: either the cover turned it off,
+     * or it was already off (power key, double tap to sleep, timeout) when
+     * the cover was closed. Opening the cover then wakes the screen.
+     */
+    private boolean mWakeOnOpen;
 
     private final SensorEventListener mHallListener = new SensorEventListener() {
         @Override
@@ -96,14 +100,19 @@ final class FolioCover {
         PowerManager pm = mContext.getSystemService(PowerManager.class);
         if (away) {
             unregisterLight();
-            if (mSleptByCover && enabled() && !pm.isInteractive()) {
+            if (mWakeOnOpen && enabled() && !pm.isInteractive()) {
                 pm.wakeUp(SystemClock.uptimeMillis(), PowerManager.WAKE_REASON_LID,
                         "tb520fu:folio");
             }
-            mSleptByCover = false;
+            mWakeOnOpen = false;
             return;
         }
-        if (!enabled() || !pm.isInteractive()) return;
+        if (!enabled()) return;
+        if (!pm.isInteractive()) {
+            // Closed on a screen that is already off: opening wakes it.
+            mWakeOnOpen = true;
+            return;
+        }
         if (mLight == null) {
             coverClosed(pm);
         } else if (!mLightRegistered) {
@@ -124,7 +133,7 @@ final class FolioCover {
 
     private void coverClosed(PowerManager pm) {
         Log.i(TAG, "cover closed, screen off");
-        mSleptByCover = true;
+        mWakeOnOpen = true;
         pm.goToSleep(SystemClock.uptimeMillis(), PowerManager.GO_TO_SLEEP_REASON_LID_SWITCH, 0);
         // Stock: "turn the screen off and lock automatically".
         try {
