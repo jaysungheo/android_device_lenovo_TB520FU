@@ -40,9 +40,9 @@ themselves (Settings > System > System update).
 
 `vendor/lenovo/TB520FU-custom` is optional. It holds the maintainer
 additions on top of PixelOS - Lenovo Notes, the per-app game performance
-profiles, the OTA
-updater with its publishing tools and the default live wallpaper - with
-their app ("Custom features"), overlays, blobs, patches and a small
+profiles, the Play Store installer switch, the certified build fingerprint,
+the OTA updater with its publishing tools and the default live wallpaper -
+with their app ("Custom Tweaks"), overlays, blobs, patches and a small
 system_server extension. Without it this tree builds a plain PixelOS for
 the device: no such app, no updater, no game performance enforcement and
 the device tree's own TB520FUParts (Lenovo features) as the only settings
@@ -143,17 +143,24 @@ trees, merged into one tree with the OnePlus-specific parts removed.
 - `health/` — QTI health HAL copy that ignores the pen charger (`wls_tx`).
 - `parts/` — TB520FUParts, "Lenovo features" in Settings > System: charging
   modes, white balance strength, memory extension (zram writeback), pen
-  settings, and the physical keyboard page of the stock settings (stock
-  strings copied by `tools/lenovo_keyboard_strings.py`). The game performance
-  page and the Play Store identity moved to "Custom features"
-  (`vendor/lenovo/TB520FU-custom`).
+  settings, folio case mode, and the physical keyboard page of the stock
+  settings with the keyboard firmware update (stock strings copied by
+  `tools/lenovo_keyboard_strings.py`). Sub pages open as their own activity,
+  like the Settings sub pages. The game performance page lives in "Custom
+  Tweaks" (`vendor/lenovo/TB520FU-custom`).
 - `input/` — `tb520fu-input.jar`, loaded into system_server as a
   DeviceKeyHandler: Lenovo pen (attach, pairing, battery, writing haptics,
-  buttons), keyboard keys, charging modes and double tap to wake, ported from
-  the stock ZUI services (see `input/NOTICE`). Also the converted Lenovo
-  keylayouts.
+  buttons), keyboard keys, charging modes, double tap to wake and the folio
+  case mode (the cover is the sensor HAL hall effect sensor, confirmed by the
+  light sensor, as on stock), ported from the stock ZUI services (see
+  `input/NOTICE`). Also the converted Lenovo keylayouts.
 - `lenovo/PenService/` — the stock PenService with a compat dex for APIs that
-  changed in Android 17.
+  changed in Android 17 and the PixelOS look of the pen settings (card groups).
+- `lenovo/KeyboardUpdate/` — the stock keyboard firmware updaters with a
+  compat dex that gives their page the PixelOS look (no resource overlays).
+- `system_ext.prop` — besides the stock values: `ro.config.lgsi.device.type=pad`
+  (the stock Lenovo apps use the tablet dialog layout with it) and a linear
+  brightness slider like stock ZUI.
 - `patches/` — PixelOS source patches, applied by `patches/apply.sh`.
 - `tools/bringup/` — scripts used to generate `proprietary-files.txt` and the
   props from a stock dump (`TB520FU_STOCK`, default `~/tb520fu`).
