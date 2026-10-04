@@ -135,13 +135,7 @@ class KeyboardFragment : SettingsBasePreferenceFragment(), InputManager.InputDev
     private fun appKey(key: String, index: Int): Preference =
         findPreference<Preference>(key)!!.apply {
             setOnPreferenceClickListener {
-                parentFragmentManager.beginTransaction()
-                    .replace(
-                        com.android.settingslib.collapsingtoolbar.R.id.content_frame,
-                        KeyboardAppKeyFragment.newInstance(index),
-                    )
-                    .addToBackStack(null)
-                    .commit()
+                PartsActivity.open(requireContext(), KeyboardAppKeyFragment.newInstance(index))
                 true
             }
         }
