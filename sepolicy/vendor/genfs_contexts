@@ -3,6 +3,9 @@ genfscon sysfs /devices/virtual/huaqin/interface/hw_info u:object_r:vendor_sysfs
 
 # Lenovo pogo keyboard state (keyboard HAL)
 genfscon sysfs /devices/platform/soc/soc:lenovo_kb u:object_r:vendor_sysfs_lenovo_kb:s0
+# Its wakeup source stays a wakeup node (stock does the same), else
+# system_suspend cannot read the wakeup statistics under it.
+genfscon sysfs /devices/platform/soc/soc:lenovo_kb/wakeup u:object_r:sysfs_wakeup:s0
 
 # Touch panel pen id (touchscreen HAL)
 genfscon proc /Pen_ID u:object_r:vendor_proc_lenovo_touch:s0
