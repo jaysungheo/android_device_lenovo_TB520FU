@@ -9,6 +9,12 @@ set_prop(hal_camera_default, vendor_camera_prop)
 allow fsck lenovocust_block_device:blk_file rw_file_perms;
 
 dontaudit kernel vendor_modprobe:key search;
+# system_dlkm_modprobe.sh lists / while looking for the module directory.
+dontaudit vendor_modprobe rootfs:dir read;
+
+# ueventd looks for firmware under the WLAN persist directory (kiwi_v2), which
+# has its own label here (vendor_persist_wlan_file).
+allow ueventd vendor_persist_wlan_file:dir search;
 
 # Probes without effect
 dontaudit zygote property_type:file { getattr map open read };

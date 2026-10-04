@@ -13,3 +13,11 @@ genfscon proc /Pen_ID u:object_r:vendor_proc_lenovo_touch:s0
 # Pen/keyboard wireless charging transmitter (pen attach, MAC, Qi commands)
 genfscon sysfs /devices/platform/soc/soc:qcom,pmic_glink/soc:qcom,pmic_glink:qcom,battery_charger/power_supply/wls_tx u:object_r:vendor_sysfs_wls_tx:s0
 genfscon sysfs /firmware/fdt u:object_r:vendor_sysfs_tb520fu_fdt:s0
+
+# Wakeup sources the stock vendor policy labels sysfs_wakeup; without them
+# system_suspend cannot read their statistics (genfscon is a prefix match, so
+# ".../wakeup" covers the numbered wakeupNN directories).
+genfscon sysfs /devices/platform/soc/8c0000.qcom,qupv3_2_geni_se/888000.qcom,qup_uart/wakeup u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc/ac0000.qcom,qupv3_1_geni_se/a90000.spi/spi_master/spi0/spi0.0/wakeup u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc/soc:qcom,pmic_glink/soc:qcom,pmic_glink:qcom,battery_charger/power_supply/wls_tx/wakeup u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc/soc:qcom,pmic_glink/soc:qcom,pmic_glink:qcom,ucsi/power_supply/ucsi-source-psy-soc:qcom,pmic_glink:qcom,ucsi2/wakeup u:object_r:sysfs_wakeup:s0

@@ -218,7 +218,6 @@ ro.camera.enableCamera1MaxZsl=1
 drm.service.enabled=true
 vendor.wv.oemcrypto.debug.enable_hlos_data_path=true
 vendor.wv.oemcrypto.debug.enable_prov40=true
-persist.demo.hdmirotationlock=false
 persist.sys.sf.color_saturation=1.0
 persist.sys.sf.color_mode=0
 debug.sf.hw=0
@@ -302,10 +301,6 @@ ro.vendor.dolby.dax.version=DAX3_3.13.0.9_r1
 
 # Display (Lenovo addition on top of init.qti.display_boot.sh)
 vendor.display.disable_get_screen_decorator_support=1
-
-# Boot animation: the natural orientation is portrait (touch/pen/sensors), the
-# tablet is used in landscape
-ro.bootanim.set_orientation_logical_0=ORIENTATION_90
 
 # Blur (notification shade, recents, dialogs); SM8650 handles it fine
 ro.surface_flinger.supports_background_blur=1
