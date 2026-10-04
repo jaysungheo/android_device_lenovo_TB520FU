@@ -187,7 +187,10 @@
         <item>8500.0</item>
         <item>9500.0</item>
     </array>
-    <!-- Low light: neutral below 40 lux (4500K ambient maps to 6500K) -->
+    <!-- The low and high light values below are display CCTs: this AOSP maps
+         the ambient CCT to the display CCT first and then blends these in
+         (DisplayWhiteBalanceController.updateAmbientColorTemperature).
+         Low light: neutral 6500K below 40 lux, like stock (below 50 lux). -->
     <array name="config_displayWhiteBalanceLowLightAmbientBrightnesses">
         <item>40.0</item>
         <item>50.0</item>
@@ -196,8 +199,8 @@
         <item>0.0</item>
         <item>1.0</item>
     </array>
-    <item name="config_displayWhiteBalanceLowLightAmbientColorTemperature" format="float" type="dimen">4500.0</item>
-    <!-- Bright daylight: 7500K above 1000 lux (6000K ambient maps to 7450K) -->
+    <item name="config_displayWhiteBalanceLowLightAmbientColorTemperature" format="float" type="dimen">6500.0</item>
+    <!-- Bright daylight: 7500K above 1000 lux, like stock -->
     <array name="config_displayWhiteBalanceHighLightAmbientBrightnesses">
         <item>900.0</item>
         <item>1000.0</item>
@@ -206,7 +209,7 @@
         <item>0.0</item>
         <item>1.0</item>
     </array>
-    <item name="config_displayWhiteBalanceHighLightAmbientColorTemperature" format="float" type="dimen">6000.0</item>
+    <item name="config_displayWhiteBalanceHighLightAmbientColorTemperature" format="float" type="dimen">7500.0</item>
 
     <!-- Double tap to wake: Settings > Display > Tap to wake, applied to the
          touch panel by input/DoubleTapWake.java -->
