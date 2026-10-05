@@ -87,6 +87,14 @@ apply_patch frameworks/base \
 #       Defines config_tb520fu_patch_desktop_opt_out so TB520FUParts can detect it.
 apply_patch frameworks/base \
     "$PATCHES/frameworks_base-0004-keyboard-desktop-first-opt-out.patch"
+# 0005: The stock PenService "Show pointer when hovering" switch writes
+#       Settings.Global stylus_change_icon ("type:show"), which only the ZUI
+#       input service read. AOSP draws no icon for a hovering stylus unless
+#       the app asks for one; ViewRootImpl now shows the hover spot
+#       (PointerIcon.TYPE_SPOT_HOVER) while the switch is on and the app
+#       asks for nothing (handwriting and app icons keep priority).
+apply_patch frameworks/base \
+    "$PATCHES/frameworks_base-0005-lenovo-pen-hover-pointer.patch"
 # frameworks/native
 # 0001: RefreshRateSelector: a static screen (all layers vote Min) goes to the
 #       lowest mode of at least 60 Hz, not the policy minimum; the idle timer

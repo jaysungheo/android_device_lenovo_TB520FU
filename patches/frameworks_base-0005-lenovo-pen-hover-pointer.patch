@@ -1,0 +1,52 @@
+diff --git a/core/java/android/view/ViewRootImpl.java b/core/java/android/view/ViewRootImpl.java
+index 56757a6cf..c7041e60d 100644
+--- a/core/java/android/view/ViewRootImpl.java
++++ b/core/java/android/view/ViewRootImpl.java
+@@ -219,6 +219,7 @@ import android.os.Trace;
+ import android.os.UserHandle;
+ import android.os.VibrationAttributes;
+ import android.os.Vibrator;
++import android.provider.Settings;
+ import android.sysprop.DisplayProperties;
+ import android.sysprop.ViewProperties;
+ import android.text.TextUtils;
+@@ -8962,6 +8963,11 @@ public final class ViewRootImpl implements ViewParent,
+         if (pointerIcon == null) {
+             pointerIcon = mView.onResolvePointerIcon(event, pointerIndex);
+         }
++        if (pointerIcon == null && event.isStylusPointer() && tb520fuPenHoverPointer()) {
++            // TB520FU: the default stylus icon is empty; the Lenovo pen setting
++            // "Show pointer when hovering" asks for a visible one.
++            pointerIcon = PointerIcon.getSystemIcon(mContext, PointerIcon.TYPE_SPOT_HOVER);
++        }
+         if (pointerIcon == null) {
+             pointerIcon = PointerIcon.getSystemIcon(mContext, PointerIcon.TYPE_NOT_SPECIFIED);
+         }
+@@ -8976,6 +8982,27 @@ public final class ViewRootImpl implements ViewParent,
+         return true;
+     }
+ 
++    /**
++     * TB520FU: the stock PenService writes its "Show pointer when hovering"
++     * switch to Settings.Global stylus_change_icon as "type:show" (stock ZUI
++     * input service format, "1:0" = off); read live through the settings
++     * cache, so a change applies on the next hover.
++     */
++    private boolean tb520fuPenHoverPointer() {
++        try {
++            final String value = Settings.Global.getString(mContext.getContentResolver(),
++                    "stylus_change_icon");
++            if (value == null) {
++                return false;
++            }
++            final int colon = value.indexOf(':');
++            return colon >= 0 && "1".equals(value.substring(colon + 1).trim());
++        } catch (RuntimeException e) {
++            // Isolated processes cannot reach the settings provider.
++            return false;
++        }
++    }
++
+     private void maybeUpdateTooltip(MotionEvent event) {
+         if (event.getPointerCount() != 1) {
+             return;
