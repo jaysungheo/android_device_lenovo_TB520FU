@@ -127,6 +127,17 @@ blob_fixups: blob_fixups_user_type = {
         'vendor/etc/seccomp_policy/qsap_qapeservice.policy',
     ): blob_fixup()
         .add_line_if_missing('lseek: 1'),
+    # Wi-Fi only: stock ZUI sets the country from the Lenovo factory code,
+    # without it the driver stays on its default (US). Let the driver learn
+    # the country from the access points around (802.11d) and give that
+    # priority over a country set by the host.
+    (
+        'vendor/etc/wifi/kiwi_v2/WCNSS_qcom_cfg.ini',
+        'vendor/etc/wifi/peach/WCNSS_qcom_cfg.ini',
+        'vendor/etc/wifi/qca6750/WCNSS_qcom_cfg.ini',
+    ): blob_fixup()
+        .regex_replace('(?m)^g11dSupportEnabled=0$', 'g11dSupportEnabled=1')
+        .regex_replace('(?m)^gCountryCodePriority=1$', 'gCountryCodePriority=0'),
     'vendor/etc/vintf/manifest/c2_manifest_vendor.xml': blob_fixup()
         .regex_replace('.*IComponentStore/dolby.*\n', ''),
     'vendor/lib64/libqcodec2_core.so': blob_fixup()
