@@ -5,6 +5,6 @@
 -->
 <resources>
     <dimen name="list_common_padding_zui">16dp</dimen>
-    <dimen name="list_text_vertical_padding_zui_horizontal">12dp</dimen>
+    <dimen name="list_text_vertical_padding_zui_horizontal">16dp</dimen>
     <dimen name="text_size_list_item_zui">16sp</dimen>
 </resources>

@@ -20,9 +20,9 @@
     <dimen name="pen_pref_padding">16dp</dimen>
     <dimen name="pen_pref_padding_zui14_5">16dp</dimen>
     <dimen name="list_common_padding_zui">16dp</dimen>
-    <dimen name="list_text_vertical_padding_zui">12dp</dimen>
-    <dimen name="list_text_vertical_padding_zui_horizontal">12dp</dimen>
-    <dimen name="list_height_one_line_zui">56dp</dimen>
+    <dimen name="list_text_vertical_padding_zui">16dp</dimen>
+    <dimen name="list_text_vertical_padding_zui_horizontal">16dp</dimen>
+    <dimen name="list_height_one_line_zui">72dp</dimen>
 
     <!-- Typography: Settings titles are 16sp (TextAppearance.SettingsLib.
          BodyLarge/TitleMedium), the ZUI pen list uses 18sp at sw400dp. -->

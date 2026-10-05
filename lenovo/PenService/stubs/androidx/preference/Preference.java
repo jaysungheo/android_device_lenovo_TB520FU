@@ -40,6 +40,14 @@ public class Preference {
 
     public void setTitle(CharSequence title) {}
 
+    public CharSequence getSummary() {
+        throw new RuntimeException("stub");
+    }
+
+    public boolean isSelectable() {
+        throw new RuntimeException("stub");
+    }
+
     public Drawable getIcon() {
         throw new RuntimeException("stub");
     }

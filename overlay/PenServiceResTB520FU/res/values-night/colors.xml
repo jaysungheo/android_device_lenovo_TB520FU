@@ -7,9 +7,12 @@
     <color name="list_item_text_normal_zui">@android:color/system_neutral1_100</color>
     <color name="list_item_text_disabled_zui">@android:color/system_neutral2_600</color>
     <color name="list_item_second_line_text_normal_zui">@android:color/system_neutral2_300</color>
-    <color name="preference_category_text_zui">@android:color/system_accent1_200</color>
+    <color name="preference_category_text_zui">@android:color/system_primary_dark</color>
     <!-- neutral1_50 is #F1F0F6 in the night map; keep the theme background. -->
     <color name="preference_category_bg_zui">@android:color/transparent</color>
+    <color name="preference_category_x_space_background">@android:color/transparent</color>
+    <color name="preference_category_x_lower_text">@android:color/system_primary_dark</color>
+    <color name="preference_category_x_upper_text">@android:color/system_on_surface_variant_dark</color>
     <color name="system_primary_color_on_zui">@android:color/system_accent1_500</color>
     <color name="system_primary_color_on_pressed_zui">@android:color/system_accent1_700</color>
     <color name="system_primary_color_on_hovered_zui">@android:color/system_accent1_600</color>
@@ -18,4 +21,9 @@
     <!-- Page and navigation bar background: the PixelOS Settings background
          (settingslib_materialColorSurfaceContainer). -->
     <color name="background_zui">@android:color/system_surface_container_dark</color>
+    <color name="dialog_background_zui">@android:color/system_surface_container_high_dark</color>
+    <color name="dialog_button_text_normal_zui">@android:color/system_primary_dark</color>
+    <color name="text_title_dialog_zui">@android:color/system_on_surface_dark</color>
+    <color name="text_body_dialog_zui">@android:color/system_on_surface_variant_dark</color>
+    <color name="dialog_list_item_text_color">@android:color/system_on_surface_dark</color>
 </resources>

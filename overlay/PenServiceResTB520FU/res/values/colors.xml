@@ -18,8 +18,15 @@
     <!-- Category title: PixelOS Settings titles use the primary colour above
          the card groups (BasePreferenceFragmentCompat in lenovo/PenService),
          on the page background. -->
-    <color name="preference_category_text_zui">@android:color/system_accent1_600</color>
+    <color name="preference_category_text_zui">@android:color/system_primary_light</color>
     <color name="preference_category_bg_zui">@android:color/transparent</color>
+    <!-- The pen pages use the "X" category layout (preference_category_x):
+         its row background points at system_background_zui directly (a
+         lighter grey than the page, seen as a strip between the card groups)
+         and its title at a fixed grey. -->
+    <color name="preference_category_x_space_background">@android:color/transparent</color>
+    <color name="preference_category_x_lower_text">@android:color/system_primary_light</color>
+    <color name="preference_category_x_upper_text">@android:color/system_on_surface_variant_light</color>
     <!-- Switch (track when on) and its pressed/hovered states -->
     <color name="system_primary_color_on_zui">@android:color/system_accent1_600</color>
     <color name="system_primary_color_on_pressed_zui">@android:color/system_accent1_700</color>
@@ -29,4 +36,19 @@
     <!-- Page and navigation bar background: the PixelOS Settings background
          (settingslib_materialColorSurfaceContainer). -->
     <color name="background_zui">@android:color/system_surface_container_light</color>
+    <!-- Dialogs (zui.app.MessageDialog, the list preference dialog): the
+         Material 3 dialog colours of PixelOS (surface container high, title
+         on surface, text on surface variant, primary text buttons) without
+         the ZUI divider above the buttons. The layout stays the ZUI one. -->
+    <color name="dialog_background_zui">@android:color/system_surface_container_high_light</color>
+    <color name="dialog_background_zui_dark">@android:color/system_surface_container_high_dark</color>
+    <color name="dialog_divider_zui">@android:color/transparent</color>
+    <color name="dialog_divider_zui_dark">@android:color/transparent</color>
+    <color name="dialog_button_text_normal_zui">@android:color/system_primary_light</color>
+    <color name="text_title_dialog_zui">@android:color/system_on_surface_light</color>
+    <color name="text_title_dialog_zui_dark">@android:color/system_on_surface_dark</color>
+    <color name="text_body_dialog_zui">@android:color/system_on_surface_variant_light</color>
+    <color name="text_body_dialog_zui_dark">@android:color/system_on_surface_variant_dark</color>
+    <color name="dialog_list_item_text_color">@android:color/system_on_surface_light</color>
+    <color name="dialog_list_item_text_color_dark">@android:color/system_on_surface_dark</color>
 </resources>

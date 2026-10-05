@@ -11,13 +11,16 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
@@ -34,16 +37,25 @@ import com.lenovo.pen.cap.util.ZuiVersions;
  * no scroll bar). On top of it the rows get the PixelOS Settings look
  * (SettingsLib expressive, settingslib_round_background_*): consecutive rows
  * between two categories form one group of surface-bright cards, 20dp corners
- * on the outside of the group, 4dp inside, 2dp apart. Categories and the
- * stock bottom spacer rows (pen_settings_preference_space) stay outside the
- * cards and end a group. The backgrounds are set per adapter position from an
- * item decoration, so rows hidden or shown later regroup on the next layout.
+ * on the outside of the group, 4dp inside, 2dp apart. Categories, the stock
+ * bottom spacer rows and the "Learn more" footer stay outside the cards, on
+ * the page background, and end a group; a category without a title leaves the
+ * 16dp gap of an untitled Settings section. The backgrounds are set per
+ * adapter position from an item decoration, so rows hidden or shown later
+ * regroup on the next layout. Row titles, summaries and category titles get
+ * the SettingsLib expressive fonts (the stock sizes already match), and the
+ * toolbar the Settings back button and title (PixelToolbar).
  */
 public class BasePreferenceFragmentCompat extends zui.appcompat.preference.PreferenceFragmentCompat {
 
     private static final int OUTER_RADIUS_DP = 20;
     private static final int INNER_RADIUS_DP = 4;
     private static final int GAP_DP = 2;
+    // The empty category row is about 6dp high; together 16dp between groups.
+    private static final int UNTITLED_GROUP_GAP_DP = 10;
+    // SettingsLib expressive rows: at least 72dp, 16dp vertical padding
+    // (list_text_vertical_padding_zui in PenServiceResTB520FU).
+    private static final int ROW_MIN_HEIGHT_DP = 72;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,6 +72,13 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
         // The cards replace the ZUI dividers between rows.
         setDivider(null);
         list.addItemDecoration(new CardDecoration(context));
+        // After the activity attached the page, the toolbar is in the window.
+        list.post(new Runnable() {
+            @Override
+            public void run() {
+                PixelToolbar.attach(list);
+            }
+        });
         return view;
     }
 
@@ -72,10 +91,19 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
         private final float mOuterRadius;
         private final float mInnerRadius;
         private final int mGap;
+        private final int mUntitledGroupGap;
+        private final int mRowMinHeight;
         private final int mCardColor;
         private final ColorStateList mRippleColor;
         private final int mSpacerLayout;
+        private final int mFooterLayout;
         private RecyclerView.Adapter mObserved;
+        private final Typeface mTitleFont = Typeface.create("variable-title-medium",
+                Typeface.NORMAL);
+        private final Typeface mSummaryFont = Typeface.create("variable-body-medium",
+                Typeface.NORMAL);
+        private final Typeface mCategoryFont = Typeface.create(
+                "variable-title-small-emphasized", Typeface.NORMAL);
 
         CardDecoration(Context context) {
             Resources res = context.getResources();
@@ -83,6 +111,8 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
             mOuterRadius = OUTER_RADIUS_DP * density;
             mInnerRadius = INNER_RADIUS_DP * density;
             mGap = Math.round(GAP_DP * density);
+            mUntitledGroupGap = Math.round(UNTITLED_GROUP_GAP_DP * density);
+            mRowMinHeight = Math.round(ROW_MIN_HEIGHT_DP * density);
             boolean night = (res.getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
                     == Configuration.UI_MODE_NIGHT_YES;
             mCardColor = context.getColor(night
@@ -95,6 +125,9 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
             mRippleColor = ripple != null ? ripple : ColorStateList.valueOf(0x1f000000);
             // Empty row at the end of the stock pen pages (bottom padding).
             mSpacerLayout = res.getIdentifier("pen_settings_preference_space", "layout",
+                    context.getPackageName());
+            // "Learn more" link below the last group.
+            mFooterLayout = res.getIdentifier("pen_settings_preference_footer_right", "layout",
                     context.getPackageName());
         }
 
@@ -110,11 +143,29 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
             PreferenceGroupAdapter prefs = (PreferenceGroupAdapter) adapter;
             int position = parent.getChildAdapterPosition(view);
             Preference preference = item(prefs, position);
+            if (preference instanceof PreferenceCategory) {
+                font(view, android.R.id.title, mCategoryFont);
+            } else if (preference != null) {
+                font(view, android.R.id.title, mTitleFont);
+                font(view, android.R.id.summary, mSummaryFont);
+            }
             if (isGroupEdge(preference)) {
+                // Rows of the normal layout are recycled for cards too.
+                if (view.getBackground() instanceof Card) {
+                    view.setBackground(null);
+                    view.setMinimumHeight(0);
+                }
+                if (position > 0 && preference instanceof PreferenceCategory
+                        && TextUtils.isEmpty(preference.getTitle())) {
+                    outRect.top = mUntitledGroupGap;
+                }
                 return;
             }
             boolean first = isGroupEdge(item(prefs, position - 1));
             boolean last = isGroupEdge(item(prefs, position + 1));
+            if (view.getMinimumHeight() < mRowMinHeight) {
+                view.setMinimumHeight(mRowMinHeight);
+            }
             int shape = first ? (last ? SINGLE : TOP) : (last ? BOTTOM : MIDDLE);
             if (!first) {
                 outRect.top = mGap;
@@ -169,6 +220,14 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
             });
         }
 
+        /** Sets the font before the row is measured; no-op when it already has it. */
+        static void font(View row, int id, Typeface font) {
+            View text = row.findViewById(id);
+            if (text instanceof TextView && ((TextView) text).getTypeface() != font) {
+                ((TextView) text).setTypeface(font);
+            }
+        }
+
         private static Preference item(PreferenceGroupAdapter adapter, int position) {
             if (position < 0 || position >= adapter.getItemCount()) {
                 return null;
@@ -177,8 +236,22 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
         }
 
         private boolean isGroupEdge(Preference preference) {
-            return preference == null || preference instanceof PreferenceCategory
-                    || (mSpacerLayout != 0 && preference.getLayoutResource() == mSpacerLayout);
+            if (preference == null || preference instanceof PreferenceCategory) {
+                return true;
+            }
+            int layout = preference.getLayoutResource();
+            if ((mSpacerLayout != 0 && layout == mSpacerLayout)
+                    || (mFooterLayout != 0 && layout == mFooterLayout)) {
+                return true;
+            }
+            // The spacer rows are bound with the normal row layout (the ZUI
+            // Preference replaces the layout from the XML), so recognise them
+            // by their content: a plain Preference with nothing to show and
+            // nothing to tap. Picture and preview rows (own classes, no title
+            // either) keep their cards.
+            return preference.getClass() == zui.appcompat.preference.Preference.class
+                    && !preference.isSelectable() && TextUtils.isEmpty(preference.getTitle())
+                    && TextUtils.isEmpty(preference.getSummary());
         }
 
         private Drawable card(int shape) {
