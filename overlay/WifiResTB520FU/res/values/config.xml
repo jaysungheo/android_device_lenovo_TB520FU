@@ -13,7 +13,6 @@
     <bool name="config_wifiSaeH2eSupported">true</bool>
     <bool name="config_wifiSoftap6ghzSupported">true</bool>
     <bool name="config_wifiSoftapIeee80211beSupported">true</bool>
-    <bool name="config_wifiUpdateCountryCodeFromScanResultGeneric">false</bool>
     <integer name="config_wifiDisableReasonByWrongPasswordThreshold">1</integer>
     <string name="config_wifiP2pDeviceNamePrefix">Lenovo Yoga Tab Plus_</string>
     <string name="wifi_tether_configure_ssid_default">Lenovo Yoga Tab Plus</string>
@@ -47,4 +46,11 @@
     <integer name="config_wifiDelayDisconnectOnImsLostMs">1000</integer>
     <integer name="config_wifiHardwareSoftapMaxClientCount">32</integer>
     <integer name="config_wifiMaxNumWifiConfigurations">1000</integer>
+
+    <!-- Wi-Fi only, no telephony country, and the stock way (Lenovo factory
+         country code) is not in this build, so the driver kept its default
+         country (US) everywhere. Take the country from the Country IE of the
+         access points around (they have to agree, see WifiCountryCode); the
+         driver's 802.11d (WCNSS_qcom_cfg.ini fixup) covers the time before. -->
+    <bool name="config_wifiUpdateCountryCodeFromScanResultGeneric">true</bool>
 </resources>
