@@ -57,6 +57,7 @@ public final class InputCore {
     final PalmController mPalm;
     final KeyboardDesktopMode mDesktopMode;
     final WifiSarController mWifiSar;
+    final WifiCountryFromLocale mWifiCountry;
     final PenScreenshot mPenScreenshot;
     final PenMagnifier mPenMagnifier;
     private InputExtension mExtension;
@@ -90,6 +91,7 @@ public final class InputCore {
         mPalm = new PalmController(context, mHandler);
         mDesktopMode = new KeyboardDesktopMode(context, mHandler);
         mWifiSar = new WifiSarController(context, mHandler);
+        mWifiCountry = new WifiCountryFromLocale(context, mHandler);
         mPenScreenshot = new PenScreenshot(context, mHandler);
         mPenMagnifier = new PenMagnifier(context, mHandler);
         mExtension = loadExtension(context, mHandler);
@@ -146,6 +148,7 @@ public final class InputCore {
         Safe.run("palm rejection", mPalm::start).run();
         Safe.run("keyboard desktop mode", mDesktopMode::start).run();
         Safe.run("wifi sar", mWifiSar::start).run();
+        Safe.run("wifi country", mWifiCountry::start).run();
         Safe.run("haptics", mHaptics::start).run();
         Safe.run("pen", mPen::start).run();
         Safe.run("stylus screenshot", mPenScreenshot::start).run();
