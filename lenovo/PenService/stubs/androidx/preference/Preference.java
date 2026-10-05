@@ -44,6 +44,8 @@ public class Preference {
         throw new RuntimeException("stub");
     }
 
+    public void setSummary(CharSequence summary) {}
+
     public boolean isSelectable() {
         throw new RuntimeException("stub");
     }

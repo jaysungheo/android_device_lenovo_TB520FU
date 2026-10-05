@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceGroupAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -77,12 +78,55 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
             @Override
             public void run() {
                 PixelToolbar.attach(list);
+                mergeGroupNotes(getPreferenceScreen());
             }
         });
         return view;
     }
 
+    /**
+     * A stock note row right below a group (FooterPreference, for example the
+     * handwriting page's "other recognition is not affected" line) becomes the
+     * summary of the group's last row, like a Settings row summary, instead of
+     * grey text under the cards. A note at the top of a page stays a heading.
+     */
+    static void mergeGroupNotes(PreferenceGroup screen) {
+        if (screen == null) {
+            return;
+        }
+        Preference previous = null;
+        for (int i = 0; i < screen.getPreferenceCount(); i++) {
+            Preference preference = screen.getPreference(i);
+            if (!preference.isVisible()) {
+                continue;
+            }
+            if (CardDecoration.isDescription(preference) && previous instanceof PreferenceGroup
+                    && !TextUtils.isEmpty(preference.getTitle())) {
+                Preference last = lastVisible((PreferenceGroup) previous);
+                if (last != null && !(last instanceof PreferenceGroup)
+                        && !CardDecoration.isDescription(last)
+                        && TextUtils.isEmpty(last.getSummary())) {
+                    last.setSummary(preference.getTitle());
+                    preference.setVisible(false);
+                    continue;
+                }
+            }
+            previous = preference;
+        }
+    }
+
+    static Preference lastVisible(PreferenceGroup group) {
+        for (int i = group.getPreferenceCount() - 1; i >= 0; i--) {
+            Preference preference = group.getPreference(i);
+            if (preference.isVisible()) {
+                return preference;
+            }
+        }
+        return null;
+    }
+
     private static final class CardDecoration extends RecyclerView.ItemDecoration {
+        static final String FOOTER_CLASS = "com.lenovo.pen.cap.widget.FooterPreference";
         private static final int SINGLE = 0;
         private static final int TOP = 1;
         private static final int MIDDLE = 2;
@@ -104,6 +148,7 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
                 Typeface.NORMAL);
         private final Typeface mCategoryFont = Typeface.create(
                 "variable-title-small-emphasized", Typeface.NORMAL);
+        private final int mTextColor;
 
         CardDecoration(Context context) {
             Resources res = context.getResources();
@@ -118,6 +163,9 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
             mCardColor = context.getColor(night
                     ? android.R.color.system_surface_bright_dark
                     : android.R.color.system_surface_bright_light);
+            mTextColor = context.getColor(night
+                    ? android.R.color.system_on_surface_dark
+                    : android.R.color.system_on_surface_light);
             TypedArray a = context.obtainStyledAttributes(
                     new int[] { android.R.attr.colorControlHighlight });
             ColorStateList ripple = a.getColorStateList(0);
@@ -145,6 +193,15 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
             Preference preference = item(prefs, position);
             if (preference instanceof PreferenceCategory) {
                 font(view, android.R.id.title, mCategoryFont);
+            } else if (isDescription(preference)) {
+                // Page description (pen gestures): heading text on the page
+                // background, like a category title, not a grey card.
+                font(view, android.R.id.title, mCategoryFont);
+                View title = view.findViewById(android.R.id.title);
+                if (title instanceof TextView
+                        && ((TextView) title).getCurrentTextColor() != mTextColor) {
+                    ((TextView) title).setTextColor(mTextColor);
+                }
             } else if (preference != null) {
                 font(view, android.R.id.title, mTitleFont);
                 font(view, android.R.id.summary, mSummaryFont);
@@ -235,8 +292,14 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
             return adapter.getItem(position);
         }
 
+        /** The stock text row above or below a page (FooterPreference). */
+        static boolean isDescription(Preference preference) {
+            return preference != null && FOOTER_CLASS.equals(preference.getClass().getName());
+        }
+
         private boolean isGroupEdge(Preference preference) {
-            if (preference == null || preference instanceof PreferenceCategory) {
+            if (preference == null || preference instanceof PreferenceCategory
+                    || isDescription(preference)) {
                 return true;
             }
             int layout = preference.getLayoutResource();

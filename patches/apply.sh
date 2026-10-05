@@ -91,8 +91,9 @@ apply_patch frameworks/base \
 #       Settings.Global stylus_change_icon ("type:show"), which only the ZUI
 #       input service read. AOSP draws no icon for a hovering stylus unless
 #       the app asks for one; ViewRootImpl now shows the hover spot
-#       (PointerIcon.TYPE_SPOT_HOVER) while the switch is on and the app
-#       asks for nothing (handwriting and app icons keep priority).
+#       (PointerIcon.TYPE_SPOT_HOVER, scaled to 16dp like the stock pointer)
+#       while the switch is on and the app asks for nothing (handwriting and
+#       app icons keep priority).
 apply_patch frameworks/base \
     "$PATCHES/frameworks_base-0005-lenovo-pen-hover-pointer.patch"
 # frameworks/native

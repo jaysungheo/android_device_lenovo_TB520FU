@@ -22,6 +22,10 @@ public abstract class PreferenceFragmentCompat {
         throw new RuntimeException("stub");
     }
 
+    public PreferenceScreen getPreferenceScreen() {
+        throw new RuntimeException("stub");
+    }
+
     public final RecyclerView getListView() {
         throw new RuntimeException("stub");
     }
