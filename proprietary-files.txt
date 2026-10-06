@@ -954,6 +954,26 @@ vendor/etc/sensors/config/lanai_lsm6dso_kirby.json
 vendor/etc/sensors/config/lanai_lsm6dso_lapis.json
 vendor/etc/sensors/config/lanai_tcs3408_0.json
 
+# Thermal engine policy (Lenovo; identical in the PRC firmware
+# TB520FU_CN_OPEN_USER_Q00002.0_W_ZUI_17.5.10.186_ST_260408). thermal-engine
+# reads thermal-engine_<set>.conf for the use case in thermal_user_case.conf;
+# without a ZUI client it stays on case 0.
+vendor/etc/thermal-engine_battery_0.conf
+vendor/etc/thermal-engine_battery_1.conf
+vendor/etc/thermal-engine_battery_2.conf
+vendor/etc/thermal-engine_battery_3.conf
+vendor/etc/thermal-engine_common_0.conf
+vendor/etc/thermal-engine_cpu_0.conf
+vendor/etc/thermal-engine_cpu_1.conf
+vendor/etc/thermal-engine_cpu_2.conf
+vendor/etc/thermal-engine_cpu_3.conf
+vendor/etc/thermal-engine_cpu_4.conf
+vendor/etc/thermal-engine_fan_0.conf
+vendor/etc/thermal-engine_gpu_0.conf
+vendor/etc/thermal-engine_gpu_1.conf
+vendor/etc/thermal-engine_sensor_0.conf
+vendor/etc/thermal_user_case.conf
+
 # Dolby Atmos (DAX3)
 vendor/bin/hw/vendor.dolby.hardware.dms@2.0-service
 vendor/etc/init/vendor.dolby.hardware.dms@2.0-service.rc
