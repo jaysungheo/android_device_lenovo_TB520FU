@@ -53,6 +53,9 @@
     <color name="dialog_list_item_text_color_dark">@android:color/system_on_surface_dark</color>
     <!-- The button row has its own background (btn_dialog_zui), white before:
          the same surface as the dialog. -->
+    <!-- Button panel under the buttons (message_dialog): it showed white
+         through the rounded button corners and the transparent divider. -->
+    <color name="button_background_zui">@android:color/system_surface_container_high_light</color>
     <color name="dialog_button_background_normal_zui">@android:color/system_surface_container_high_light</color>
     <color name="dialog_button_background_normal_zui_dark">@android:color/system_surface_container_high_dark</color>
 </resources>

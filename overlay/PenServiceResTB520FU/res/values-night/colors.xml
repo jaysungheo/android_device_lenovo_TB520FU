@@ -26,5 +26,6 @@
     <color name="text_title_dialog_zui">@android:color/system_on_surface_dark</color>
     <color name="text_body_dialog_zui">@android:color/system_on_surface_variant_dark</color>
     <color name="dialog_list_item_text_color">@android:color/system_on_surface_dark</color>
+    <color name="button_background_zui">@android:color/system_surface_container_high_dark</color>
     <color name="dialog_button_background_normal_zui">@android:color/system_surface_container_high_dark</color>
 </resources>

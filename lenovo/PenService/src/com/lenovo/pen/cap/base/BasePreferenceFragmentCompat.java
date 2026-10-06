@@ -78,6 +78,7 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
             @Override
             public void run() {
                 PixelToolbar.attach(list);
+                EdgeToEdge.apply(list);
                 mergeGroupNotes(getPreferenceScreen());
             }
         });
@@ -106,7 +107,21 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
                 if (last != null && !(last instanceof PreferenceGroup)
                         && !CardDecoration.isDescription(last)
                         && TextUtils.isEmpty(last.getSummary())) {
+                    if (last instanceof zui.appcompat.preference.PreferenceWithArrow) {
+                        // Its summary sits right of the title (a value) by
+                        // default; a description goes below the title.
+                        ((zui.appcompat.preference.PreferenceWithArrow) last).setSummaryLocation(
+                                zui.appcompat.preference.PreferenceWithArrow.LOCATION_BOTTOM);
+                        int bottom = last.getContext().getResources().getIdentifier(
+                                "preference_appcompat_zui", "layout",
+                                last.getContext().getPackageName());
+                        if (bottom != 0) {
+                            last.setLayoutResource(bottom);
+                        }
+                    }
                     last.setSummary(preference.getTitle());
+                    // Hiding the note changes the hierarchy, so the adapter
+                    // also picks up the new row layout.
                     preference.setVisible(false);
                     continue;
                 }
