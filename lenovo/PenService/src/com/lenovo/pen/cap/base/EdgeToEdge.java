@@ -37,10 +37,15 @@ final class EdgeToEdge implements View.OnApplyWindowInsetsListener {
         }
         Window window = activity.getWindow();
         View content = window.findViewById(android.R.id.content);
-        if (content == null || content.getTag(android.R.id.content) != null) {
+        if (content == null) {
             return;
         }
-        content.setTag(android.R.id.content, Boolean.TRUE);
+        // No View tag remembers that the window is already set up: the key of
+        // setTag(int, Object) has to be an id of the application's own package
+        // ("The key must be an application-specific resource id", View.java),
+        // and android.R.id.content, the only id known here, is a framework one.
+        // Every page installs its own listener instead, so a page opened later
+        // in the same window pads its own list as well.
         window.setDecorFitsSystemWindows(false);
         window.setNavigationBarColor(Color.TRANSPARENT);
         window.setNavigationBarContrastEnforced(false);
