@@ -127,10 +127,14 @@ blob_fixups: blob_fixups_user_type = {
         'vendor/etc/seccomp_policy/qsap_qapeservice.policy',
     ): blob_fixup()
         .add_line_if_missing('lseek: 1'),
-    'vendor/etc/vintf/manifest/c2_manifest_vendor.xml': blob_fixup()
-        .regex_replace('.*IComponentStore/dolby.*\n', ''),
-    'vendor/lib64/libqcodec2_core.so': blob_fixup()
+    (
+        'vendor/lib64/c2.dolby.hevc.dec.so',
+        'vendor/lib64/c2.dolby.hevc.sec.dec.so',
+        'vendor/lib64/libqcodec2_core.so',
+    ): blob_fixup()
         .add_needed('libcodec2_shim.so'),
+    'vendor/lib64/c2.dolby.client.so': blob_fixup()
+        .add_needed('libcodec2_hidl_shim.so'),
     (
         'vendor/bin/hw/vendor.qti.hardware.display.composer-service',
         'vendor/lib64/libaodoptfeature.so',

@@ -1,0 +1,12 @@
+//
+// Copyright (C) 2026 The LineageOS Project
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+
+cc_library_shared {
+    name: "libcodec2_hidl_shim",
+    srcs: ["objcpy.cpp"],
+    shared_libs: ["libcodec2_hidl@1.0"],
+    vendor: true,
+}

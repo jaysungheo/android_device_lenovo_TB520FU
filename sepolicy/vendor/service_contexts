@@ -3,3 +3,6 @@ vendor.lenovo.hardware.keyboard.IKeyboard/default       u:object_r:hal_lenovokey
 vendor.lenovo.hardware.touchscreen.ITouchscreen/default u:object_r:hal_lenovotouchscreen_service:s0
 vendor.goodix.hardware.biometrics.fingerprint.cap.IGoodixFingerprintDaemon/default u:object_r:goodix_fingerprint_service:s0
 vendor.dolby.dms.IDms/default                           u:object_r:hal_dms_service:s0
+
+# Dolby Vision
+vendor.dolby.dvs.IDvs/default    u:object_r:dvs_aidl_service:s0

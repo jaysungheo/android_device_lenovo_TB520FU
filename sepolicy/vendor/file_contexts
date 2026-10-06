@@ -28,3 +28,7 @@
 /vendor/bin/init\.tb520fu\.region\.sh    u:object_r:tb520fu_region_exec:s0
 /vendor/bin/setwlansardsi[0-9]\.sh    u:object_r:tb520fu_wlan_sar_exec:s0
 /vendor/bin/vendor_cmd_tool    u:object_r:tb520fu_wlan_sar_exec:s0
+
+# Dolby Vision
+/vendor/bin/hw/vendor\.dolby\.media\.c2@1\.0-service-vision    u:object_r:vendorcodec_exec:s0
+/vendor/bin/hw/dvs-aidl-service                                u:object_r:dvs_aidl_default_exec:s0
