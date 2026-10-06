@@ -5,6 +5,7 @@
 
 package com.lenovo.pen.cap.base;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -78,7 +79,13 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
             @Override
             public void run() {
                 PixelToolbar.attach(list);
-                EdgeToEdge.apply(list);
+                Activity activity = EdgeToEdge.activity(list.getContext());
+                if (activity != null) {
+                    PageStyler.register(activity);
+                    EdgeToEdge.apply(activity);
+                    // A list added after the first insets pass gets them too.
+                    list.requestApplyInsets();
+                }
                 mergeGroupNotes(getPreferenceScreen());
             }
         });
@@ -146,6 +153,8 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
         private static final int TOP = 1;
         private static final int MIDDLE = 2;
         private static final int BOTTOM = 3;
+        private static final int FLAT_TOP = 4;
+        private static final int FLAT_BOTTOM = 8;
 
         private final float mOuterRadius;
         private final float mInnerRadius;
@@ -239,7 +248,17 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
                 view.setMinimumHeight(mRowMinHeight);
             }
             int shape = first ? (last ? SINGLE : TOP) : (last ? BOTTOM : MIDDLE);
-            if (!first) {
+            // A picture or slider row that belongs to the row above it forms
+            // one card with it: no gap and square corners where they meet.
+            boolean joinedAbove = !first && isJoinedToAbove(preference);
+            boolean joinedBelow = !last && isJoinedToAbove(item(prefs, position + 1));
+            if (joinedAbove) {
+                shape |= FLAT_TOP;
+            }
+            if (joinedBelow) {
+                shape |= FLAT_BOTTOM;
+            }
+            if (!first && !joinedAbove) {
                 outRect.top = mGap;
             }
             Drawable background = view.getBackground();
@@ -332,9 +351,26 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
                     && TextUtils.isEmpty(preference.getSummary());
         }
 
+        /**
+         * Rows that only show what the row above them does (gesture previews)
+         * or adjust it (the writing feedback strength under the pen effect).
+         */
+        static boolean isJoinedToAbove(Preference preference) {
+            if (preference == null) {
+                return false;
+            }
+            String name = preference.getClass().getName();
+            return name.equals("com.lenovo.pen.bt.widget.TouchFilmTapTwoPreviewPreference")
+                    || name.equals("com.lenovo.pen.bt.widget.TouchFilmAutoSavePreviewPreference")
+                    || name.equals("com.lenovo.pen.bt.widget.HapticLevelPreference");
+        }
+
         private Drawable card(int shape) {
-            float top = shape == SINGLE || shape == TOP ? mOuterRadius : mInnerRadius;
-            float bottom = shape == SINGLE || shape == BOTTOM ? mOuterRadius : mInnerRadius;
+            int base = shape & 3;
+            float top = (shape & FLAT_TOP) != 0 ? 0
+                    : base == SINGLE || base == TOP ? mOuterRadius : mInnerRadius;
+            float bottom = (shape & FLAT_BOTTOM) != 0 ? 0
+                    : base == SINGLE || base == BOTTOM ? mOuterRadius : mInnerRadius;
             GradientDrawable card = new GradientDrawable();
             card.setColor(mCardColor);
             card.setCornerRadii(new float[] {
