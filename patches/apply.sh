@@ -103,6 +103,13 @@ apply_patch frameworks/base \
 apply_patch frameworks/native \
     "$PATCHES/frameworks_native-0001-static-screen-60hz-floor.patch"
 
+# frameworks/av
+# 0001: MediaCodec turns on Qualcomm VPP frame interpolation (2X) for the
+#       apps selected in VideoMotion (Settings > Display), read from
+#       sys.lenovo.memc.<uid> at configure time.
+apply_patch frameworks/av \
+    "$PATCHES/frameworks_av-0001-video-motion-smoothing.patch"
+
 # packages/apps/ParanoidSense
 # 0001: the face enrollment preview surface is a fixed portrait 240x320dp
 #       box. On this landscape tablet (front camera mounted at 270) the

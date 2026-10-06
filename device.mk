@@ -132,6 +132,10 @@ PRODUCT_PACKAGES += \
 # Enforce generic ramdisk allow list
 $(call inherit-product, $(SRC_TARGET_DIR)/product/generic_ramdisk.mk)
 
+# Video motion smoothing (Qualcomm VPP frame interpolation, per app)
+PRODUCT_PACKAGES += \
+    VideoMotion
+
 # Dolby Atmos UI: LunarisDolby (LunarisDolby/, from Lenovo-SM8850
 # hardware_dolby), set up for the stock DAX3 blobs and tuning of this tablet
 PRODUCT_PACKAGES += \
