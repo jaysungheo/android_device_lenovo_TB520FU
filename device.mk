@@ -132,9 +132,10 @@ PRODUCT_PACKAGES += \
 # Enforce generic ramdisk allow list
 $(call inherit-product, $(SRC_TARGET_DIR)/product/generic_ramdisk.mk)
 
-# Dolby Atmos UI (PixelOS packages/apps/DolbyAtmos; DAX3 blobs from stock)
+# Dolby Atmos UI: LunarisDolby (LunarisDolby/, from Lenovo-SM8850
+# hardware_dolby), set up for the stock DAX3 blobs and tuning of this tablet
 PRODUCT_PACKAGES += \
-    DolbyAtmos
+    LunarisDolby
 
 # Device settings (parts/)
 PRODUCT_PACKAGES += \
@@ -279,7 +280,6 @@ PRODUCT_PACKAGES += \
 # Overlays
 PRODUCT_ENFORCE_RRO_TARGETS := *
 PRODUCT_PACKAGES += \
-    DolbyAtmosResTB520FU \
     FrameworksResTB520FU \
     PenServiceResTB520FU \
     SettingsProviderResTB520FU \

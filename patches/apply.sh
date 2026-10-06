@@ -103,17 +103,6 @@ apply_patch frameworks/base \
 apply_patch frameworks/native \
     "$PATCHES/frameworks_native-0001-static-screen-60hz-floor.patch"
 
-# packages/apps/DolbyAtmos
-# 0001: the default profile was hardcoded to Dynamic; move it into an
-#       overlayable string (overlay/DolbyAtmosResTB520FU keeps Dynamic).
-apply_patch packages/apps/DolbyAtmos \
-    "$PATCHES/packages_apps_DolbyAtmos-0001-overlayable-default-profile.patch"
-# 0002: the equalizer labelled its sliders 32 Hz-16 kHz and treated the gains
-#       as 1/10 dB. The DAX bands are 47 Hz-19.7 kHz (the sliders set every
-#       other one) and the gains are 1/16 dB, as in the stock Lenovo equalizer.
-apply_patch packages/apps/DolbyAtmos \
-    "$PATCHES/packages_apps_DolbyAtmos-0002-geq-dax-bands-and-scale.patch"
-
 # packages/apps/ParanoidSense
 # 0001: the face enrollment preview surface is a fixed portrait 240x320dp
 #       box. On this landscape tablet (front camera mounted at 270) the
