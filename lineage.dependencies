@@ -1,10 +1,10 @@
 [
   {
-    "repository": "android_kernel_lenovo_TB520FU",
-    "target_path": "kernel/lenovo/TB520FU"
+    "repository": "android_device_lenovo_sm8650-common",
+    "target_path": "device/lenovo/sm8650-common"
   },
   {
-    "repository": "android_vendor_lenovo_TB520FU",
-    "target_path": "vendor/lenovo/TB520FU"
+    "repository": "android_device_lenovo_lapis-kernel",
+    "target_path": "device/lenovo/lapis-kernel"
   }
 ]

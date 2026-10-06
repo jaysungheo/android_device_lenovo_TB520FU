@@ -11,7 +11,7 @@ import android.view.KeyEvent;
 
 /**
  * Extension point for the optional customizations repository
- * (vendor/lenovo/TB520FU-custom). Its tb520fu-input-custom.jar is loaded into
+ * (device/lenovo/lapis/custom). Its tb520fu-input-custom.jar is loaded into
  * system_server at runtime and cannot compile against this jar, which is why
  * InputCore loads it through a PathClassLoader and drives it through this
  * interface. Without the jar no implementation exists and nothing is loaded.

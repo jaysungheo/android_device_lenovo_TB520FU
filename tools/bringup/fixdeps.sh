@@ -6,7 +6,7 @@ TOP=$(cd "$TREE/../../.." && pwd)
 STOCK=${TB520FU_STOCK:-$HOME/tb520fu}
 F=$STOCK/force_libs.txt
 touch $F
-cd $TOP && source build/envsetup.sh >/dev/null 2>&1 && breakfast TB520FU user >/dev/null 2>&1
+cd $TOP && source build/envsetup.sh >/dev/null 2>&1 && breakfast lapis user >/dev/null 2>&1
 python3 $S/mkblobs.py $TREE/proprietary-files.txt >/dev/null && (cd $TREE && ./extract-files.py $STOCK >/dev/null 2>&1)
 for i in $(seq 1 25); do
     m nothing > $TOP/analysis.log 2>&1 && { echo "iter $i: analysis OK"; exit 0; }

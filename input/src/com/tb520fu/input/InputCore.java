@@ -25,7 +25,7 @@ import java.io.File;
  * finished booting (LOCKED_BOOT_COMPLETED), so nothing here can slow down or
  * break early boot.
  *
- * The optional customizations repository (vendor/lenovo/TB520FU-custom) installs
+ * The optional customizations repository (device/lenovo/lapis/custom) installs
  * /system_ext/framework/tb520fu-input-custom.jar with
  * com.tb520fu.input.custom.CustomInput. When that jar is present it is loaded
  * into a PathClassLoader and driven through [InputExtension] (game performance
@@ -34,7 +34,7 @@ import java.io.File;
 public final class InputCore {
     private static final String TAG = "TB520FUInput";
 
-    /** Optional customizations jar, from vendor/lenovo/TB520FU-custom. */
+    /** Optional customizations jar, from device/lenovo/lapis/custom. */
     private static final String CUSTOM_JAR = "/system_ext/framework/tb520fu-input-custom.jar";
     private static final String CUSTOM_CLASS = "com.tb520fu.input.custom.CustomInput";
 

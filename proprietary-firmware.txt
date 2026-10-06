@@ -4,4 +4,4 @@
 # pvmfw (protected VM firmware): the bootloader verifies it through vbmeta
 # once dm-verity is on; without its descriptor (BoardConfig) slot b was marked
 # unbootable and the first boot could crash.
-pvmfw.img;AB
+pvmfw.img;AB|171925d56a26850fd2f13ef4462c8e1da88114b5
