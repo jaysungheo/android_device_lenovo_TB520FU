@@ -60,3 +60,5 @@ BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --include_descriptors_from_image vendor/leno
 # Include the proprietary files BoardConfig.
 include vendor/lenovo/lapis/BoardConfigVendor.mk
 
+# Optional customizations (hardware/lenovo/custom), when present
+-include hardware/lenovo/custom/BoardConfigCustom.mk

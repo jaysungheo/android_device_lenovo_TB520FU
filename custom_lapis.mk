@@ -10,6 +10,11 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 # Inherit from lapis device
 $(call inherit-product, device/lenovo/lapis/device.mk)
 
+# Maintainer customizations (hardware/lenovo/custom): Custom Tweaks, game
+# performance, Play Store installer per app, Lenovo Notes, OTA updater,
+# wallpaper.
+$(call inherit-product-if-exists, hardware/lenovo/custom/custom.mk)
+
 # Inherit some common PixelOS stuff.
 $(call inherit-product, vendor/custom/config/common_full_tablet_wifionly.mk)
 
