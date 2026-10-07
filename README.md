@@ -1,5 +1,12 @@
 # Lenovo Yoga Tab Plus (lapis) — device tree
 
+<p>
+  <a href="https://sourceforge.net/projects/pixelos-unofficial-tb520fu/"><img alt="SourceForge OSS Rising Star" src="https://sourceforge.net/cdn/syndication/badge_img/4143825/oss-rising-star-white?achievement=oss-rising-star" width="125"></a>
+</p>
+
+[![Total downloads](https://img.shields.io/sourceforge/dt/pixelos-unofficial-tb520fu.svg?label=downloads)](https://sourceforge.net/projects/pixelos-unofficial-tb520fu/files/seventeen/)
+[![Monthly downloads](https://img.shields.io/sourceforge/dm/pixelos-unofficial-tb520fu.svg)](https://sourceforge.net/projects/pixelos-unofficial-tb520fu/files/seventeen/)
+
 Unofficial device tree for the Lenovo Yoga Tab Plus / YOGA Pad Pro (model
 TB520FU, codename lapis, Qualcomm Snapdragon 8 Gen 3).
 
