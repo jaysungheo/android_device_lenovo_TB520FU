@@ -146,12 +146,15 @@ blob_fixups: blob_fixups_user_type = {
         'vendor/lib64/libcodec2_hidl@1.0-v34.so',
         'vendor/lib64/libcodec2_hidl_plugin-v34.so',
         'vendor/lib64/libcodec2_soft_common-v34.so',
-        'vendor/lib64/libcodec2_vndk-v34.so',
         'vendor/lib64/libsfplugin_ccodec_utils-v34.so',
         'vendor/lib64/libstagefright_aidl_bufferpool2-v34.so',
         'vendor/lib64/libstagefright_bufferpool@2.0.1-v34.so',
         'vendor/lib64/libstagefright_bufferqueue_helper-v34.so',
     ): codec2_v34(blob_fixup().fix_soname()),
+    # Built against the libui of Android 14: lock() and unlock() without the
+    # fence arguments.
+    'vendor/lib64/libcodec2_vndk-v34.so': codec2_v34(blob_fixup().fix_soname())
+        .add_needed('libui_shim.so'),
     (
         'vendor/lib64/libpandora.algorithm.arcsoft.superportraitvideo.1.so',
         'vendor/lib64/libpandora.algorithm.arcsoft.tablethdrchecker.1.so',
