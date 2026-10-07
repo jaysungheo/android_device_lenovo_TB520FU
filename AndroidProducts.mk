@@ -4,4 +4,4 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/lineage_lapis.mk
+    $(LOCAL_DIR)/custom_lapis.mk
