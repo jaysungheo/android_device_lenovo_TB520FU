@@ -28,6 +28,11 @@ PRODUCT_VENDOR_PROPERTIES += \
 # Dalvik
 $(call inherit-product, frameworks/native/build/tablet-10in-xhdpi-2048-dalvik-heap.mk)
 
+# Video motion smoothing (Qualcomm VPP frame interpolation, per app;
+# hardware/lenovo/packages/VideoMotion and frameworks/av)
+PRODUCT_PACKAGES += \
+    VideoMotion
+
 # Dolby Atmos UI: LunarisDolby (hardware/lenovo/packages/LunarisDolby),
 # set up for the stock DAX3 blobs and tuning of this tablet
 PRODUCT_PACKAGES += \
