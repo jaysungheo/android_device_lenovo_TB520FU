@@ -21,6 +21,8 @@ import android.widget.ScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * Lets a pen settings page scroll under the navigation bar like the Settings
@@ -34,16 +36,22 @@ import java.util.ArrayList;
  * see PageStyler; once per window.
  */
 final class EdgeToEdge implements View.OnApplyWindowInsetsListener {
+    // Windows already set up, by their content view. Not a View tag: the key
+    // of setTag(int, Object) has to be an id of the application's own package
+    // ("The key must be an application-specific resource id", View.java),
+    // and android.R.id.content, the only id known here, is a framework one.
+    private static final Map<View, Boolean> sApplied = new WeakHashMap<>();
+
     final ArrayList<View> mLists = new ArrayList<>();
     final ArrayList<Integer> mBottomPaddings = new ArrayList<>();
 
     static void apply(Activity activity) {
         Window window = activity.getWindow();
         View content = window.findViewById(android.R.id.content);
-        if (content == null || content.getTag(android.R.id.content) != null) {
+        if (content == null || sApplied.containsKey(content)) {
             return;
         }
-        content.setTag(android.R.id.content, Boolean.TRUE);
+        sApplied.put(content, Boolean.TRUE);
         boolean night = (activity.getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
         window.getDecorView().setBackgroundColor(activity.getColor(night
