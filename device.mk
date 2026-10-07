@@ -28,11 +28,11 @@ PRODUCT_VENDOR_PROPERTIES += \
 # Dalvik
 $(call inherit-product, frameworks/native/build/tablet-10in-xhdpi-2048-dalvik-heap.mk)
 
-# Device settings (parts/)
+# Device settings (hardware/lenovo/packages/TB520FUParts)
 PRODUCT_PACKAGES += \
     TB520FUParts
 
-# Lenovo pen / keyboard / battery bridge (input/)
+# Lenovo pen / keyboard / battery bridge (hardware/lenovo/input)
 PRODUCT_PACKAGES += \
     PenService \
     tb520fu-input \
@@ -40,10 +40,10 @@ PRODUCT_PACKAGES += \
     ZuiKeyboardUpdateOlympia
 
 # Stock Lenovo pen/keyboard keylayouts, ZUI-only keycodes remapped
-# (tools/bringup/convert_keylayouts.py)
+# (convert_keylayouts.py)
 PRODUCT_COPY_FILES += \
-    $(call find-copy-subdir-files,*.kl,device/lenovo/lapis/input/keylayout,$(TARGET_COPY_OUT_VENDOR)/usr/keylayout) \
-    $(call find-copy-subdir-files,*.idc,device/lenovo/lapis/input/idc,$(TARGET_COPY_OUT_VENDOR)/usr/idc)
+    $(call find-copy-subdir-files,*.kl,device/lenovo/lapis/configs/keylayout,$(TARGET_COPY_OUT_VENDOR)/usr/keylayout) \
+    $(call find-copy-subdir-files,*.idc,device/lenovo/lapis/configs/idc,$(TARGET_COPY_OUT_VENDOR)/usr/idc)
 
 # Fingerprint (Goodix)
 PRODUCT_COPY_FILES += \
@@ -126,7 +126,8 @@ PRODUCT_SHIPPING_API_LEVEL := $(BOARD_SHIPPING_API_LEVEL)
 PRODUCT_SOONG_NAMESPACES += \
     device/lenovo/lapis \
     device/lenovo/lapis/lenovo/KeyboardUpdate \
-    device/lenovo/lapis/lenovo/PenService
+    device/lenovo/lapis/lenovo/PenService \
+    hardware/lenovo
 
 # VINTF
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += device/lenovo/lapis/vintf/device_framework_matrix.xml

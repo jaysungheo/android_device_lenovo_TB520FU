@@ -9,7 +9,7 @@
             <instance>default</instance>
         </interface>
     </hal>
-    <!-- Lenovo HALs used by the pen/keyboard bridge (input/) -->
+    <!-- Lenovo HALs used by the pen/keyboard bridge (hardware/lenovo/input) -->
     <hal format="aidl" optional="true">
         <name>vendor.lenovo.hardware.battery</name>
         <version>4</version>

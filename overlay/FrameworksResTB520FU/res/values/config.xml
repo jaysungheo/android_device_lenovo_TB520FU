@@ -212,10 +212,10 @@
     <item name="config_displayWhiteBalanceHighLightAmbientColorTemperature" format="float" type="dimen">7500.0</item>
 
     <!-- Double tap to wake: Settings > Display > Tap to wake, applied to the
-         touch panel by input/DoubleTapWake.java -->
+         touch panel by hardware/lenovo/input DoubleTapWake.java -->
     <bool name="config_supportDoubleTapWake">true</bool>
 
-    <!-- Lenovo pen / keyboard / battery bridge (input/), loaded into
+    <!-- Lenovo pen / keyboard / battery bridge (hardware/lenovo/input), loaded into
          system_server by PhoneWindowManager -->
     <string-array name="config_deviceKeyHandlerLibs" translatable="false">
         <item>/system_ext/framework/tb520fu-input.jar</item>
