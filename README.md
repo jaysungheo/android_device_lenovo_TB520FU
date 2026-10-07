@@ -6,7 +6,7 @@ TB520FU, codename lapis, Qualcomm Snapdragon 8 Gen 3).
 | Branch | Builds |
 |---|---|
 | `lineage-24.0` | plain LineageOS 24 (`lineage_lapis`), no source patches |
-| `seventeen` | PixelOS 17 (`custom_lapis`): `lineage-24.0` plus the source patches, LunarisDolby, video motion smoothing and the maintainer customizations (`custom/`) |
+| `seventeen` | PixelOS 17 (`custom_lapis`): `lineage-24.0` plus the PixelOS product, LunarisDolby, video motion smoothing and the maintainer customizations |
 
 | | |
 |---|---|
@@ -23,7 +23,7 @@ STRONG(RKP Sign), Thanks to [sungwon1002](https://github.com/sungwon1002).
 
 ## Downloads
 
-Latest build: see [Releases](https://github.com/wnduddld0513/android_device_lenovo_lapis/releases/),
+Latest build: see [Releases](https://github.com/lenovo-sm8650/android_device_lenovo_lapis/releases/),
 installation steps in the release notes. Files are on
 [SourceForge](https://sourceforge.net/projects/pixelos-unofficial-tb520fu/files/seventeen/).
 Pick the region of your device: ROW and PRC only differ in the device tree
@@ -37,28 +37,38 @@ themselves (Settings > System > System update).
 
 ## Repositories
 
-Laid out like the LineageOS trees (device, SoC common tree, blobs, kernel):
+All repositories are in the [lenovo-sm8650](https://github.com/lenovo-sm8650)
+organization, laid out like the LineageOS trees (device, SoC common tree, hardware, blobs,
+kernel):
 
 | Path | Repository | Contents |
 |---|---|---|
 | `device/lenovo/lapis` | `android_device_lenovo_lapis` | this tree |
 | `device/lenovo/sm8650-common` | `android_device_lenovo_sm8650-common` | SM8650 (pineapple) platform configuration |
 | `device/lenovo/lapis-kernel` | `android_device_lenovo_lapis-kernel` | stock vendor kernel modules, dtb and dtbo |
+| `hardware/lenovo` | `android_hardware_lenovo` | TB520FUParts, the `tb520fu-input` system_server bridge; on `seventeen` also LunarisDolby, VideoMotion and the maintainer customizations (`custom/`) |
 | `kernel/lenovo/sm8650` | `android_kernel_lenovo_sm8650` | Android common kernel `android14-6.1` at `2ecae636cf9b` (the source of the stock GKI kernel) plus the Qualcomm UAPI headers |
 | `vendor/lenovo/lapis` | `proprietary_vendor_lenovo_lapis` | device blobs (Git LFS for files over 50 MB) |
 | `vendor/lenovo/sm8650-common` | `proprietary_vendor_lenovo_sm8650-common` | platform blobs |
 
-Every repository has a `lineage-24.0` and a `seventeen` branch.
-`tools/local_manifest.xml` lists them; `lineage.dependencies` does the same
-for roomservice.
+Every repository has a `lineage-24.0` and a `seventeen` branch;
+`lineage.dependencies` lists them for roomservice.
 
-On `seventeen`, `custom/` holds the maintainer additions on top of PixelOS -
-Lenovo Notes, the per-app game performance profiles, the per-app Play Store
-installer switch, the OTA updater with its publishing tools and the default
-live wallpaper - with their app ("Custom Tweaks"), overlays, patches and a
-small system_server extension. TB520FUParts (Lenovo features) is part of
-both branches.
+PixelOS (`seventeen`) also needs a few source changes. They are commits in
+forks of the PixelOS projects (`seventeen` branch; Aperture from LineageOS,
+`lineage-24.0`), which the local manifest below puts in place of the
+originals:
 
+| Path | Fork | Changes |
+|---|---|---|
+| `frameworks/base` | `android_frameworks_base` | Lenovo pen haptic and keyboard managers, white balance strength, keyboard desktop mode opt-out, pen hover pointer, installer report for picked apps |
+| `frameworks/av` | `android_frameworks_av` | video motion smoothing (Qualcomm VPP) |
+| `frameworks/native` | `android_frameworks_native` | 60 Hz floor for a static screen |
+| `packages/apps/Settings` | `android_packages_apps_Settings` | optional white balance switch, Lenovo `PLACE_HOLDER` action |
+| `packages/apps/ParanoidSense` | `android_packages_apps_ParanoidSense` | landscape enrollment preview |
+| `packages/apps/Updater` | `android_packages_apps_Updater` | SourceForge update server |
+| `packages/apps/Aperture` | `android_packages_apps_Aperture` | UI rotation on a landscape display |
+| `vendor/lineage` | `android_vendor_lineage` | prebuilt vendor modules, kernel header cleanup |
 ## Kernel
 
 The stock firmware runs Google's GKI build of `android14-6.1`
@@ -77,52 +87,73 @@ Lenovo's release: https://support.lenovo.com/us/en/solutions/ht511330-lenovo-ope
 ## Getting the source
 
 Git LFS is needed for two blobs in the vendor repository (and, on
-`seventeen`, for the wallpaper APK and Lenovo Notes in `custom/`).
+`seventeen`, for the APKs in `hardware/lenovo/custom`).
 
 ```bash
 sudo apt install git-lfs && git lfs install
 mkdir pixelos && cd pixelos
 repo init -u https://github.com/PixelOS-AOSP/android_manifest -b seventeen --git-lfs
 mkdir -p .repo/local_manifests
-# copy tools/local_manifest.xml to .repo/local_manifests/lapis.xml
+# save the manifest below as .repo/local_manifests/lapis.xml
 repo sync -c -j$(nproc)
-repo forall device/lenovo/lapis vendor/lenovo/lapis -c git lfs pull
 ```
 
+`.repo/local_manifests/lapis.xml` for PixelOS:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <remote name="lapis" fetch="https://github.com/lenovo-sm8650" revision="seventeen" />
+
+  <!-- Replaced by the forks below -->
+  <remove-project name="PixelOS-AOSP/android_frameworks_av" />
+  <remove-project name="PixelOS-AOSP/android_frameworks_base" />
+  <remove-project name="PixelOS-AOSP/android_frameworks_native" />
+  <remove-project name="PixelOS-AOSP/android_packages_apps_ParanoidSense" />
+  <remove-project name="PixelOS-AOSP/android_packages_apps_Settings" />
+  <remove-project name="PixelOS-AOSP/android_packages_apps_Updater" />
+  <remove-project name="PixelOS-AOSP/android_vendor_lineage" />
+  <remove-project name="LineageOS/android_packages_apps_Aperture" />
+  <!-- Replaced by LunarisDolby (hardware/lenovo) -->
+  <remove-project name="PixelOS-AOSP/android_packages_apps_DolbyAtmos" />
+
+  <project name="android_device_lenovo_lapis" path="device/lenovo/lapis" remote="lapis" />
+  <project name="android_device_lenovo_lapis-kernel" path="device/lenovo/lapis-kernel" remote="lapis" />
+  <project name="android_device_lenovo_sm8650-common" path="device/lenovo/sm8650-common" remote="lapis" />
+  <project name="android_hardware_lenovo" path="hardware/lenovo" remote="lapis" />
+  <project name="android_kernel_lenovo_sm8650" path="kernel/lenovo/sm8650" remote="lapis" />
+  <project name="proprietary_vendor_lenovo_lapis" path="vendor/lenovo/lapis" remote="lapis" />
+  <project name="proprietary_vendor_lenovo_sm8650-common" path="vendor/lenovo/sm8650-common" remote="lapis" />
+
+  <project name="android_frameworks_av" path="frameworks/av" remote="lapis" />
+  <project name="android_frameworks_base" path="frameworks/base" remote="lapis" />
+  <project name="android_frameworks_native" path="frameworks/native" remote="lapis" />
+  <project name="android_packages_apps_Aperture" path="packages/apps/Aperture" remote="lapis" revision="lineage-24.0" />
+  <project name="android_packages_apps_ParanoidSense" path="packages/apps/ParanoidSense" remote="lapis" />
+  <project name="android_packages_apps_Settings" path="packages/apps/Settings" remote="lapis" />
+  <project name="android_packages_apps_Updater" path="packages/apps/Updater" remote="lapis" />
+  <project name="android_vendor_lineage" path="vendor/lineage" remote="lapis" />
+</manifest>
+```
+
+For LineageOS, use `revision="lineage-24.0"` and only the device, hardware,
+kernel and vendor projects.
 ## Building
 
-The PixelOS source needs a few patches (see `patches/apply.sh`). They are
-applied with `git apply` only, nothing is committed, so `repo sync` keeps
-working; run the script again after every sync.
-
 ```bash
-bash device/lenovo/lapis/patches/apply.sh
 source build/envsetup.sh
 breakfast lapis user
-m pixelos
+m pixelos        # LineageOS: m bacon
 ```
 
-The script also runs `device/lenovo/lapis/custom/patches/apply.sh` when
-`custom/` is there, and reverts its patches when it is gone.
-
-The build helper selects the `user` variant and keeps ADB authentication
-configured on by default. `WITH_ADB_INSECURE=true` explicitly requests the
-insecure ADB setting; unset, empty and `false` values keep authentication on.
-The AVB and app signing keys stay as configured below. `user` builds exclude
-debug tools, ADB root and the OTA `addon.d` preservation path.
-
-Or unattended, with the log in `build.log` and the result in `build.status`:
-
-```bash
-setsid nohup device/lenovo/lapis/tools/build.sh > /dev/null 2>&1 < /dev/null &
-```
-
+`user` builds keep ADB authentication on and exclude debug tools, ADB root
+and the OTA `addon.d` preservation path. `WITH_ADB_INSECURE=true` turns ADB
+authentication off. The AVB and app signing keys stay as configured below.
 ## OTA publishing
 
-Belongs to the customizations
-(`custom/`, `seventeen` only); see its README for the SourceForge folder
-layout, its `tools/ota_json.py` and the incremental OTA steps.
-
+Belongs to the customizations (`hardware/lenovo/custom`, `seventeen` only);
+see its README for the SourceForge folder layout, its `tools/ota_json.py` and
+the incremental OTA steps.
 ## Installing
 
 Sideload the OTA package (`out/target/product/lapis/PixelOS_lapis-*.zip`)
@@ -146,19 +177,8 @@ trees, merged into one tree with the OnePlus-specific parts removed.
   (`LapisRowFrameworksOverlay`, `LapisRowWifiResOverlay`,
   `manifest_pineapple.xml` without IMS/DPM, the device is Wi-Fi only).
 - `health/` — QTI health HAL copy that ignores the pen charger (`wls_tx`).
-- `parts/` — TB520FUParts, "Lenovo features" in Settings > System: charging
-  modes, white balance strength, memory extension (zram writeback), pen
-  settings, folio case mode, and the physical keyboard page of the stock
-  settings with the keyboard firmware update (stock strings copied by
-  `tools/lenovo_keyboard_strings.py`). Sub pages open as their own activity,
-  like the Settings sub pages. The game performance page lives in "Custom
-  Tweaks" (`device/lenovo/lapis/custom`).
-- `input/` — `tb520fu-input.jar`, loaded into system_server as a
-  DeviceKeyHandler: Lenovo pen (attach, pairing, battery, writing haptics,
-  buttons), keyboard keys, charging modes, double tap to wake and the folio
-  case mode (the cover is the sensor HAL hall effect sensor, confirmed by the
-  light sensor, as on stock), ported from the stock ZUI services (see
-  `input/NOTICE`). Also the converted Lenovo keylayouts.
+- `configs/idc/`, `configs/keylayout/` — the stock Lenovo pen and keyboard
+  input configurations, ZUI-only keycodes remapped to AOSP keycodes.
 - `lenovo/PenService/` — the stock PenService with a compat dex for APIs that
   changed in Android 17 and the PixelOS look of the pen settings (card groups).
 - `lenovo/KeyboardUpdate/` — the stock keyboard firmware updaters with a
@@ -166,9 +186,19 @@ trees, merged into one tree with the OnePlus-specific parts removed.
 - `system_ext.prop` — besides the stock values: `ro.config.lgsi.device.type=pad`
   (the stock Lenovo apps use the tablet dialog layout with it) and a linear
   brightness slider like stock ZUI.
-- `patches/` — PixelOS source patches, applied by `patches/apply.sh`.
-- `tools/bringup/` — scripts used to generate `proprietary-files.txt` and the
-  props from a stock dump (`TB520FU_STOCK`, default `~/tb520fu`).
+
+In `hardware/lenovo`:
+
+- `packages/TB520FUParts/` — "Lenovo features" in Settings > System:
+  charging modes, white balance strength, memory extension (zram writeback),
+  pen settings, folio case mode, and the physical keyboard page of the stock
+  settings with the keyboard firmware update.
+- `input/` — `tb520fu-input.jar`, loaded into system_server as a
+  DeviceKeyHandler: Lenovo pen (attach, pairing, battery, writing haptics,
+  buttons), keyboard keys, charging modes, double tap to wake and the folio
+  case mode (the cover is the sensor HAL hall effect sensor, confirmed by the
+  light sensor, as on stock), ported from the stock ZUI services (see
+  `input/NOTICE`).
 
 ## Verified boot
 
