@@ -28,6 +28,11 @@ PRODUCT_VENDOR_PROPERTIES += \
 # Dalvik
 $(call inherit-product, frameworks/native/build/tablet-10in-xhdpi-2048-dalvik-heap.mk)
 
+# Dolby Atmos UI: LunarisDolby (hardware/lenovo/packages/LunarisDolby),
+# set up for the stock DAX3 blobs and tuning of this tablet
+PRODUCT_PACKAGES += \
+    LunarisDolby
+
 # Device settings (hardware/lenovo/packages/TB520FUParts)
 PRODUCT_PACKAGES += \
     TB520FUParts
