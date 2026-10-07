@@ -48,6 +48,28 @@ lib_fixups: lib_fixups_user_type = {
 }
 
 
+CODEC2_V34_LIBS = (
+    'android.hardware.media.c2@1.0',
+    'libcodec2',
+    'libcodec2_hidl@1.0',
+    'libcodec2_hidl_plugin',
+    'libcodec2_soft_common',
+    'libcodec2_vndk',
+    'libsfplugin_ccodec_utils',
+    'libstagefright_aidl_bufferpool2',
+    'libstagefright_bufferpool@2.0.1',
+    'libstagefright_bufferqueue_helper',
+)
+
+
+def codec2_v34(fixup):
+    # The stock Dolby Vision Codec2 blobs use the stock Codec2 libraries,
+    # shipped as <name>-v34.so next to the ones built from source.
+    for lib in CODEC2_V34_LIBS:
+        fixup = fixup.replace_needed(f'{lib}.so', f'{lib}-v34.so')
+    return fixup
+
+
 def clear_opencl_versions(fixup):
     # Lenovo camera algorithm libs reference OpenCL symbols with OPENCL_x.y
     # versions, but the Adreno libOpenCL exports them unversioned.
@@ -111,12 +133,25 @@ blob_fixups: blob_fixups_user_type = {
     'system_ext/lib64/libwfdservice.so': blob_fixup()
         .replace_needed('android.media.audio.common.types-V4-cpp.so', 'android.media.audio.common.types-V5-cpp.so'),
     (
+        'vendor/bin/hw/vendor.dolby.media.c2@1.0-service-vision',
+        'vendor/lib64/c2.dolby.client.so',
         'vendor/lib64/c2.dolby.hevc.dec.so',
         'vendor/lib64/c2.dolby.hevc.sec.dec.so',
-    ): blob_fixup()
-        .add_needed('libcodec2_shim.so'),
-    'vendor/lib64/c2.dolby.client.so': blob_fixup()
-        .add_needed('libcodec2_hidl_shim.so'),
+        'vendor/lib64/c2.dolby.store.so',
+        'vendor/lib64/libdolbydecoderprocessor.so',
+    ): codec2_v34(blob_fixup()),
+    (
+        'vendor/lib64/android.hardware.media.c2@1.0-v34.so',
+        'vendor/lib64/libcodec2-v34.so',
+        'vendor/lib64/libcodec2_hidl@1.0-v34.so',
+        'vendor/lib64/libcodec2_hidl_plugin-v34.so',
+        'vendor/lib64/libcodec2_soft_common-v34.so',
+        'vendor/lib64/libcodec2_vndk-v34.so',
+        'vendor/lib64/libsfplugin_ccodec_utils-v34.so',
+        'vendor/lib64/libstagefright_aidl_bufferpool2-v34.so',
+        'vendor/lib64/libstagefright_bufferpool@2.0.1-v34.so',
+        'vendor/lib64/libstagefright_bufferqueue_helper-v34.so',
+    ): codec2_v34(blob_fixup().fix_soname()),
     (
         'vendor/lib64/libpandora.algorithm.arcsoft.superportraitvideo.1.so',
         'vendor/lib64/libpandora.algorithm.arcsoft.tablethdrchecker.1.so',
