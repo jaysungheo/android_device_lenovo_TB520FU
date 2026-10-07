@@ -19,6 +19,14 @@
         </interface>
     </hal>
     <hal format="aidl" optional="true">
+        <name>vendor.lenovo.hardware.display</name>
+        <version>3</version>
+        <interface>
+            <name>IDisplay</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="aidl" optional="true">
         <name>vendor.lenovo.hardware.keyboard</name>
         <version>2</version>
         <interface>

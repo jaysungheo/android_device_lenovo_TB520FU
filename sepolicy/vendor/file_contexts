@@ -9,6 +9,7 @@
 
 # Lenovo HALs
 /vendor/bin/hw/vendor\.lenovo\.hardware\.battery-service     u:object_r:hal_lenovobattery_default_exec:s0
+/vendor/bin/hw/vendor\.lenovo\.hardware\.display-service     u:object_r:hal_lenovodisplay_default_exec:s0
 /vendor/bin/hw/vendor\.lenovo\.hardware\.keyboard-service    u:object_r:hal_lenovokeyboard_default_exec:s0
 /vendor/bin/hw/vendor\.lenovo\.hardware\.touchscreen-service u:object_r:hal_lenovotouchscreen_default_exec:s0
 /dev/ttyHS1                                     u:object_r:lenovo_keyboard_device:s0
