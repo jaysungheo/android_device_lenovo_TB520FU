@@ -22,6 +22,8 @@ allow hal_dms_default vendor_data_file:file create_file_perms;
 
 # Clients: the audio HAL effects and the Dolby apps (daxService, DolbyAtmos)
 hal_client_domain(hal_audio_default, hal_dms)
+# Dolby audio decoders (vendor.dolby.media.c2-default-service-dax)
+hal_client_domain(mediacodec, hal_dms)
 hal_client_domain(platform_app, hal_dms)
 hal_client_domain(platform_app_36, hal_dms)
 hal_client_domain(system_app, hal_dms)
