@@ -1,10 +1,10 @@
 # Lenovo Yoga Tab Plus (TB520FU, lapis): HDR, HDR10+, Dolby Vision and display brightness
 
 This document records how HDR10, HDR10+ and Dolby Vision are enabled on the
-PixelOS 17 build for the TB520FU, how the display reaches its HDR brightness,
-and how the panel's high brightness mode (HBM) is used, with the brightness
-curve recalculated from the Pixel configuration. It explains what was done and
-why, so the work can be checked or continued.
+PixelOS 17 build for the TB520FU, why HDR content is not boosted above the SDR
+brightness, and how the panel's high brightness mode (HBM) is used (in sunlight,
+as on the stock firmware). It explains what was done and why, so the work can be
+checked or continued.
 
 ## 0. Panel and starting point
 
@@ -68,10 +68,9 @@ sees an HDR layer.
 ### 1.4 Open points
 - Netflix HDR, Dolby Vision and Atmos can only be checked with a plan that has
   them.
-- Decoder-side Dolby Vision is not seen as an HDR layer by SurfaceFlinger, so
-  "CABC off while HDR is on the screen" does not trigger for it. The stock
-  firmware has no sender of `com.dolby.vision_play` either (only a receiver in
-  `services.jar`), so another signal is needed.
+- Decoder-side Dolby Vision is not seen as an HDR layer by SurfaceFlinger. The
+  stock firmware waits for a `com.dolby.vision_play` broadcast that nothing in
+  it sends; the stock DolbyVisionService app now sends it (section 2).
 
 ## 2. CABC
 
@@ -79,108 +78,95 @@ The panel sends `55 01` (UI mode) at every power on, and the `cabc_mode` node is
 write-only. The CABC part of the stock ZuiDisplayService is ported as
 `CabcController` (`hardware/lenovo/input`, Lenovo display HAL `setCabcMode`,
 transaction 3): UI mode for most apps, moving image or off for the stock app
-lists, and **off while an HDR layer is on the screen**, since CABC dims the
-backlight behind the tone mapping. The mode is set again whenever the screen
-turns on.
+lists, and **off while an HDR layer is on the screen or Dolby Vision plays**,
+since CABC dims the backlight behind the tone mapping. The mode is set again
+whenever the screen turns on.
 
-## 3. Brightness: making HDR bright
+Dolby Vision is tone mapped in the decoder, so SurfaceFlinger sees an SDR layer.
+The DVS daemon calls back the stock DolbyVisionService app when the Dolby Vision
+decoder starts and stops (`onDolbyVisionPlaybackStart` / `Stop`, logged as
+"notify Dolby Vision playback start"). A compat dex prepended to the app
+(`lenovo/DolbyVisionService`, like `lenovo/PenService`) replaces its DVS client
+`DolbyDvsManager` with one that also sends the broadcast the stock
+ZuiDisplayService expects: `com.dolby.vision_play` with `start` / `stop` in the
+`action` extra, to the system server only. TB520FUParts declares it as a
+protected broadcast (system apps only). The callback is not taken from the app:
+the DVS daemon keeps a single one, and the app needs it to give DVS the
+backlight.
 
-### 3.1 Problem
-Without HDR brightness information in the display configuration Android tone
-maps HDR video into the range of the SDR white, so HDR looked no brighter than
-the UI. The stock firmware uses the HBM for HDR.
+## 3. Brightness: no HDR boost, sunlight HBM as on stock
 
-### 3.2 Design
-1. The HBM is made the top of the Android brightness scale, through the
-   framework's own `HighBrightnessMode` and `sdrHdrRatioMap`. The "Enhanced HDR
-   brightness" switch and strength slider of Settings then work unchanged.
-2. The HDR peak curve is not made up: it has the shape of the Pixel (cheetah)
-   configuration, scaled to the 650 / 900 nits of this panel.
-3. Automatic and manual brightness use the same path
-   (DisplayPowerController to LocalDisplayAdapter), so both work.
-4. Brightness changes ramp smoothly in both directions, without steps or jumps.
+### 3.1 Decision
+HDR content is tone mapped within the SDR brightness, as on the stock firmware
+and other LCD tablets:
 
-### 3.3 Display configuration
-`device/lenovo/lapis/configs/displayconfig/display_id_4630947161651687043.xml`,
-installed to `/vendor/etc/displayconfig/`.
-
-- `screenBrightnessMap`: the previous curve compressed to end at 0.85 (650 nits)
-  and a last point `1.0 = 900 nits`. Slider up to 85% is the normal range, above
-  it the HBM range.
-- `highBrightnessMode`: `transitionPoint` 0.85; `minimumLux` 5000 (direct
-  sunlight with auto brightness, like the stock firmware and the Pixel);
-  `timing` 1800 s window, at most 300 s, at least 60 s (the usual Android
-  behavior, for sunlight only: HDR video does not use this time);
-  `allowInLowPowerMode=false`; `minimumHdrPercentOfScreen=0.1`.
-- `sdrHdrRatioMap` (74 points): HDR peak = SDR nits x ratio(SDR nits).
-  - SDR 2 to 81 nits: ratio 8.0, peak 650 nits
-  - up to 491 nits: peak constant at 650 nits (ratio = 650 / SDR)
-  - 491 to 650 nits: ratio 1.325 to 1.385, peak up to 900 nits
-  - so slider 20-60% gives an HDR peak of 650 nits, 80% about 831, 100% 900.
-- No `hdrBrightnessConfig`: an early version with a lux map could lower the
-  backlight below the SDR brightness when a video started. With only the HBM
-  block, `HdrBrightnessModifier` uses the HBM data as its fallback.
-
-Reference: the Pixel configuration keeps the HDR peak at the maximum of the
-normal range for most slider positions and uses the HBM only at high slider
-positions. Other devices differ (some hold the peak at every slider position);
-the Pixel way fits the AOSP framework best and was converted to this panel.
-
-### 3.4 HBM bridge (`frameworks/base`: `LenovoHbmBridge`, `LocalDisplayAdapter`)
-The HBM of the panel multiplies the whole backlight by a fixed factor (about
-1.385), so the nits Android asks for are sent as two parts: a 0-1 backlight
-value for the composer and the `hbm` node.
-
-- Enabled by `ro.vendor.display.hbm_bridge=true` (`vendor.prop`) and an HBM block
-  in the display configuration.
-- `LocalDisplayAdapter.BacklightAdapter.setBacklight()` maps every brightness
-  change (display backlight and SDR layer backlight) with `toComposer()`:
-  - up to the transition point: `value = backlight / transition`, `hbm = 0`;
-  - above it: `hbm = 2` and `value = nits / 900` (the backlight value is lowered
-    by the same factor, so the nits stay the same);
-  - a hysteresis of 0.002 around the transition point avoids flipping.
-- Order of writes, to avoid a brightness jump: going up, the lowered backlight
-  value goes first and the HBM turns on 40 ms later (not if it was turned off in
-  the meantime); going down, the HBM turns off first (synchronously) and the
-  backlight value rises right after.
-- The bridge writes `hbm = 0` when it is created, so an HBM left on by a restart
-  of system_server cannot stay on.
-- The smooth ramps come from the framework ramps (HDR increase 0.5, decrease
-  0.3) together with this mapping.
-
-### 3.5 Settings
-The AOSP "Enhanced HDR brightness" switch (`hdr_brightness_enabled`, default on)
-and its strength slider (`hdr_brightness_boost_level`, default 1) work as
-usual. The entry is shown only when `display.isHdr()` and
-`isHdrSdrRatioAvailable` are true, which the `sdrHdrRatioMap` above provides.
-
-## 4. Measured on the device (manual brightness, HDR video playing)
-
-| Slider | Backlight | hbm | Nits |
+| Device | Panel | HDR brightness boost | HBM |
 | --- | --- | --- | --- |
-| 20% / 40% / 60% | 2047 (1478 when coming down) | 0 (2 when coming down) | about 650 |
-| 69% | 1655 | 2 | about 727 |
-| 80% | 1890 | 2 | about 831 |
-| 90% / 100% | 2047 | 2 | 900 |
+| Pixel Tablet (tangorpro) | LCD, 500 nits | none: no `highBrightnessMode` nor `hdrBrightnessConfig` in its display configuration | none |
+| OnePlus Pad 2 (LineageOS) | LCD | none: no display configuration | stock blobs |
+| Lenovo stock (ZUI 17.5) | LCD, 650 / 900 nits | none | sunlight only |
+| Pixel 7 Pro (cheetah) | OLED | yes | HDR and sunlight |
 
-- The two representations of 650 nits ((2047, hbm 0) and (1478, hbm 2)) come from
-  the hysteresis, the brightness is the same.
-- Without HDR content the hbm node stays 0 and the backlight follows the slider
-  (40% is 959, 80% is 1925, 100% is 2047).
-- Not done yet: sunlight HBM with auto brightness in real light, a
-  `thermalThrottling` map in the display configuration, and the stock
-  "2 minutes per session, 30 minutes per day" style limit (only the Android
-  HBM time window is used for sunlight).
+An LCD lights the whole panel with one backlight: raising it for HDR highlights
+also raises the black of the video. The SDR layers, dimmed by SurfaceFlinger to
+keep their brightness, are also out of step with the backlight on this panel:
+the backlight chip ramps every change over 192 ms (BL_CFG2 0xC5 in its device
+tree: BIT(7) | (5 + 192 / 64) << 3 | PWM_HYST, the encoding of the mainline
+ktz8866 driver) after the frames that the value takes to reach it, so the screen
+flashes or darkens when HDR content comes and goes. A compensation of that ramp
+in DisplayManager was tried and dropped (see the history of this document).
+
+### 3.2 Display configuration
+`configs/displayconfig/display_id_4630947161651687043.xml`, installed to
+`/vendor/etc/displayconfig/`:
+
+- `screenBrightnessMap`: the brightness curve of config.xml, 650 nits (the
+  typical brightness of the specifications of the panel) at 1.0.
+- `thermalThrottling`: the levels of the Pixel configurations (Pixel Tablet,
+  Pixel 7 Pro: 465, 297, 213 and 150 nits). The skin thresholds of the thermal
+  HAL start at 48 C (light), so normal use is not throttled. The stock firmware
+  has no limit of its own (`config_zui_enter/exitHbmTemperature` 0).
+- No `highBrightnessMode` and no `hdrBrightnessConfig`: Android does not boost
+  the brightness for HDR content, and the "Enhanced HDR brightness" setting is
+  not shown (it is not on the stock firmware either).
+
+### 3.3 Sunlight HBM (`hardware/lenovo` input: `SunlightHbmController`)
+The high brightness mode of the panel (`hbm` node, steps 1 and 2, about 1.25x
+and 1.4x of the backlight, set through the Lenovo display HAL `setHbmState`)
+is used the way the stock ZuiDisplayService does:
+
+- automatic brightness on, the brightness at or near its maximum (0.95: the
+  automatic curve with the adjustment of the user may end a little below 1.0;
+  the stock service wants 1.0), the screen on;
+- step 1 from 5000 lux, step 2 from 10000 lux
+  (`config_zui_defaultBrightnessThreshold` of the stock
+  LapisRowFrameworksOverlay: 5000, 10000), with the 3 s debounce of the stock
+  service both ways;
+- off as soon as a condition stops, also when the thermal throttling lowers the
+  maximum brightness.
+
+The light sensor is only listened to while the other conditions hold.
+
+## 4. Checked on the device
+
+- With the HBM bridge (an earlier version) the slider positions gave the HDR
+  peaks of the Pixel shape (650 to 900 nits); dropped with the HDR boost.
+- Thermal throttling, injected skin status (`cmd thermalservice
+  inject-temperature SKIN <status> skin 50`): backlight 1584 / 1008 / 721 / 509
+  of 2047 for light / moderate / severe / critical with the earlier ratios; the
+  current values are the absolute Pixel ones above.
+- Sunlight HBM: a phone flashlight on the sensor (9000 to 24000 lux) switched
+  step 2 on with automatic brightness at the top, and off when the brightness
+  went down.
 
 ## 5. Where the code is
 
 | Repository | Content |
 | --- | --- |
-| android_device_lenovo_lapis | display configuration, `vendor.prop`, Dolby decoders and libui-v34 in `extract-files.py`, SELinux |
+| android_device_lenovo_lapis | display configuration, Dolby decoders and libui-v34 in `extract-files.py`, SELinux, Dolby Vision service compat (`lenovo/DolbyVisionService`) |
 | android_vendor_lenovo_lapis | stock Dolby / display HAL blobs (relinked to libui-v34) |
-| android_frameworks_base (fork) | `LenovoHbmBridge`, `LocalDisplayAdapter` |
 | android_frameworks_native (fork) | SurfaceFlinger Dolby Vision type, RefreshRateSelector steadiness |
-| hardware/lenovo/input | `CabcController` |
+| android_hardware_lenovo | `input`: `CabcController`, `SunlightHbmController` |
 
 Refresh rate: during video the YouTube window voted "Max" and the rate flipped
 between 60 and 120 Hz. A `RefreshRateSelector` patch ignores Max votes while an
@@ -190,11 +176,9 @@ ExplicitExactOrMultiple layer is present and the screen is untouched.
 
 - Read `cat /sys/class/backlight/panel0-backlight/brightness` and the `hbm`
   node next to it.
-- `settings put system screen_brightness_mode 0` and
-  `settings put system screen_brightness <0-255>`, then read the values after
-  4 seconds (the ramp).
-- Log: `logcat -s LenovoHbmBridge` prints "backlight up to 0.85 is 650.0 nits,
-  high brightness mode up to 900.0 nits" at start.
+- Raw light sensor values: the "last 50 events" of the ambient light sensor in
+  `dumpsys sensorservice`.
+- Logs: `logcat -s TB520FUSunlightHbm TB520FUCabc`.
 - When bind-mounting binaries for a root test, mind the SELinux labels
   (`chcon`) and that `/data` is `nosuid`, which breaks the SurfaceFlinger domain
   transition (use tmpfs).
