@@ -1,0 +1,4 @@
+runtime_resource_overlay {
+    name: "ZuiUDeviceResTarget",
+    product_specific: true,
+}
