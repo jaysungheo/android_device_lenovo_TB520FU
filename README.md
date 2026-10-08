@@ -225,3 +225,19 @@ updates. Switching to other keys later needs a data wipe.
 `<dump>` is an extracted stock firmware containing `vendor/`, `odm/`,
 `system_ext/` and `product/`. Not needed when the vendor repository is
 synced.
+
+## Credits
+
+Thanks to the projects and contributors whose work this port builds on:
+
+- **[AOSP](https://source.android.com/) and the [Android common kernel](https://android.googlesource.com/kernel/common/)** — the Android platform and the `android14-6.1` GKI kernel used by this device.
+- **[PixelOS](https://github.com/PixelOS-AOSP)** — the ROM, build infrastructure, recovery and apps used by the `seventeen` branch.
+- **[LineageOS](https://github.com/LineageOS) and its OnePlus device maintainers** — the [OnePlus Pad 2 (`caihong`)](https://github.com/LineageOS/android_device_oneplus_caihong) and [SM8650 common](https://github.com/LineageOS/android_device_oneplus_sm8650-common) trees that formed the starting point for this port, as well as the extraction tools, Aperture and [compatibility libraries](https://github.com/LineageOS/android_hardware_lineage_compat).
+- **Lenovo and Qualcomm** — the stock ZUI firmware, HALs, kernel modules and device configuration. The pen, keyboard, battery and folio-cover support is adapted from Lenovo's stock services; the [Lenovo kernel source release](https://support.lenovo.com/us/en/solutions/ht511330-lenovo-open-source-portal) supplies the vendor UAPI headers.
+- **[TheMuppets](https://github.com/TheMuppets/proprietary_vendor_oneplus_sm8650-common) and OnePlus** — the OnePlus SM8650 QSSI system-side WiFi Display blobs used for Miracast, together with Lenovo's stock vendor-side blobs.
+- **Lunaris AOSP, [Pong Development](https://github.com/Pong-Development/hardware_dolby), Paranoid Android and the LunarisDolby contributors** — the Dolby Atmos settings app, imported through [Lenovo-SM8850's fork](https://github.com/Lenovo-SM8850/hardware_dolby). Its in-app credits acknowledge Ghost (`Ghosuto`), Adithya R (`adithya2306`), Kenway (`kenway214`), tranQuila (`MrTopia`), `pabloescobar-reborn` and the translators.
+- **[miner7222](https://github.com/miner7222) / [Lenovo-SM8850](https://github.com/Lenovo-SM8850/android_hardware_lenovo)** — the VideoMotion app and the framework changes used as the basis for per-app Qualcomm VPP frame interpolation.
+
+The lapis bring-up, Lenovo-specific adaptations and maintenance are by
+[wnduddld0513](https://github.com/wnduddld0513). Thanks also to everyone who
+has tested builds and provided bug reports.
