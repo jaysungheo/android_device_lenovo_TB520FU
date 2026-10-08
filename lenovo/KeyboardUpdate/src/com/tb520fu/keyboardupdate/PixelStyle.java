@@ -64,6 +64,29 @@ public final class PixelStyle implements Application.ActivityLifecycleCallbacks 
         }
     }
 
+    /**
+     * The activity animations of Settings. The updaters' theme sets their own
+     * Animation.Zui.Activity, a copy of the plain platform Animation.Activity: as a style
+     * of the app it is played as such (the page comes in from below), while the platform
+     * style gets the default transitions of the system, the ones of the Settings pages
+     * that open the updater (in from the side). Dialog styles are left alone.
+     */
+    @Override
+    public void onActivityPreCreated(Activity activity, Bundle savedInstanceState) {
+        try {
+            Window window = activity.getWindow();
+            int own = activity.getResources().getIdentifier("Animation.Zui.Activity", "style",
+                    activity.getPackageName());
+            int platform = Resources.getSystem().getIdentifier("Animation.DeviceDefault.Activity",
+                    "style", "android");
+            if (own != 0 && platform != 0 && window.getAttributes().windowAnimations == own) {
+                window.setWindowAnimations(platform);
+            }
+        } catch (RuntimeException e) {
+            Log.w(TAG, "Cannot set the animations of " + activity.getComponentName(), e);
+        }
+    }
+
     @Override
     public void onActivityPostCreated(Activity activity, Bundle savedInstanceState) {
         try {
