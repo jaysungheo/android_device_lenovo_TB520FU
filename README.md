@@ -187,9 +187,7 @@ trees, merged into one tree with the OnePlus-specific parts removed.
   changed in Android 17 and the PixelOS look of the pen settings (card groups).
 - `lenovo/KeyboardUpdate/` — the stock keyboard firmware updaters with a
   compat dex that gives their page the PixelOS look (no resource overlays).
-- `configs/displayconfig/` — display configuration of the panel: the high brightness
-  mode as the top of the brightness scale and the HDR brightness curve (see
-  `docs/HDR_DISPLAY.md`, which also explains HDR10+ and Dolby Vision).
+- `configs/displayconfig/` — display configuration of the panel.
 - `system_ext.prop` — besides the stock values: `ro.config.lgsi.device.type=pad`
   (the stock Lenovo apps use the tablet dialog layout with it) and a linear
   brightness slider like stock ZUI.
