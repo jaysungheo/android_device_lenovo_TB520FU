@@ -24,9 +24,6 @@ TB520FU, codename lapis, Qualcomm Snapdragon 8 Gen 3).
 | Stock firmware | `ZUI_17.5.10.362_260719_ROW` |
 | Shipping API | 34 |
 
-Status: used daily. SELinux enforcing, dm-verity on, and the bootloader can be
-relocked (see "Verified boot"). Widevine L1 (Netflix HD), Play Integrity
-STRONG(RKP Sign), Thanks to [sungwon1002](https://github.com/sungwon1002).
 
 ## Downloads
 
