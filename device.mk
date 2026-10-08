@@ -45,6 +45,10 @@ PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*.kl,device/lenovo/lapis/configs/keylayout,$(TARGET_COPY_OUT_VENDOR)/usr/keylayout) \
     $(call find-copy-subdir-files,*.idc,device/lenovo/lapis/configs/idc,$(TARGET_COPY_OUT_VENDOR)/usr/idc)
 
+# Display configuration: raises the backlight for HDR content (HdrBrightnessModifier),
+# which Android only does with a config of the display
+PRODUCT_COPY_FILES +=     $(call find-copy-subdir-files,*.xml,device/lenovo/lapis/configs/displayconfig,$(TARGET_COPY_OUT_VENDOR)/etc/displayconfig)
+
 # Fingerprint (Goodix)
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.fingerprint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.fingerprint.xml
