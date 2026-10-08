@@ -25,6 +25,46 @@ TB520FU, codename lapis, Qualcomm Snapdragon 8 Gen 3).
 | Shipping API | 34 |
 
 
+## Features
+
+Highlights of the PixelOS (`seventeen`) build:
+
+### Device features
+
+- **Widevine L1** — Netflix HD playback.
+- **HDR, HDR10+ and Dolby Vision** — HDR video playback with the device's display and media codecs.
+- **Dolby Atmos** — LunarisDolby settings, sound profiles and equalizer.
+- **Play Integrity** — BASIC, DEVICE and STRONG.
+- **OTA updates** — full and incremental updates through Settings > System > System update.
+- **Lenovo Pencil** — automatic pairing, battery and charging status, writing haptics, pen buttons and the Lenovo pen settings.
+- **Lenovo keyboard** — touchpad controls, configurable shortcut keys, backlight, firmware updates and desktop mode integration.
+- **Folio case** — close the cover to sleep and lock; open it to wake.
+- **Adaptive refresh rate** — 30/60/90/120/144 Hz display modes with adaptive switching.
+- **Battery controls** — charging limits, battery protection, bypass charging and standby power saving.
+- **Natural colors** — ambient white balance with adjustable strength.
+- **Memory extension** — storage-backed virtual memory with a selectable size.
+- **Double tap to wake** and a **PC mode Quick Settings tile**.
+- **Video motion smoothing** — per-app Qualcomm VPP frame interpolation (MEMC).
+
+HDR and Dolby playback depends on the app, content and streaming subscription.
+
+### Custom features
+
+Available in Settings > System > Custom Tweaks:
+
+- **Per-app CPU/GPU performance** — separate Power saving, Balanced, Default and custom limits for each app, with optional background memory cleanup for games. Profiles apply while the app is on screen and return to normal when you leave it.
+- **Device identity spoofing** — choose the brand, manufacturer and model reported to selected apps.
+- **Play Store installer reporting** — make selected apps recognize Google Play as their installer.
+
+## Working
+
+- Display, Wi-Fi, Bluetooth and almost all other features tested so far.
+- Miracast (wireless display).
+
+## Not working
+
+None found so far.
+
 ## Downloads
 
 Latest build: see [Releases](https://github.com/lenovo-sm8650/android_device_lenovo_lapis/releases/),
