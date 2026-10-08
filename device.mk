@@ -42,6 +42,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     TB520FUParts
 
+# Dolby Vision service app with the stock com.dolby.vision_play broadcast
+# (lenovo/DolbyVisionService)
+PRODUCT_PACKAGES += \
+    DolbyVisionService
+
 # Lenovo pen / keyboard / battery bridge (hardware/lenovo/input)
 PRODUCT_PACKAGES += \
     PenService \
@@ -139,6 +144,7 @@ PRODUCT_SHIPPING_API_LEVEL := $(BOARD_SHIPPING_API_LEVEL)
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
     device/lenovo/lapis \
+    device/lenovo/lapis/lenovo/DolbyVisionService \
     device/lenovo/lapis/lenovo/KeyboardUpdate \
     device/lenovo/lapis/lenovo/PenService \
     hardware/lenovo
