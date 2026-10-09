@@ -268,8 +268,8 @@ synced.
 
 ## Credits
 
-- **[PixelOS](https://github.com/PixelOS-AOSP)**
-- **[LineageOS](https://github.com/LineageOS)** — [OnePlus Pad 2 (`caihong`)](https://github.com/LineageOS/android_device_oneplus_caihong) device tree.
+- **[PixelOS Team](https://github.com/PixelOS-AOSP)**
+- **[LineageOS Team](https://github.com/LineageOS)** — [OnePlus Pad 2 (android_device_oneplus_caihong, android_kernel_oneplus_sm8650)](https://github.com/LineageOS/android_device_oneplus_caihong).
 - **[miner7222](https://github.com/miner7222) / [Lenovo-SM8850](https://github.com/Lenovo-SM8850/android_hardware_lenovo)** — VideoMotion and Qualcomm VPP frame interpolation.
 - **Lunaris AOSP / [Pong Development](https://github.com/Pong-Development/hardware_dolby)** — LunarisDolby.
 - **[sungwon1002](https://github.com/sungwon1002)** — Play Integrity ([TB710FU device tree](https://github.com/sungwon1002/android_device_lenovo_TB710FU)).
