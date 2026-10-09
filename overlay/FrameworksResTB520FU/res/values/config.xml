@@ -133,6 +133,18 @@
     <integer name="config_defaultRefreshRate">0</integer>
     <integer name="config_defaultPeakRefreshRate">120</integer>
 
+    <!-- The panel turns the stylus scanning of its touch controller off at 90 and 144 Hz
+         (dsi_panel_match_fps_setting of the Lenovo display driver). The touch controller still
+         reports a stylus nearby with KEY_SKIN_STYLUS (249) on the touchscreen, so the display
+         leaves those rates until 10 s after the last one, like the stock SurfaceFlinger
+         (ro.surface_flinger.set_pen_timer_ms=10000). -->
+    <integer name="config_stylusDetectScanCode">249</integer>
+    <integer-array name="config_stylusIncompatibleRefreshRates">
+        <item>90</item>
+        <item>144</item>
+    </integer-array>
+    <integer name="config_stylusRefreshRateTimeoutMs">10000</integer>
+
     <!-- Memory extension: let StorageManagerService schedule the zram
          writeback job (the backing file comes from fstab.zram.N) -->
     <bool name="config_zramWriteback">true</bool>
