@@ -133,6 +133,9 @@
     <integer name="config_defaultRefreshRate">0</integer>
     <integer name="config_defaultPeakRefreshRate">120</integer>
 
+    <!-- Battery Saver keeps the selected refresh rate unless the user enables its limit. -->
+    <bool name="config_lowPowerRefreshRateDefault">false</bool>
+
     <!-- The panel turns the stylus scanning of its touch controller off at 90 and 144 Hz
          (dsi_panel_match_fps_setting of the Lenovo display driver). The touch controller still
          reports a stylus nearby with KEY_SKIN_STYLUS (249) on the touchscreen, so the display
