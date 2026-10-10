@@ -10,11 +10,6 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 # Inherit from lapis device
 $(call inherit-product, device/lenovo/lapis/device.mk)
 
-# Maintainer customizations (hardware/lenovo/custom): Custom Tweaks, game
-# performance, Play Store installer per app, Lenovo Notes, OTA updater,
-# wallpaper.
-$(call inherit-product-if-exists, hardware/lenovo/custom/custom.mk)
-
 # Inherit some common PixelOS stuff.
 $(call inherit-product, vendor/custom/config/common_full_tablet_wifionly.mk)
 
@@ -34,3 +29,7 @@ PRODUCT_BUILD_PROP_OVERRIDES += \
     DeviceProduct=TB520FU \
     SystemDevice=TB520FU \
     SystemName=TB520FU
+
+# Inherit after the stock properties so the optional Pixel fingerprint wins.
+# TARGET_ENABLE_FP_OVERRIDE=false retains the stock fingerprint above.
+$(call inherit-product-if-exists, hardware/lenovo/custom/custom.mk)
