@@ -1,8 +1,16 @@
 <!--
      DRAFT VINTF manifest for TB-J607F: the gauguin (SM7225) manifest without
      the radio, IMS, data, NFC and fingerprint HALs (Wi-Fi only tablet).
-     Keymaster 4.1 and no audiohalext, as stock. TODO(J607F): reconcile the
-     rest with the stock /vendor/etc/vintf/manifest.xml.
+     Keymaster 4.1 and no audiohalext, as stock.
+
+     Checked against the stock J607F manifest and its fragments: every other
+     stock HAL either brings its own fragment (blobs: GNSS, Codec2, NN,
+     Widevine, Dolby DMS; source: display, health, power, thermal, USB, Wi-Fi,
+     vibrator, boot) or is left out on purpose (IMS, data, eMBMS, WiGig, QTI
+     perf/iop, Lenovo/QTI factory, soter, trusted UI, cacert, OMX,
+     tetheroffload, and the lights HAL: no LED, the backlight goes through
+     the display composer). Sensors are the AIDL multihal from source
+     (device.mk), so gauguin's HIDL sensors@1.0 entry is not here.
 -->
 <manifest version="5.0" type="device" target-level="7">
     <hal format="hidl">
@@ -34,11 +42,6 @@
         <name>android.hardware.keymaster</name>
         <transport>hwbinder</transport>
         <fqname>@4.1::IKeymasterDevice/default</fqname>
-    </hal>
-    <hal format="hidl">
-        <name>android.hardware.sensors</name>
-        <transport>hwbinder</transport>
-        <fqname>@1.0::ISensors/default</fqname>
     </hal>
     <hal format="hidl">
         <name>android.hardware.soundtrigger</name>

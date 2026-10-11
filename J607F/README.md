@@ -32,11 +32,16 @@ checked out at `device/lenovo/J607F` (see `tools/local_manifest.xml` and
 `.find-ignore` keeps the build system from scanning it while it lives under
 `device/lenovo/TB520FU`; delete that file when it moves to its own repository.
 
+This repository follows the upstream lapis tree (TB520FU, now codename
+`lapis`). Syncing `seventeen` with upstream replaces its history, which
+dropped this directory once (2026-10-07..10); it was restored from the last
+merged J607F branch. Moving it to its own repository avoids that.
+
 ## What came from where
 
 | Part | Source |
 |---|---|
-| Layout, `custom_J607F.mk`, `AndroidProducts.mk`, overlays, `.prop` split, `extract-files.py` / `setup-makefiles.py` style | TB520FU (this repository) |
+| Layout, `custom_J607F.mk` / `lineage_J607F.mk` split, stock fingerprint overrides, `AndroidProducts.mk`, overlays, `.prop` split, `extract-files.py` / `setup-makefiles.py` style, Wi-Fi country from scan results | TB520FU / lapis (this repository) |
 | `BoardConfig.mk` lito / 4.19 kernel / partitions / Wi-Fi | LineageOS [gauguin](https://github.com/LineageOS/android_device_xiaomi_gauguin) (SM7225) and [motorola/sm7250-common](https://github.com/LineageOS/android_device_motorola_sm7250-common) (A/B lito), `lineage-24.0` |
 | `device.mk` HAL selection | gauguin and motorola/sm7250-common |
 | `init/` rc files, `ueventd`, `init.qti.dcvs.sh`, `configs/wifi`, `configs/power/powerhint.json`, `config.fs` | gauguin, minus radio / NFC / ATFWD / Xiaomi camera parts |
@@ -75,6 +80,9 @@ vendor image is two years newer (security patch 2023-01-05).
 | GNSS, vibrator | both present | `device.mk` |
 | Sensors | accel, gyro, light, proximity, step counter/detector; no compass | `device.mk` |
 | Keymaster | 4.1 | `vintf/manifest.xml`, `proprietary-files.txt` |
+| VINTF | stock manifest and fragments checked HAL by HAL; HALs with blob or source fragments are not repeated, radio/IMS/WiGig/factory/perf HALs left out | `vintf/manifest.xml` |
+| Brightness, power profile | stock backlight-to-nits map, auto-brightness curve, slider range; stock `power_profile.xml` | `overlay/FrameworksResJ607F` |
+| Build fingerprint | stock `Lenovo/LenovoTB-J607F_PRC/J607F:11/...` | `custom_J607F.mk`, `lineage_J607F.mk` |
 | WLAN firmware | `qca_cld/`, stock symlinks | `Android.bp` |
 | Init | stock SAR permissions, Lenovo ship mode and battery protection triggers, audio module loading | `init/init.target.rc` |
 | Kernel | [jaysungheo/kernel_lenovo_J607Z](https://github.com/jaysungheo/kernel_lenovo_J607Z) `CipA17` (fork of nzlnice/kernel_lenovo_J607Z), `vendor/arnoz_defconfig` | `BoardConfig.mk`, `tools/local_manifest.xml` |
@@ -90,10 +98,11 @@ The stock dumps, configs and comparison notes live in the project files
 | Extra blob fixups | `extract-files.py` | first `m nothing` / boot |
 | Display blobs pinned or not | `proprietary-files.txt` (Display, Display Postprocessing) | gauguin pins older `libsdm-*`, `libdisplayqos`, `qdcmss` to match the source display HAL; the J607Z ones are taken unpinned, so pin them if the display HAL rejects them |
 | Rear camera EEPROM libs | `proprietary-files.txt` (Camera) | the J607Z camera set has no `com.qti.eeprom.lenovo_ov13b10_*` or `com.qti.node.lenovo` (J607F 2021 firmware does); add them from the J607F dump only if the rear camera fails to read calibration |
-| VINTF manifest | `vintf/manifest.xml` | reconcile the rest with the stock manifest and fragments |
 | IRQ numbers for msm_drm / kgsl | `init/init.target.rc` | `/proc/interrupts` on a running device |
-| Auto-brightness curve, backlight range, power profile | `overlay/FrameworksResJ607F` | stock framework-res overlay APK |
-| Device nodes and sysfs labels (touch, pen, keyboard dock, amp, Type-C) | `sepolicy/vendor` | stock vendor `file_contexts`, booted device |
+| Auto-brightness curve | `overlay/FrameworksResJ607F` | stock curve and nits mapping are in; the lapis tree had to raise its stock curve, so check it on the device |
+| Device nodes and sysfs labels (touch, pen, keyboard dock, amp, Type-C) | `sepolicy/vendor` | add with the HAL or app that uses them; stock labels: `/sys/devices/virtual/touch/tp_dev/gesture_on` (`sysfs_tp`, double tap), keyboard dock `.../i2c-2/2-0061/0018:17EF:610B.0002/version` (`vendor_lenovo_kb`), pm6150l `leds@d300` (`vendor_lenovo_leds`), `/sys/hwinfo` |
+| Keyboard dock keylayout | `configs/` | the dock is HID 17EF:610B; stock J607F has no keylayout for it (Generic.kl); lapis ships a `Vendor_17ef_Product_610b.kl` worth trying if keys are wrong |
+| Lights HAL | `device.mk` | none (no LED, backlight through the composer); add `android.hardware.light-service.lineage` as gauguin does if the brightness slider does nothing |
 | Which IMU fits (BMI26x or ICM4x6xx) | none, both configs ship | runtime |
 
 ## Known risks
