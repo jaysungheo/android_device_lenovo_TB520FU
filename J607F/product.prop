@@ -1,0 +1,3 @@
+# DRAFT: TODO(J607F) stock product build.prop properties worth keeping.
+# If stock Lenovo apps get ported (PenService and friends, like TB520FU),
+# add ro.config.lgsi.device.type=pad to system_ext.prop as TB520FU does.

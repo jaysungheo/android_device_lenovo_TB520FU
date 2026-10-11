@@ -1,0 +1,2 @@
+# Stock vendor sets no zram; ZUI configures swap from the system side. 50% kept.
+/dev/block/zram0                                        none                   swap    defaults                                             zramsize=50%
