@@ -95,8 +95,8 @@ The stock dumps, configs and comparison notes live in the project files
 
 | What | Where | How to get it |
 |---|---|---|
-| Extra blob fixups | `extract-files.py` | first `m nothing` / boot |
-| Display blobs pinned or not | `proprietary-files.txt` (Display, Display Postprocessing) | gauguin pins older `libsdm-*`, `libdisplayqos`, `qdcmss` to match the source display HAL; the J607Z ones are taken unpinned, so pin them if the display HAL rejects them |
+| Extra blob fixups | `extract-files.py` | symbols are checked (see below); what is left shows at first boot: crashes or aborts in `logcat` |
+| Display blobs pinned or not | `proprietary-files.txt` (Display, Display Postprocessing) | the J607Z `libsdm-*`, `libdisplayqos`, `qdcmss` are unpinned; every `sdm::` symbol they import exists in the lineage-24.0-caf-sm8250 display source, so no pin is needed unless the display HAL misbehaves at runtime |
 | Rear camera EEPROM libs | `proprietary-files.txt` (Camera) | the J607Z camera set has no `com.qti.eeprom.lenovo_ov13b10_*` or `com.qti.node.lenovo` (J607F 2021 firmware does); add them from the J607F dump only if the rear camera fails to read calibration |
 | IRQ numbers for msm_drm / kgsl | `init/init.target.rc` | `/proc/interrupts` on a running device |
 | Auto-brightness curve | `overlay/FrameworksResJ607F` | stock curve and nits mapping are in; the lapis tree had to raise its stock curve, so check it on the device |
@@ -104,6 +104,26 @@ The stock dumps, configs and comparison notes live in the project files
 | Keyboard dock keylayout | `configs/` | the dock is HID 17EF:610B; stock J607F has no keylayout for it (Generic.kl); lapis ships a `Vendor_17ef_Product_610b.kl` worth trying if keys are wrong |
 | Lights HAL | `device.mk` | none (no LED, backlight through the composer); add `android.hardware.light-service.lineage` as gauguin does if the brightness slider does nothing |
 | Which IMU fits (BMI26x or ICM4x6xx) | none, both configs ship | runtime |
+
+## Blob check against Android 17
+
+`tools/bringup/symcheck.py` resolves every undefined symbol of the blobs in
+`vendor/lenovo/J607F` against real Android 17 libraries (vendor and system
+images of the PixelOS lapis build 20261013-0618). Result (2026-10-14):
+
+- 64-bit: nothing missing apart from symbols of libraries the J607F build
+  provides itself (protobuf 3.9.1 vendorcompat, the HIDL NN 1.x, health 2.1
+  and QTI mapper libraries, libwpa_client, libcrypto_shim, the sm8250 display
+  HAL's `libsdmutils`).
+- 32-bit: lapis has no 32-bit libraries, so names were compared against the
+  64-bit ones: nothing missing apart from `libaudioroute-v34` symbols and
+  ARM unwinder helpers of the q3dtools Vulkan debug layer.
+- No blob needs `clear_symbol_version`: the only versioned imports are
+  `LIBSYNC` and `LIBVNDKSUPPORT`.
+- Runtime fixup added: `vendor.qti.hardware.camera.postproc@1.0-service-impl.so`
+  (64-bit) calls `configureRpcThreadpool(4, true)` inside the camera
+  provider, which aborts since Android 12; the call is patched out as on
+  gauguin. The 32-bit copy is left as is (the camera provider is 64-bit).
 
 ## Known risks
 

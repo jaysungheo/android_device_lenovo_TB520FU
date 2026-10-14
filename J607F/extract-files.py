@@ -51,6 +51,11 @@ lib_fixups: lib_fixups_user_type = {
 blob_fixups: blob_fixups_user_type = {
     ('vendor/lib/hw/audio.primary.lito.so', 'vendor/lib/libaudioroute_ext.so'): blob_fixup()
         .replace_needed('libaudioroute.so', 'libaudioroute-v34.so'),
+    # The impl calls configureRpcThreadpool(4, true) after the camera
+    # provider already set a larger pool; libhidlbase aborts on that since
+    # Android 12. Drop the call (bl -> nop after mov w1, #1), as gauguin does.
+    'vendor/lib64/vendor.qti.hardware.camera.postproc@1.0-service-impl.so': blob_fixup()
+        .sig_replace('21 00 80 52 13 0A 00 94', '21 00 80 52 1F 20 03 D5'),
     'vendor/lib64/libwvhidl.so': blob_fixup()
         .add_needed('libcrypto_shim.so'),
     'vendor/lib64/libdpps.so': blob_fixup()
