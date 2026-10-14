@@ -112,7 +112,7 @@ originals:
 | `packages/apps/ParanoidSense` | `android_packages_apps_ParanoidSense` | landscape enrollment preview |
 | `packages/apps/Updater` | `android_packages_apps_Updater` | SourceForge update server |
 | `packages/apps/Aperture` | `android_packages_apps_Aperture` | UI rotation on a landscape display |
-| `vendor/lineage` | `android_vendor_lineage` | prebuilt vendor modules, kernel header cleanup |
+| `vendor/lineage` | `android_vendor_lineage` | prebuilt vendor modules |
 ## Kernel
 
 The stock firmware runs Google's GKI build of `android14-6.1`
@@ -180,8 +180,7 @@ repo sync -c -j$(nproc)
 </manifest>
 ```
 
-For LineageOS, use `revision="lineage-24.0"` and only the device, hardware,
-kernel and vendor projects.
+For LineageOS, see the README of the `lineage-24.0` branch.
 ## Building
 
 ```bash
