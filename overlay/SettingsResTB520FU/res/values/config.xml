@@ -11,4 +11,8 @@
     <!-- Regulatory labels: the stock e-label of TB520FU (system/etc/deviceinfo/e_label_wifi*.png),
          shown like the stock ZUI Settings. -->
     <bool name="config_show_regulatory_info">true</bool>
+
+    <!-- "Charge to full" of the battery defender tip lifts the Lenovo charge
+         limits until the charger is unplugged (tb520fu-input BatteryController). -->
+    <string name="config_battery_defender_resume_charge_action" translatable="false">com.tb520fu.action.RESUME_CHARGING</string>
 </resources>
