@@ -31,7 +31,7 @@
 /vendor/bin/vendor_cmd_tool    u:object_r:tb520fu_wlan_sar_exec:s0
 
 # Dolby Vision
-/vendor/bin/hw/vendor\.dolby\.media\.c2@1\.0-service-vision    u:object_r:vendorcodec_exec:s0
+/vendor/bin/hw/vendor\.dolby\.media\.c2-service-vision         u:object_r:vendorcodec_exec:s0
 /vendor/bin/hw/dvs-aidl-service                                u:object_r:dvs_aidl_default_exec:s0
 # Dolby audio decoders
 /vendor/bin/hw/vendor\.dolby\.media\.c2-default-service-dax  u:object_r:mediacodec_exec:s0
