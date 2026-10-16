@@ -51,7 +51,8 @@ PRODUCT_PACKAGES += \
     libgui_shim \
     libinput_shim \
     vendor.display.config@2.0 \
-    vendor.qti.hardware.display.config-V5-ndk
+    vendor.qti.hardware.display.config-V5-ndk \
+    vendor.qti.hardware.display.config-V16-ndk
 
 PRODUCT_SYSTEM_EXT_PROPERTIES += \
     persist.debug.wfd.enable=1 \
