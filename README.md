@@ -21,7 +21,7 @@ TB520FU, codename lapis, Qualcomm Snapdragon 8 Gen 3).
 | Kernel | GKI `6.1.138-android14-11`, built from source |
 | Display | 2944×1840 dual-DSI, natively landscape, density 340 |
 | Codename | lapis (`ro.vendor.config.lgsi.project`) |
-| Stock firmware | `ZUI_17.5.10.362_260719_ROW` |
+| Stock firmware | `ZUI_18.5.10.037_260929_ROW` |
 | Shipping API | 34 |
 
 
