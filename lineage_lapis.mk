@@ -23,8 +23,8 @@ PRODUCT_CHARACTERISTICS := nosdcard,tablet
 PRODUCT_GMS_CLIENTID_BASE := android-lenovo
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
-    BuildDesc="TB520FU-user 16 BQ2A.250610.001-BP2A.250605.031.A3 362 release-keys" \
-    BuildFingerprint=qti/TB520FU/TB520FU:16/BQ2A.250610.001-BP2A.250605.031.A3/ZUI_17.5.10.362_260719_ROW:user/release-keys \
+    BuildDesc="TB520FU-user 17 CQ2A.260712.001 37 release-keys" \
+    BuildFingerprint=qti/TB520FU/TB520FU:17/CQ2A.260712.001/ZUI_18.5.10.037_260929_ROW:user/release-keys \
     DeviceName=TB520FU \
     DeviceProduct=TB520FU \
     SystemDevice=TB520FU \

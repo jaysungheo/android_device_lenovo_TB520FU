@@ -43,13 +43,9 @@ PRODUCT_PACKAGES += \
     LenovoParts
 
 # WiFi Display (Miracast): the QTI session of the OnePlus QSSI blobs
-# (proprietary-files.txt) with the shims of hardware/lineage/compat and the
-# QTI display config clients built from source
+# (proprietary-files.txt) with the QTI display config clients built from source
 PRODUCT_PACKAGES += \
-    android.hidl.base@1.0 \
     libdisplayconfig.system.qti \
-    libgui_shim \
-    libinput_shim \
     vendor.display.config@2.0 \
     vendor.qti.hardware.display.config-V5-ndk \
     vendor.qti.hardware.display.config-V16-ndk

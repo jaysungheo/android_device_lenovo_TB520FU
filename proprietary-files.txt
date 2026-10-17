@@ -1,5 +1,5 @@
 ## All proprietary files from this list are from the stock
-## TB520FU_ROW_OPEN_USER_Q00002.0_W_ZUI_17.5.10.362_ST_260719 firmware
+## TB520FU_ROW_OPEN_USER_Q29300.0_A17_ZUI_18.5.10.037_ST_260929 firmware
 ## of the Lenovo Yoga Tab Plus (lapis).
 
 # Sensors config
