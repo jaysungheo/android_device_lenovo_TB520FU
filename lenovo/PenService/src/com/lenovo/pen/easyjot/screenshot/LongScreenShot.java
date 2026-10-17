@@ -56,6 +56,9 @@ public final class LongScreenShot {
     }
 
     public static final class Companion {
-        private Companion() {}
+        // Not private: called from the outer class (Companion field). The compat dex is built with d8
+        // --no-desugaring, so a private member reached from another class (javac's
+        // nestmate access) is not rewritten and ART throws IllegalAccessError.
+        Companion() {}
     }
 }
