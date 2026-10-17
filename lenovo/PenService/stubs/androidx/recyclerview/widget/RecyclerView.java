@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 
 /** Compile-time stand-in; the real class comes from the PenService dex. */
 public class RecyclerView extends ViewGroup {
+    public static final int NO_POSITION = -1;
+
     public RecyclerView(Context context) {
         super(context);
     }
@@ -45,6 +47,10 @@ public class RecyclerView extends ViewGroup {
 
     public abstract static class Adapter<VH extends ViewHolder> {
         public abstract int getItemCount();
+
+        public int getItemViewType(int position) {
+            throw new RuntimeException("stub");
+        }
 
         public void registerAdapterDataObserver(AdapterDataObserver observer) {}
     }

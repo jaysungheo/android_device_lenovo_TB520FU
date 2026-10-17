@@ -18,12 +18,15 @@ import vendor.dolby.dvs.IDvs;
 import vendor.dolby.dvs.IDvsCallback;
 
 /**
- * The DVS client of the stock DolbyVisionService, with the same behavior, that
+ * The DVS client of the stock DolbyVisionService (AIDL path only: the device
+ * has the AIDL dvs-aidl-service, no HIDL one), with the same behavior, that
  * also announces the Dolby Vision playback the way the stock firmware expects:
  * the com.dolby.vision_play broadcast with "start" / "stop" in the "action"
  * extra, which the stock ZuiDisplayService (and CabcController of the device)
- * uses to turn the panel CABC off. DVS tells the app when the Dolby Vision
- * decoder starts and stops; nothing in the stock firmware sent the broadcast.
+ * uses to turn the panel CABC off. The Android 17 DVS daemon reports the
+ * decoder through onDolbyNotification ("Callback_DolbyRenderStart" and
+ * "Callback_DolbyRenderStop") instead of onDolbyVisionPlaybackStart and Stop;
+ * nothing in the stock firmware sent the broadcast.
  */
 public class DolbyDvsManager {
     private static final String TAG = "DolbyDvsManager";
@@ -31,10 +34,15 @@ public class DolbyDvsManager {
     /** Stock ZuiDisplayService DOLBY_VISION_ACTION. */
     private static final String ACTION_DOLBY_VISION = "com.dolby.vision_play";
 
+    private static final String EVENT_RENDER_START = "Callback_DolbyRenderStart";
+    private static final String EVENT_RENDER_STOP = "Callback_DolbyRenderStop";
+
     private static IDvs mDvs;
     private static IDvsCallbackImpl mDvsCallbackImpl;
 
     public interface DvsCallback {
+        void onDolbyNotification(String event);
+
         boolean onDolbyVisionPlaybackStart();
 
         boolean onDolbyVisionPlaybackStop();
@@ -46,7 +54,7 @@ public class DolbyDvsManager {
         if (dvsCallback == null) {
             throw new IllegalArgumentException("Illegal null argument");
         }
-        IDvs service = getService();
+        IDvs service = getAidlService();
         if (service == null) {
             return false;
         }
@@ -64,6 +72,10 @@ public class DolbyDvsManager {
         setParameter("brightness", brightness);
     }
 
+    public static void setAdjustedBrightness(int brightness) {
+        setParameter("adjustedBrightness", brightness);
+    }
+
     public static void setCurrentPQmode(int mode) {
         setParameter("pqMode", mode);
     }
@@ -73,7 +85,7 @@ public class DolbyDvsManager {
     }
 
     private static void setParameter(String key, int value) {
-        IDvs service = getService();
+        IDvs service = getAidlService();
         if (service == null) {
             return;
         }
@@ -95,7 +107,7 @@ public class DolbyDvsManager {
     }
 
     private static int getParameter(String key) {
-        IDvs service = getService();
+        IDvs service = getAidlService();
         if (service == null) {
             return 0;
         }
@@ -112,7 +124,7 @@ public class DolbyDvsManager {
     }
 
     public static int[] getDisplayIDs() {
-        IDvs service = getService();
+        IDvs service = getAidlService();
         if (service == null) {
             return null;
         }
@@ -166,7 +178,19 @@ public class DolbyDvsManager {
 
         @Override
         public String getInterfaceHash() {
-            return "c37499ec236359f61c5c42109200921e04a8fdbc";
+            return "8531c2009e64a4bcabdd3fd3210e44ea073500b6";
+        }
+
+        @Override
+        public void onDolbyNotification(String event) {
+            if (EVENT_RENDER_START.equals(event)) {
+                announcePlayback(true);
+            } else if (EVENT_RENDER_STOP.equals(event)) {
+                announcePlayback(false);
+            }
+            if (mListener != null) {
+                mListener.onDolbyNotification(event);
+            }
         }
 
         @Override
@@ -199,7 +223,7 @@ public class DolbyDvsManager {
         }
     }
 
-    private static IDvs getService() {
+    public static IDvs getAidlService() {
         if (mDvs != null) {
             return mDvs;
         }

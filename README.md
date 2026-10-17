@@ -21,7 +21,7 @@ TB520FU, codename lapis, Qualcomm Snapdragon 8 Gen 3).
 | Kernel | GKI `6.1.138-android14-11`, built from source |
 | Display | 2944×1840 dual-DSI, natively landscape, density 340 |
 | Codename | lapis (`ro.vendor.config.lgsi.project`) |
-| Stock firmware | `ZUI_17.5.10.362_260719_ROW` |
+| Stock firmware | `ZUI_18.5.10.037_260929_ROW` |
 | Shipping API | 34 |
 
 
@@ -58,12 +58,12 @@ Available in Settings > System > Custom Tweaks:
 
 ## Working
 
-- Display, Wi-Fi, Bluetooth and almost all other features
-- Miracast (wifi display).
+- Display, Wi-Fi, Bluetooth and almost all other features.
+- Miracast (wireless display).
 
 ## Not working
 
-Not found yet..
+None
 
 ## Downloads
 
@@ -90,7 +90,7 @@ kernel):
 | `device/lenovo/lapis` | `android_device_lenovo_lapis` | this tree |
 | `device/lenovo/sm8650-common` | `android_device_lenovo_sm8650-common` | SM8650 (pineapple) platform configuration |
 | `device/lenovo/lapis-kernel` | `android_device_lenovo_lapis-kernel` | stock vendor kernel modules, dtb and dtbo |
-| `hardware/lenovo` | `android_hardware_lenovo` | TB520FUParts, the `tb520fu-input` system_server bridge; on `seventeen` also LunarisDolby, VideoMotion and the maintainer customizations (`custom/`) |
+| `hardware/lenovo` | `android_hardware_lenovo` | LenovoParts, the `lenovo-input` system_server bridge; on `seventeen` also LunarisDolby, VideoMotion and the maintainer customizations (`custom/`) |
 | `kernel/lenovo/sm8650` | `android_kernel_lenovo_sm8650` | Android common kernel `android14-6.1` at `2ecae636cf9b` (the source of the stock GKI kernel) plus the Qualcomm UAPI headers |
 | `vendor/lenovo/lapis` | `proprietary_vendor_lenovo_lapis` | device blobs (Git LFS for files over 50 MB) |
 | `vendor/lenovo/sm8650-common` | `proprietary_vendor_lenovo_sm8650-common` | platform blobs |
@@ -112,7 +112,7 @@ originals:
 | `packages/apps/ParanoidSense` | `android_packages_apps_ParanoidSense` | landscape enrollment preview |
 | `packages/apps/Updater` | `android_packages_apps_Updater` | SourceForge update server |
 | `packages/apps/Aperture` | `android_packages_apps_Aperture` | UI rotation on a landscape display |
-| `vendor/lineage` | `android_vendor_lineage` | prebuilt vendor modules, kernel header cleanup |
+| `vendor/lineage` | `android_vendor_lineage` | prebuilt vendor modules |
 ## Kernel
 
 The stock firmware runs Google's GKI build of `android14-6.1`
@@ -180,8 +180,7 @@ repo sync -c -j$(nproc)
 </manifest>
 ```
 
-For LineageOS, use `revision="lineage-24.0"` and only the device, hardware,
-kernel and vendor projects.
+For LineageOS, see the README of the `lineage-24.0` branch.
 ## Building
 
 ```bash
@@ -234,11 +233,11 @@ trees, merged into one tree with the OnePlus-specific parts removed.
 
 In `hardware/lenovo`:
 
-- `packages/TB520FUParts/` — "Lenovo features" in Settings > System:
+- `packages/LenovoParts/` — "Lenovo features" in Settings > System:
   charging modes, white balance strength, memory extension (zram writeback),
   pen settings, folio case mode, and the physical keyboard page of the stock
   settings with the keyboard firmware update.
-- `input/` — `tb520fu-input.jar`, loaded into system_server as a
+- `input/` — `lenovo-input.jar`, loaded into system_server as a
   DeviceKeyHandler: Lenovo pen (attach, pairing, battery, writing haptics,
   buttons), keyboard keys, charging modes, double tap to wake and the folio
   case mode (the cover is the sensor HAL hall effect sensor, confirmed by the

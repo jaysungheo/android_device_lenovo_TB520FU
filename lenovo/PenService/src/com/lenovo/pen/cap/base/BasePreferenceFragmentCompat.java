@@ -56,7 +56,7 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
     // The empty category row is about 6dp high; together 16dp between groups.
     private static final int UNTITLED_GROUP_GAP_DP = 10;
     // SettingsLib expressive rows: at least 72dp, 16dp vertical padding
-    // (list_text_vertical_padding_zui in PenServiceResTB520FU).
+    // (list_text_vertical_padding_zui in PenServiceResTarget).
     private static final int ROW_MIN_HEIGHT_DP = 72;
 
     @Override
@@ -147,30 +147,31 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
         return null;
     }
 
-    private static final class CardDecoration extends RecyclerView.ItemDecoration {
+    // Not private: AppListCards (the app selection pages) uses the same cards.
+    static final class CardDecoration extends RecyclerView.ItemDecoration {
         static final String FOOTER_CLASS = "com.lenovo.pen.cap.widget.FooterPreference";
-        private static final int SINGLE = 0;
-        private static final int TOP = 1;
-        private static final int MIDDLE = 2;
-        private static final int BOTTOM = 3;
-        private static final int FLAT_TOP = 4;
-        private static final int FLAT_BOTTOM = 8;
+        static final int SINGLE = 0;
+        static final int TOP = 1;
+        static final int MIDDLE = 2;
+        static final int BOTTOM = 3;
+        static final int FLAT_TOP = 4;
+        static final int FLAT_BOTTOM = 8;
 
         private final float mOuterRadius;
         private final float mInnerRadius;
-        private final int mGap;
+        final int mGap;
         private final int mUntitledGroupGap;
-        private final int mRowMinHeight;
+        final int mRowMinHeight;
         private final int mCardColor;
         private final ColorStateList mRippleColor;
         private final int mSpacerLayout;
         private final int mFooterLayout;
         private RecyclerView.Adapter mObserved;
-        private final Typeface mTitleFont = Typeface.create("variable-title-medium",
+        final Typeface mTitleFont = Typeface.create("variable-title-medium",
                 Typeface.NORMAL);
-        private final Typeface mSummaryFont = Typeface.create("variable-body-medium",
+        final Typeface mSummaryFont = Typeface.create("variable-body-medium",
                 Typeface.NORMAL);
-        private final Typeface mCategoryFont = Typeface.create(
+        final Typeface mCategoryFont = Typeface.create(
                 "variable-title-small-emphasized", Typeface.NORMAL);
         private final int mTextColor;
 
@@ -268,7 +269,7 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
         }
 
         /** Regroup when rows are added, removed or hidden. */
-        private void observe(RecyclerView parent, RecyclerView.Adapter adapter) {
+        void observe(RecyclerView parent, RecyclerView.Adapter adapter) {
             if (mObserved == adapter) {
                 return;
             }
@@ -365,7 +366,7 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
                     || name.equals("com.lenovo.pen.bt.widget.HapticLevelPreference");
         }
 
-        private Drawable card(int shape) {
+        Drawable card(int shape) {
             int base = shape & 3;
             float top = (shape & FLAT_TOP) != 0 ? 0
                     : base == SINGLE || base == TOP ? mOuterRadius : mInnerRadius;
@@ -380,7 +381,7 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
     }
 
     /** Card background of one row; remembers its shape to skip rebuilding. */
-    private static final class Card extends RippleDrawable {
+    static final class Card extends RippleDrawable {
         final int mShape;
 
         Card(ColorStateList color, Drawable content, int shape) {

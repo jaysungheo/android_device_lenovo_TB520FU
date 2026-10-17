@@ -11,7 +11,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.tb520fu.keyboardupdate.PixelStyle;
+import org.lineageos.settings.keyboardupdate.PixelStyle;
 
 /**
  * Replacement of the stock androidx.startup.InitializationProvider of the

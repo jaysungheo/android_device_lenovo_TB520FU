@@ -1,9 +1,9 @@
 # Denials seen in permissive mode that need a rule or are harmless probes.
 
 # Camera HAL: the Lenovo camx build walks every property area; it only needs
-# its own vendor.camera/main_back properties.
+# its own vendor.camera/main_back properties (vendor_camera_prop access comes
+# from the Qualcomm hal_camera policy).
 dontaudit hal_camera_default property_type:file { getattr map open read };
-set_prop(hal_camera_default, vendor_camera_prop)
 
 # e2fsck on lenovocust at boot
 allow fsck lenovocust_block_device:blk_file rw_file_perms;
@@ -38,9 +38,8 @@ set_prop(vendor_init, vendor_lenovo_config_prop)
 get_prop(system_app, vendor_lenovo_config_prop)
 get_prop({ platform_app platform_app_36 }, vendor_lenovo_config_prop)
 
-# Pen charger (power_supply/wls_tx): tb520fu-input reads attach state and MAC,
+# Pen charger (power_supply/wls_tx): lenovo-input reads attach state and MAC,
 # the battery HAL sends Qi commands
-allow system_server vendor_sysfs_wls_tx:dir r_dir_perms;
 allow system_server vendor_sysfs_wls_tx:file r_file_perms;
 allow hal_lenovobattery_default vendor_sysfs_wls_tx:dir r_dir_perms;
 allow hal_lenovobattery_default vendor_sysfs_wls_tx:file rw_file_perms;

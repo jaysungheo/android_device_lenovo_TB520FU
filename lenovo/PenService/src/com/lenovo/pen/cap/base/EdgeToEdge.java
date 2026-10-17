@@ -52,9 +52,15 @@ final class EdgeToEdge implements View.OnApplyWindowInsetsListener {
             return;
         }
         sApplied.put(content, Boolean.TRUE);
+        // ZUI 18.5 ZuiAppCompatActivity.setupEdgeToEdge() pads the whole decor
+        // by the system bars (navigation bar included) and consumes the
+        // insets, so the content listener below would get none: drop it.
+        View decor = window.getDecorView();
+        decor.setOnApplyWindowInsetsListener(null);
+        decor.setPadding(0, 0, 0, 0);
         boolean night = (activity.getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
-        window.getDecorView().setBackgroundColor(activity.getColor(night
+        decor.setBackgroundColor(activity.getColor(night
                 ? android.R.color.system_surface_container_dark
                 : android.R.color.system_surface_container_light));
         window.setDecorFitsSystemWindows(false);

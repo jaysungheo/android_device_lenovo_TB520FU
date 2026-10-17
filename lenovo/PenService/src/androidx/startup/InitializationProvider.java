@@ -4,6 +4,7 @@
  */
 package androidx.startup;
 
+import android.app.Application;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,9 +12,13 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
+import com.lenovo.pen.cap.base.PageStyler;
 import com.zui.input.handwriting.ZuiHandWritingManager;
 
-/** Keep stock AndroidX startup and start the IME migration before Application.onCreate(). */
+/**
+ * Keep stock AndroidX startup, register the pen page styling and start the
+ * IME migration before Application.onCreate().
+ */
 public class InitializationProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
@@ -21,6 +26,9 @@ public class InitializationProvider extends ContentProvider {
         if (context == null) throw new IllegalStateException("Context cannot be null");
         if (context.getApplicationContext() == null) return true;
         AppInitializer.getInstance(context).discoverAndInitialize();
+        if (context.getApplicationContext() instanceof Application) {
+            PageStyler.register((Application) context.getApplicationContext());
+        }
         try {
             ZuiHandWritingManager.getInstance(context);
         } catch (RuntimeException e) {

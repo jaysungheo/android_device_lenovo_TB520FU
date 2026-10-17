@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.UserHandle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.inputmethod.InputMethodInfo;
@@ -25,6 +26,7 @@ public final class ZuiHandWritingManager {
     private static final String GBOARD =
             "com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME";
     private static final String HANDWRITING = "pen_set_freewrite_on";
+    private static final String INK_MODE_INTERCEPT_EVENTS = "inkmode_intercept_events";
     private static final String LAST_KEYBOARD = "last_keyboard";
     private static ZuiHandWritingManager sInstance;
 
@@ -57,9 +59,15 @@ public final class ZuiHandWritingManager {
 
     // Retained for stock callers, although the Lenovo IME is no longer registered.
     public void setHwEnable(int enabled) { mHandler.post(new Refresh(this)); }
-    public void setToolType(int toolType) {}
-    public void registerIMEClient(IIMEClient client) {}
-    public void unregisterIMEClient(IIMEClient client) {}
+    // Same setting the stock ZuiHandWritingService writes; lenovo-input reads it.
+    public void setInkModeInterceptEvents(boolean intercept) {
+        try {
+            Settings.System.putIntForUser(mContext.getContentResolver(),
+                    INK_MODE_INTERCEPT_EVENTS, intercept ? 1 : 0, UserHandle.USER_CURRENT);
+        } catch (RuntimeException e) {
+            Log.e(TAG, "Cannot set ink mode event interception", e);
+        }
+    }
 
     void refresh() {
         try {

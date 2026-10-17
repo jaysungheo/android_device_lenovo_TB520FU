@@ -16,6 +16,8 @@ public interface IDvsCallback extends IInterface {
 
     int getInterfaceVersion() throws RemoteException;
 
+    void onDolbyNotification(String event) throws RemoteException;
+
     boolean onDolbyVisionPlaybackStart() throws RemoteException;
 
     boolean onDolbyVisionPlaybackStop() throws RemoteException;

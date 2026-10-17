@@ -4,8 +4,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-import re
-
 from extract_utils.fixups_blob import (
     blob_fixup,
     blob_fixups_user_type,
@@ -146,32 +144,26 @@ blob_fixups: blob_fixups_user_type = {
         'vendor/etc/audio/sku_pineapple_qssi/audio_policy_configuration.xml',
     ): blob_fixup()
         .regex_replace(r'(?m)^[ \t]*<item>FM Tuner</item>\r?\n', ''),
-    # WiFi Display (stock system side, see proprietary-files.txt)
-    # IGraphicBufferConsumer::releaseBuffer has no EGLDisplay and EGLSyncKHR
-    # arguments any more (libgui BQ_GL_FENCE_CLEANUP), and the old call put
-    # null in the place of the release fence: pass the fence (x5) as the third
-    # argument (mov x3, xzr -> mov x3, x5 before mov x4, xzr; blr x8).
-    'system_ext/lib64/libwfdavenhancements.so': blob_fixup()
-        .binary_regex_replace(
-            re.escape(bytes.fromhex('e3031faae4031faa00013fd6')),
-            bytes.fromhex('e30305aae4031faa00013fd6'),
+    # Quick notes open ZUI Notes, which is not part of the build: keep both
+    # PenService quick note switches off until the user turns them on.
+    'system/etc/pen/pen_config.xml': blob_fixup()
+        .regex_replace(
+            r'(name="pen_set_quick_create_(?:click|screenoff)_notes">)1<',
+            r'\g<1>0<',
         ),
-    'system_ext/lib64/libwfdcommonutils.so': blob_fixup()
-        .remove_needed('libheif.so'),
-    # AudioSystem moved from libaudioclient to libaudiobase in Android 17.
-    'system_ext/lib64/libwfdmmsrc_system.so': blob_fixup()
-        .add_needed('libaudiobase.so')
-        .add_needed('libgui_shim.so'),
-    'system_ext/lib64/libwfdnative.so': blob_fixup()
-        .add_needed('libinput_shim.so'),
+    # WiFi Display (stock system side, see proprietary-files.txt)
+    # The Android 17 stock WFD libraries are built against the current libgui,
+    # libinput and libaudiobase: libwfdmmsrc_system, libwfdnative and
+    # libwfdservice resolve every symbol against the built system libraries,
+    # so neither libgui_shim nor libinput_shim is linked any more, and the
+    # stock libwfdavenhancements already calls the current releaseBuffer.
     'system_ext/lib64/libwfdservice.so': blob_fixup()
-        .add_needed('libaudiobase.so')
         .replace_needed('android.media.audio.common.types-V4-cpp.so', 'android.media.audio.common.types-V5-cpp.so'),
     (
-        'vendor/bin/hw/vendor.dolby.media.c2@1.0-service-vision',
+        'vendor/bin/hw/vendor.dolby.media.c2-service-vision',
         'vendor/lib64/c2.dolby.client.so',
-        'vendor/lib64/c2.dolby.hevc.dec.so',
-        'vendor/lib64/c2.dolby.hevc.sec.dec.so',
+        'vendor/lib64/c2.dolby.vision.dec.so',
+        'vendor/lib64/c2.dolby.vision.sec.dec.so',
         'vendor/lib64/c2.dolby.store.so',
         'vendor/lib64/libdolbydecoderprocessor.so',
         'vendor/lib64/libdolbyeglcore.so',

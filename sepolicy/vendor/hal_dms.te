@@ -2,9 +2,6 @@
 hal_attribute(dms)
 
 type hal_dms_hwservice, hwservice_manager_type;
-type hal_dms_service, protected_service, service_manager_type;
-allow hal_dms_client hal_dms_service:service_manager find;
-allow hal_dms_server hal_dms_service:service_manager { add find };
 
 binder_call(hal_dms_client, hal_dms_server)
 binder_call(hal_dms_server, hal_dms_client)
