@@ -18,15 +18,26 @@ import android.view.View;
  * pen settings page; floating and dialog activities have no such toolbar and
  * are left alone.
  */
-final class PageStyler implements Application.ActivityLifecycleCallbacks {
+public final class PageStyler implements Application.ActivityLifecycleCallbacks {
     static boolean sRegistered;
 
     static void register(Activity activity) {
-        if (sRegistered || activity == null) {
+        if (activity != null) {
+            register(activity.getApplication());
+        }
+    }
+
+    /**
+     * From the application start (androidx.startup.InitializationProvider),
+     * so pages opened directly (the floating menu editor, the app lists) are
+     * styled too, not only the ones reached from a pen settings page.
+     */
+    public static void register(Application application) {
+        if (sRegistered || application == null) {
             return;
         }
         sRegistered = true;
-        activity.getApplication().registerActivityLifecycleCallbacks(new PageStyler());
+        application.registerActivityLifecycleCallbacks(new PageStyler());
     }
 
     /** Styles [activity] once its views are laid out. */
@@ -43,6 +54,7 @@ final class PageStyler implements Application.ActivityLifecycleCallbacks {
                 }
                 PixelToolbar.attach(toolbar);
                 EdgeToEdge.apply(activity);
+                AppListCards.attach(activity);
             }
         });
     }

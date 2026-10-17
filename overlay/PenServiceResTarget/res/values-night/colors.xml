@@ -39,4 +39,35 @@
     <color name="language_progress_solid">@android:color/system_primary_container_dark</color>
     <color name="language_progress_text">@android:color/system_on_surface_variant_dark</color>
     <color name="system_choose_icon_color_zui">@android:color/system_primary_dark</color>
+
+    <!-- ZUI 18.5 (A17) resources, see values/colors.xml -->
+    <color name="listview_x_edit_title_text">@android:color/system_neutral1_100</color>
+    <color name="preference_text_title_disabled_zui">@android:color/system_neutral2_600</color>
+    <color name="preference_text_summary_disabled_zui">@android:color/system_neutral2_600</color>
+    <color name="preference_category_arrow_disabled_zui">@android:color/system_neutral2_600</color>
+    <color name="text_title_zui">@android:color/system_neutral1_100</color>
+    <color name="zui_text_color_primary">@android:color/system_on_surface_dark</color>
+    <color name="app_shortcut_color">@android:color/system_primary_dark</color>
+    <color name="app_shortcut_line">@android:color/system_outline_variant_dark</color>
+    <color name="pen_dialog_title_color">@android:color/system_on_surface_dark</color>
+    <color name="pen_dialog_content_color">@android:color/system_on_surface_variant_dark</color>
+    <color name="message_dialog_description_text_color">@android:color/system_on_surface_variant_dark</color>
+    <color name="pen_dialog_try_now_btn_solid_color">@android:color/system_primary_dark</color>
+    <color name="pen_dialog_try_now_btn_text_color">@android:color/system_on_primary_dark</color>
+    <color name="pen_dialog_got_it_btn_solid_color">@android:color/system_surface_container_highest_dark</color>
+    <color name="pen_dialog_got_it_btn_text_color">@android:color/system_on_surface_dark</color>
+    <color name="pen_dialog_got_it_btn_stroke_color">@android:color/transparent</color>
+    <color name="pen_dialog_got_it_btn_press_solid_color">@android:color/system_secondary_container_dark</color>
+    <color name="pen_dialog_got_it_btn_press_stroke_color">@android:color/transparent</color>
+    <color name="seekbar_track_background_zui">@android:color/system_secondary_container_dark</color>
+    <color name="seekbar_track_background_disable_zui">@android:color/system_secondary_container_dark</color>
+    <color name="ic_seekbar_minus_plus">@android:color/system_on_surface_variant_dark</color>
+    <color name="battery_bt_info_text">@android:color/system_on_surface_variant_dark</color>
+    <color name="touch_film_float_divider_color">@android:color/system_outline_variant_dark</color>
+    <color name="touch_two_find_settings_link_color">@android:color/system_primary_dark</color>
+    <color name="touch_two_find_settings_title_color">@android:color/system_on_surface_variant_dark</color>
+    <color name="one_vision_summary_text_color">@android:color/system_on_surface_variant_dark</color>
+    <color name="floating_menu_edit_item_bg_color">@android:color/system_surface_bright_dark</color>
+    <color name="floating_menu_edit_item_out_line_color">@android:color/system_outline_variant_dark</color>
+    <color name="floating_menu_edit_tip_color">@android:color/system_on_surface_variant_dark</color>
 </resources>
