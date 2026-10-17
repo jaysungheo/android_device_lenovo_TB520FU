@@ -6,11 +6,11 @@
 /*
  * TB520FU copy of vendor/qcom/opensource/healthd-ext/aidl/main.cpp.
  * Changes: wls_tx is ignored (see qti_healthd_board_init), charging held by
- * the Lenovo charge limits is reported as LONG_LIFE (see TB520FUHealth) and an
+ * the Lenovo charge limits is reported as LONG_LIFE (see LenovoHealth) and an
  * unused variable that breaks -Werror is dropped.
  */
 
-#define LOG_TAG "android.hardware.health-service.tb520fu"
+#define LOG_TAG "android.hardware.health-service.lenovo"
 
 #include <android-base/logging.h>
 #include <android/binder_interface_utils.h>
@@ -48,14 +48,14 @@ using aidl::android::hardware::health::HealthInfo;
 /*
  * The charger only stops with a healthy battery and a charger plugged in when
  * charging is held on purpose: the 80 % limit, the 40-60 % protection mode or
- * bypass charging (tb520fu-input BatteryController). Report that as LONG_LIFE
+ * bypass charging (lenovo-input BatteryController). Report that as LONG_LIFE
  * so SystemUI shows the "charging on hold" (defend) state like a Pixel with
  * charging optimization, instead of the charging bolt. BatteryController sets
- * vendor.tb520fu.charge_hold while one of them holds charging; any other stop
+ * vendor.lenovo.charge_hold while one of them holds charging; any other stop
  * (thermal mitigation, a weak charger) stays NOT_CHARGING, as nothing in
  * Settings can lift it.
  */
-class TB520FUHealth : public Health {
+class LenovoHealth : public Health {
   public:
     using Health::Health;
 
@@ -64,7 +64,7 @@ class TB520FUHealth : public Health {
         bool plugged = info->chargerAcOnline || info->chargerUsbOnline || info->chargerDockOnline;
         if (plugged && info->batteryStatus == BatteryStatus::NOT_CHARGING &&
             info->batteryHealth == BatteryHealth::GOOD &&
-            property_get_bool("vendor.tb520fu.charge_hold", false)) {
+            property_get_bool("vendor.lenovo.charge_hold", false)) {
             info->chargingState = BatteryChargingState::LONG_LIFE;
         }
     }
@@ -170,7 +170,7 @@ int main(int argc, char** argv) {
     auto config = std::make_unique<healthd_config>();
     ::android::hardware::health::InitHealthdConfig(config.get());
     qti_healthd_board_init(config.get());
-    auto binder = ndk::SharedRefBase::make<TB520FUHealth>(gInstanceName, std::move(config));
+    auto binder = ndk::SharedRefBase::make<LenovoHealth>(gInstanceName, std::move(config));
 
     if (argc >= 2 && argv[1] == gChargerArg) {
 #if !CHARGER_FORCE_NO_UI

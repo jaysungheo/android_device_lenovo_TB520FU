@@ -41,12 +41,12 @@ java_genrule {
     ],
     tools: [
         "d8",
-        "tb520fu_prepend_dex",
+        "lenovo_prepend_dex",
     ],
     out: ["DolbyVisionService.apk"],
     cmd: "$(location d8) --release --no-desugaring --min-api 35 " +
         "--output $(genDir)/compat.zip $(location :DolbyVisionServiceCompat) && " +
-        "$(location tb520fu_prepend_dex) --apk $(location :DolbyVisionService-stock) " +
+        "$(location lenovo_prepend_dex) --apk $(location :DolbyVisionService-stock) " +
         "--dex-zip $(genDir)/compat.zip --out $(out)",
 }
 

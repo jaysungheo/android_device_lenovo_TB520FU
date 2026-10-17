@@ -38,7 +38,7 @@ set_prop(vendor_init, vendor_lenovo_config_prop)
 get_prop(system_app, vendor_lenovo_config_prop)
 get_prop({ platform_app platform_app_36 }, vendor_lenovo_config_prop)
 
-# Pen charger (power_supply/wls_tx): tb520fu-input reads attach state and MAC,
+# Pen charger (power_supply/wls_tx): lenovo-input reads attach state and MAC,
 # the battery HAL sends Qi commands
 allow system_server vendor_sysfs_wls_tx:dir r_dir_perms;
 allow system_server vendor_sysfs_wls_tx:file r_file_perms;

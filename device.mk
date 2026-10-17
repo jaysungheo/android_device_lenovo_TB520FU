@@ -38,9 +38,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     LunarisDolby
 
-# Device settings (hardware/lenovo/packages/TB520FUParts)
+# Device settings (hardware/lenovo/packages/LenovoParts)
 PRODUCT_PACKAGES += \
-    TB520FUParts
+    LenovoParts
 
 # WiFi Display (Miracast): the QTI session of the OnePlus QSSI blobs
 # (proprietary-files.txt) with the shims of hardware/lineage/compat and the
@@ -66,7 +66,7 @@ PRODUCT_PACKAGES += \
 # Lenovo pen / keyboard / battery bridge (hardware/lenovo/input)
 PRODUCT_PACKAGES += \
     PenService \
-    tb520fu-input \
+    lenovo-input \
     ZuiKeyboardUpdate \
     ZuiKeyboardUpdateOlympia
 
@@ -86,8 +86,8 @@ PRODUCT_COPY_FILES += \
 
 # Health
 PRODUCT_PACKAGES += \
-    android.hardware.health-service.tb520fu \
-    android.hardware.health-service.tb520fu_recovery
+    android.hardware.health-service.lenovo \
+    android.hardware.health-service.lenovo_recovery
 
 # Init
 PRODUCT_PACKAGES += \
@@ -98,9 +98,9 @@ PRODUCT_PACKAGES += \
     fstab.zram.8 \
     fstab.zram.12 \
     fstab.zram.16 \
-    init.tb520fu.zram.rc \
-    init.tb520fu.region.rc \
-    init.tb520fu.region.sh \
+    init.lenovo.zram.rc \
+    init.lenovo.region.rc \
+    init.lenovo.region.sh \
     setwlansardsi0.sh \
     setwlansardsi1.sh \
     setwlansardsi2.sh \
@@ -114,13 +114,13 @@ PRODUCT_COPY_FILES += \
 # Overlays
 PRODUCT_ENFORCE_RRO_TARGETS := *
 PRODUCT_PACKAGES += \
-    FrameworksResTB520FU \
-    PenServiceResTB520FU \
-    SettingsProviderResTB520FU \
-    SettingsResTB520FU \
-    SystemUIResTB520FU \
-    WifiResTB520FU \
-    ZuiUDeviceResTB520FU
+    FrameworksResTarget \
+    PenServiceResTarget \
+    SettingsProviderResTarget \
+    SettingsResTarget \
+    SystemUIResTarget \
+    WifiResTarget \
+    ZuiUDeviceResTarget
 
 # The NT36532 touch IC is flashless: nvt_36xxx downloads this firmware 5 s
 # after probe, so recovery needs it in its own /vendor/firmware.

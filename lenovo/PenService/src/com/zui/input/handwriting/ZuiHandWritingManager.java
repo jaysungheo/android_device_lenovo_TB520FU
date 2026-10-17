@@ -59,7 +59,7 @@ public final class ZuiHandWritingManager {
 
     // Retained for stock callers, although the Lenovo IME is no longer registered.
     public void setHwEnable(int enabled) { mHandler.post(new Refresh(this)); }
-    // Same setting the stock ZuiHandWritingService writes; tb520fu-input reads it.
+    // Same setting the stock ZuiHandWritingService writes; lenovo-input reads it.
     public void setInkModeInterceptEvents(boolean intercept) {
         try {
             Settings.System.putIntForUser(mContext.getContentResolver(),

@@ -56,7 +56,7 @@ public class BasePreferenceFragmentCompat extends zui.appcompat.preference.Prefe
     // The empty category row is about 6dp high; together 16dp between groups.
     private static final int UNTITLED_GROUP_GAP_DP = 10;
     // SettingsLib expressive rows: at least 72dp, 16dp vertical padding
-    // (list_text_vertical_padding_zui in PenServiceResTB520FU).
+    // (list_text_vertical_padding_zui in PenServiceResTarget).
     private static final int ROW_MIN_HEIGHT_DP = 72;
 
     @Override

@@ -72,7 +72,7 @@ binder_use(hal_lenovotouchscreen_default)
 allow hal_lenovotouchscreen_default vendor_proc_lenovo_touch:file rw_file_perms;
 allow hal_lenovotouchscreen_default proc:file rw_file_perms;
 
-# Clients: tb520fu-input in system_server
+# Clients: lenovo-input in system_server
 hal_client_domain(system_server, hal_lenovobattery)
 hal_client_domain(system_server, hal_lenovodisplay)
 hal_client_domain(system_server, hal_lenovokeyboard)
