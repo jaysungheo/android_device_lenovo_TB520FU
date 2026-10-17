@@ -1,4 +1,5 @@
-# tb520fu-input GamePerfController: per-app CPU caps/floors and GPU power levels
-allow system_server sysfs_devices_system_cpu:file rw_file_perms;
-allow system_server vendor_sysfs_kgsl:dir r_dir_perms;
-allow system_server vendor_sysfs_kgsl:file rw_file_perms;
+# lenovo-input BatteryController: a Lenovo charge limit holds charging.
+# The system server is a coredomain; the neverallow on coredomain setting
+# vendor properties exempts the violators attribute.
+typeattribute system_server system_writes_vendor_properties_violators;
+set_prop(system_server, vendor_lenovo_charge_hold_prop)
