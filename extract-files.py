@@ -18,7 +18,8 @@ from extract_utils.main import (
 )
 
 namespace_imports = [
-    'device/lenovo/TB520FU',
+    'device/lenovo/lapis',
+    'vendor/lenovo/sm8650-common',
     'hardware/qcom-caf/sm8650',
     'hardware/qcom-caf/wlan',
     'vendor/qcom/opensource/commonsys/display',
@@ -45,6 +46,37 @@ lib_fixups: lib_fixups_user_type = {
         'vendor.qti.qccvndhal_aidl-V1-ndk',
     ): lib_fixup_vendor_suffix,
 }
+
+
+CODEC2_V34_LIBS = (
+    'android.hardware.media.c2@1.0',
+    'android.hardware.media.c2@1.1',
+    'android.hardware.media.c2@1.2',
+    'libcodec2',
+    'libcodec2_hidl@1.0',
+    'libcodec2_hidl@1.1',
+    'libcodec2_hidl@1.2',
+    'libcodec2_hidl_plugin',
+    'libcodec2_soft_common',
+    'libcodec2_vndk',
+    'libsfplugin_ccodec_utils',
+    'libstagefright_aidl_bufferpool2',
+    'libstagefright_bufferpool@2.0.1',
+    'libstagefright_bufferqueue_helper',
+    'libstagefright_foundation',
+    'libui',
+)
+
+
+def codec2_v34(fixup):
+    # The stock Dolby Codec2 blobs use the stock Codec2 libraries,
+    # shipped as <name>-v34.so next to the ones built from source. They were
+    # built against the libui of Android 14 (libui-v34, from hardware/lineage/
+    # compat): the layout of GraphicBuffer differs from the one built from
+    # source, which crashed the Dolby Vision decoder.
+    for lib in CODEC2_V34_LIBS:
+        fixup = fixup.replace_needed(f'{lib}.so', f'{lib}-v34.so')
+    return fixup
 
 
 def clear_opencl_versions(fixup):
@@ -105,53 +137,58 @@ OPENCL_SYMBOLS = (
 )
 
 blob_fixups: blob_fixups_user_type = {
-    'system_ext/lib64/libwfdnative.so': blob_fixup()
-        .add_needed('libinput_shim.so'),
+    # Do not expose the FM input as a permanently connected recording device.
+    # Recorder otherwise prefers it over the tablet's built-in microphones.
+    (
+        'vendor/etc/audio/sku_pineapple/audio_policy_configuration.xml',
+        'vendor/etc/audio/sku_pineapple_qssi/audio_policy_configuration.xml',
+    ): blob_fixup()
+        .regex_replace(r'(?m)^[ \t]*<item>FM Tuner</item>\r?\n', ''),
+    # Quick notes open ZUI Notes, which is not part of the build: keep both
+    # PenService quick note switches off until the user turns them on.
+    'system/etc/pen/pen_config.xml': blob_fixup()
+        .regex_replace(
+            r'(name="pen_set_quick_create_(?:click|screenoff)_notes">)1<',
+            r'\g<1>0<',
+        ),
+    # WiFi Display (stock system side, see proprietary-files.txt)
+    # The Android 17 stock WFD libraries are built against the current libgui,
+    # libinput and libaudiobase: libwfdmmsrc_system, libwfdnative and
+    # libwfdservice resolve every symbol against the built system libraries,
+    # so neither libgui_shim nor libinput_shim is linked any more, and the
+    # stock libwfdavenhancements already calls the current releaseBuffer.
     'system_ext/lib64/libwfdservice.so': blob_fixup()
         .replace_needed('android.media.audio.common.types-V4-cpp.so', 'android.media.audio.common.types-V5-cpp.so'),
-    'system_ext/lib64/vendor.qti.hardware.qccsyshal@1.2-halimpl.so': blob_fixup()
-        .replace_needed('libprotobuf-cpp-full.so', 'libprotobuf-cpp-full-21.7.so'),
     (
-        'vendor/bin/qcc-vendor',
-        'vendor/lib64/libqcc_sdk.so',
-    ): blob_fixup()
-        .add_needed('libbinder_shim.so'),
+        'vendor/bin/hw/vendor.dolby.media.c2-service-vision',
+        'vendor/lib64/c2.dolby.client.so',
+        'vendor/lib64/c2.dolby.vision.dec.so',
+        'vendor/lib64/c2.dolby.vision.sec.dec.so',
+        'vendor/lib64/c2.dolby.store.so',
+        'vendor/lib64/libdolbydecoderprocessor.so',
+        'vendor/lib64/libdolbyeglcore.so',
+        'vendor/bin/hw/vendor.dolby.media.c2-default-service-dax',
+        'vendor/lib64/libcodec2_soft_ac4dec.so',
+        'vendor/lib64/libcodec2_soft_ddpdec.so',
+        'vendor/lib64/libcodec2_store_dolby.so',
+    ): codec2_v34(blob_fixup()),
     (
-        'vendor/etc/media_codecs_cliffs_v0.xml',
-        'vendor/etc/media_codecs_cliffs_v1.xml',
-        'vendor/etc/media_codecs_pineapple.xml',
-    ): blob_fixup()
-        .regex_replace('.*media_codecs_(google_audio|google_c2|google_telephony|google_video|vendor_audio).*\n', ''),
-    (
-        'vendor/etc/seccomp_policy/qesdksec.policy',
-        'vendor/etc/seccomp_policy/qsap_qapeservice.policy',
-    ): blob_fixup()
-        .add_line_if_missing('lseek: 1'),
-    'vendor/etc/vintf/manifest/c2_manifest_vendor.xml': blob_fixup()
-        .regex_replace('.*IComponentStore/dolby.*\n', ''),
-    'vendor/lib64/libqcodec2_core.so': blob_fixup()
-        .add_needed('libcodec2_shim.so'),
-    (
-        'vendor/bin/hw/vendor.qti.hardware.display.composer-service',
-        'vendor/lib64/libaodoptfeature.so',
-        'vendor/lib64/libapengine.so',
-        'vendor/lib64/libdpps.so',
-        'vendor/lib64/libgamepoweroptfeature.so',
-        'vendor/lib64/liblearningmodule.so',
-        'vendor/lib64/liboffscreenpoweroptfeature.so',
-        'vendor/lib64/libpowercore.so',
-        'vendor/lib64/libpsmoptfeature.so',
-        'vendor/lib64/libsnapdragoncolor-manager.so',
-        'vendor/lib64/libstandbyfeature.so',
-        'vendor/lib64/libvideooptfeature.so',
-    ): blob_fixup()
-        .replace_needed('libtinyxml2.so', 'libtinyxml2-v34.so'),
-    (
-        'vendor/lib64/libVoiceSdk.so',
-        'vendor/lib64/libcapiv2uvvendor.so',
-        'vendor/lib64/liblistensoundmodel2vendor.so',
-    ): blob_fixup()
-        .replace_needed('libtensorflowlite_c.so', 'libtensorflowlite_c_vendor.so'),
+        'vendor/lib64/android.hardware.media.c2@1.0-v34.so',
+        'vendor/lib64/android.hardware.media.c2@1.1-v34.so',
+        'vendor/lib64/android.hardware.media.c2@1.2-v34.so',
+        'vendor/lib64/libcodec2-v34.so',
+        'vendor/lib64/libcodec2_hidl@1.0-v34.so',
+        'vendor/lib64/libcodec2_hidl@1.1-v34.so',
+        'vendor/lib64/libcodec2_hidl@1.2-v34.so',
+        'vendor/lib64/libcodec2_hidl_plugin-v34.so',
+        'vendor/lib64/libcodec2_soft_common-v34.so',
+        'vendor/lib64/libcodec2_vndk-v34.so',
+        'vendor/lib64/libsfplugin_ccodec_utils-v34.so',
+        'vendor/lib64/libstagefright_aidl_bufferpool2-v34.so',
+        'vendor/lib64/libstagefright_bufferpool@2.0.1-v34.so',
+        'vendor/lib64/libstagefright_bufferqueue_helper-v34.so',
+        'vendor/lib64/libstagefright_foundation-v34.so',
+    ): codec2_v34(blob_fixup().fix_soname()),
     (
         'vendor/lib64/libpandora.algorithm.arcsoft.superportraitvideo.1.so',
         'vendor/lib64/libpandora.algorithm.arcsoft.tablethdrchecker.1.so',
@@ -181,7 +218,7 @@ blob_fixups: blob_fixups_user_type = {
 }  # fmt: skip
 
 module = ExtractUtilsModule(
-    'TB520FU',
+    'lapis',
     'lenovo',
     blob_fixups=blob_fixups,
     lib_fixups=lib_fixups,
@@ -190,5 +227,7 @@ module = ExtractUtilsModule(
 )
 
 if __name__ == '__main__':
-    utils = ExtractUtils.device(module)
+    utils = ExtractUtils.device_with_common(
+        module, 'sm8650-common', module.vendor
+    )
     utils.run()
