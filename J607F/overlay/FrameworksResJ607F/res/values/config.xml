@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+
+     DRAFT for TB-J607F. Brightness values are the stock ZUI 12.6.142_210801
+     ones (Lenovo's system framework-res.apk); power_profile.xml (res/xml) is
+     the stock vendor overlay one.
+-->
+<resources>
+    <!-- LTR578 ambient light sensor (stock sensor configs). Stock ZUI ran its
+         own auto-brightness on top of the curve below. -->
+    <bool name="config_automatic_brightness_available">true</bool>
+
+    <!-- Stock backlight (0-255) to nits mapping of the 1200x2000 LCD. -->
+    <array name="config_screenBrightnessNits">
+        <item>0</item>
+        <item>2</item>
+        <item>14</item>
+        <item>50</item>
+        <item>88</item>
+        <item>104</item>
+        <item>118</item>
+        <item>147</item>
+        <item>176</item>
+        <item>208</item>
+        <item>237</item>
+        <item>262</item>
+        <item>352</item>
+        <item>420</item>
+    </array>
+    <integer-array name="config_screenBrightnessBacklight">
+        <item>0</item>
+        <item>1</item>
+        <item>11</item>
+        <item>35</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+        <item>100</item>
+        <item>120</item>
+        <item>140</item>
+        <item>160</item>
+        <item>180</item>
+        <item>240</item>
+        <item>255</item>
+    </integer-array>
+
+    <!-- Stock auto-brightness curve: lux levels and the nits for each band
+         (one more nits value than lux levels). -->
+    <integer-array name="config_autoBrightnessLevels">
+        <item>6</item>
+        <item>35</item>
+        <item>69</item>
+        <item>104</item>
+        <item>173</item>
+        <item>230</item>
+        <item>403</item>
+        <item>518</item>
+        <item>633</item>
+        <item>829</item>
+        <item>1094</item>
+        <item>1267</item>
+        <item>1727</item>
+        <item>2303</item>
+        <item>4030</item>
+    </integer-array>
+    <array name="config_autoBrightnessDisplayValuesNits">
+        <item>2</item>
+        <item>25</item>
+        <item>85</item>
+        <item>85</item>
+        <item>85</item>
+        <item>85</item>
+        <item>110</item>
+        <item>140</item>
+        <item>180</item>
+        <item>210</item>
+        <item>250</item>
+        <item>280</item>
+        <item>320</item>
+        <item>340</item>
+        <item>360</item>
+        <item>420</item>
+    </array>
+
+    <!-- Stock hysteresis and debounce. -->
+    <integer-array name="config_dynamicHysteresisBrightLevels">
+        <item>1000</item>
+        <item>1000</item>
+        <item>500</item>
+        <item>300</item>
+        <item>100</item>
+    </integer-array>
+    <integer-array name="config_dynamicHysteresisDarkLevels">
+        <item>800</item>
+        <item>800</item>
+        <item>400</item>
+        <item>200</item>
+        <item>200</item>
+    </integer-array>
+    <integer-array name="config_dynamicHysteresisLuxLevels">
+        <item>6</item>
+        <item>35</item>
+        <item>230</item>
+        <item>633</item>
+    </integer-array>
+    <integer name="config_autoBrightnessBrighteningLightDebounce">4000</integer>
+    <integer name="config_autoBrightnessDarkeningLightDebounce">4000</integer>
+    <bool name="config_autoBrightnessResetAmbientLuxAfterWarmUp">true</bool>
+
+    <!-- Stock slider range: backlight 3 to 255, default 102. -->
+    <item name="config_screenBrightnessSettingMinimumFloat" format="float" type="dimen">0.007874</item>
+    <item name="config_screenBrightnessSettingMaximumFloat" format="float" type="dimen">1.0</item>
+    <item name="config_screenBrightnessSettingDefaultFloat" format="float" type="dimen">0.397638</item>
+
+    <!-- Tablet: navigation bar on screen, no notification LED, no telephony. -->
+    <bool name="config_showNavigationBar">true</bool>
+    <bool name="config_intrusiveNotificationLed">false</bool>
+    <bool name="config_voice_capable">false</bool>
+    <bool name="config_sms_capable">false</bool>
+
+    <!-- 60 Hz LCD. -->
+    <integer name="config_defaultRefreshRate">60</integer>
+    <integer name="config_defaultPeakRefreshRate">60</integer>
+
+    <!-- No 3.5 mm jack on this device. -->
+    <bool name="config_useDevInputEventForAudioJack">false</bool>
+
+    <!-- Wi-Fi and Bluetooth only. -->
+    <string-array translatable="false" name="networkAttributes">
+        <item>"wifi,1,1,1,-1,true"</item>
+        <item>"bluetooth,7,7,2,-1,true"</item>
+    </string-array>
+    <string-array translatable="false" name="radioAttributes">
+        <item>"1,1"</item>
+        <item>"7,1"</item>
+    </string-array>
+</resources>
