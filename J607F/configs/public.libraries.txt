@@ -1,0 +1,9 @@
+libadsprpc.so
+libcdsprpc.so
+libsdsprpc.so
+libfastcvopt.so
+liblistensoundmodel2.so
+libOpenCL.so
+libnpu.so
+libhta_hexagon_runtime.so
+# Stock /vendor/etc/public.libraries.txt lists no camera libraries.
